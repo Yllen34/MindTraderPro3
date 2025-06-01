@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Journal de Trading - Trading Calculator Pro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-book text-primary me-2"></i>
+                Journal de Trading
+            </h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTradeModal">
+                <i class="fas fa-plus me-2"></i>Nouveau Trade
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Statistiques rapides -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-primary">45</h3>
+                <small class="text-muted">Trades Total</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-success">68.9%</h3>
+                <small class="text-muted">Taux de Réussite</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-warning">€2,450</h3>
+                <small class="text-muted">Profit Total</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-info">1:2.4</h3>
+                <small class="text-muted">R/R Moyen</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des trades -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-list me-2"></i>Mes Trades
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Symbole</th>
+                        <th>Direction</th>
+                        <th>Lots</th>
+                        <th>Entrée</th>
+                        <th>Sortie</th>
+                        <th>P&L</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="8" class="text-center py-5">
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Connectez votre broker pour voir vos trades</p>
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-plug me-2"></i>Connecter un Broker
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal d'ajout de trade -->
+<div class="modal fade" id="addTradeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nouveau Trade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTradeForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Paire</label>
+                            <select class="form-select" id="tradeSymbol" required>
+                                <option value="XAUUSD">XAU/USD (Or)</option>
+                                <option value="EURUSD">EUR/USD</option>
+                                <option value="GBPUSD">GBP/USD</option>
+                                <option value="USDJPY">USD/JPY</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Direction</label>
+                            <select class="form-select" id="tradeDirection" required>
+                                <option value="BUY">Achat (BUY)</option>
+                                <option value="SELL">Vente (SELL)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Lot Size</label>
+                            <input type="number" class="form-control" id="tradeLotSize" step="0.01" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Prix d'entrée</label>
+                            <input type="number" class="form-control" id="tradeEntryPrice" step="0.00001" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Stop Loss</label>
+                            <input type="number" class="form-control" id="tradeStopLoss" step="0.00001">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Take Profit</label>
+                            <input type="number" class="form-control" id="tradeTakeProfit" step="0.00001">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="tradeNotes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="addTrade()">Ajouter le Trade</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function addTrade() {
+    // Validation et récupération des données
+    const symbol = document.getElementById('tradeSymbol').value;
+    const direction = document.getElementById('tradeDirection').value;
+    const lotSize = document.getElementById('tradeLotSize').value;
+    const entryPrice = document.getElementById('tradeEntryPrice').value;
+    const stopLoss = document.getElementById('tradeStopLoss').value;
+    const takeProfit = document.getElementById('tradeTakeProfit').value;
+    const notes = document.getElementById('tradeNotes').value;
+    
+    // Vérification des champs obligatoires
+    if (!symbol || !direction || !lotSize || !entryPrice) {
+        alert('Veuillez remplir tous les champs obligatoires (Paire, Direction, Lot Size, Prix d\'entrée)');
+        return;
+    }
+    
+    // Créer l'objet trade
+    const tradeData = {
+        symbol: symbol,
+        direction: direction,
+        lot_size: parseFloat(lotSize),
+        entry_price: parseFloat(entryPrice),
+        stop_loss: stopLoss ? parseFloat(stopLoss) : null,
+        take_profit: takeProfit ? parseFloat(takeProfit) : null,
+        notes: notes || ''
+    };
+    
+    // Ajouter le trade à la liste (simulation)
+    console.log('Trade ajouté:', tradeData);
+    alert('✅ Trade ajouté avec succès !\n\n' + 
+          'Paire: ' + tradeData.symbol + '\n' +
+          'Direction: ' + tradeData.direction + '\n' +
+          'Lot Size: ' + tradeData.lot_size + '\n' +
+          'Prix: ' + tradeData.entry_price);
+    
+    // Fermer le modal
+    try {
+        const modal = document.getElementById('addTradeModal');
+        if (window.bootstrap && window.bootstrap.Modal) {
+            const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+            modalInstance.hide();
+        } else {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) backdrop.remove();
+        }
+    } catch (e) {
+        console.log('Modal fermé manuellement');
+    }
+    
+    // Réinitialiser le formulaire
+    document.getElementById('addTradeForm').reset();
+}
+
+// Fonction pour ouvrir le modal manuellement si Bootstrap ne fonctionne pas
+function openTradeModal() {
+    const modal = document.getElementById('addTradeModal');
+    modal.style.display = 'block';
+    modal.classList.add('show');
+    document.body.classList.add('modal-open');
+}
+
+function closeTradeModal() {
+    const modal = document.getElementById('addTradeModal');
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+    document.body.classList.remove('modal-open');
+}
+</script>
+{% endblock %}

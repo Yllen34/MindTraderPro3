@@ -1,0 +1,63 @@
+
+# MindTraderPro - Idée de partenariat formateurs et services externes
+
+## 🎯 Objectif
+Créer un système de partenariats dans l'application MindTraderPro permettant :
+- Aux utilisateurs d'accéder à des **formations ou services premium avec réduction**
+- À moi (Yllen34) de **générer une commission** sur chaque vente
+
+---
+
+## ✅ Offres à intégrer
+
+### Type de services/formations partenaires :
+- Formations ICT / SMC / Price Action
+- Coaching individuel
+- Abonnement à des signaux de qualité
+- Webinaires thématiques
+- Formations sur la psychologie du trader
+- Réduction sur des challenges (FTMO, The5%ers…)
+
+---
+
+## 📱 Intégration dans l'application
+
+### Onglet dédié :
+- Nom : `Marketplace`, `Formations`, ou `Partenaires Premium`
+- Chaque offre affichée comme une **carte interactive** contenant :
+  - Nom & photo du formateur
+  - Description rapide
+  - Prix normal / prix MindTraderPro
+  - Bouton “Profiter de l’offre”
+  - Lien affilié ou code promo intégré
+
+### Ajouts techniques :
+- Tracking des clics et ventes
+- Tableau de bord pour l’admin (moi) :
+  - Liste des ventes par partenaire
+  - Total commissions par partenaire
+  - Ajout/suppression d’offres
+
+---
+
+## 💬 Message d’approche pour recruter un partenaire
+
+> Bonjour [Nom],  
+> Je développe une application de trading nommée **MindTraderPro**. Elle aide les traders avec des outils IA, des calculateurs de risque, des journaux et des modules de progression.  
+> Je souhaite intégrer des **partenaires formateurs** à qui je propose d’offrir une **réduction exclusive** à mes utilisateurs, en échange d’une commission automatique sur chaque vente générée.  
+> Tout est traqué proprement via un lien affilié ou un code personnalisé.  
+> Êtes-vous intéressé pour qu’on en discute ?
+
+---
+
+## 🛠️ Idées futures
+
+- Zone partenaire (mini dashboard pour chaque formateur)
+- Paiement automatisé des commissions
+- Intégration d’avis utilisateurs
+- Classement des formations par notation
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) - 2025

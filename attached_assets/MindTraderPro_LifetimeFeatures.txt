@@ -1,0 +1,56 @@
+
+# MindTraderPro - Statut Lifetime & Contributeurs VIP
+
+## 🎯 Objectif
+Récompenser les utilisateurs Lifetime avec des avantages exclusifs et leur donner un rôle actif dans l'évolution de l'application.
+
+---
+
+## ✅ Avantages exclusifs pour les utilisateurs Lifetime
+
+### 1. Apparence personnalisée
+
+- **Badge Lifetime Elite** visible sur le profil, le journal, le classement
+- **Avatar exclusif** non accessible autrement
+- **Contour d’avatar doré ou animé**
+- **Thème visuel unique** : "Platine Visionnaire", "Legend FX", etc.
+
+---
+
+### 2. Avantages fonctionnels
+
+- Accès anticipé aux nouvelles fonctionnalités
+- Aucun quota : journal, calculs illimités, IA, simulateurs
+- Historique complet sauvegardé en priorité
+- Export avancé de données et rapports
+
+---
+
+### 3. Droit de contribution
+
+- Accès à une section “Propose une idée” dans l’app
+- Possibilité de voter pour les futures fonctionnalités
+- Participation à des sondages internes
+- Salon Discord privé (ou Telegram) pour Lifetime uniquement
+
+---
+
+### 4. Affichage social
+
+- Classement spécial "Top Lifetime"
+- Liste publique des premiers contributeurs
+- Reconnaissance dans l'app : “Fondateur #X”, “Bêta testeur originel”
+
+---
+
+## 💡 Objectif de ce système
+
+- Créer une vraie **communauté de bâtisseurs**
+- Créer une **valeur long terme**
+- Inciter les premiers utilisateurs à s’investir durablement
+- Protéger l’évolution de l’app des dérives externes (avis, demandes aléatoires)
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

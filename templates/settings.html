@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Paramètres - Trading Calculator Pro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-cog text-primary me-2"></i>
+                Paramètres Utilisateur
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-user me-2"></i>
+                    Préférences de Trading
+                </h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Capital par défaut (€)</label>
+                            <input type="number" class="form-control" value="10000">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Risque par défaut (%)</label>
+                            <input type="number" class="form-control" value="1" step="0.1">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Paire favorite</label>
+                            <select class="form-select">
+                                <option value="XAUUSD" selected>XAU/USD (Or)</option>
+                                <option value="EURUSD">EUR/USD</option>
+                                <option value="GBPUSD">GBP/USD</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Thème</label>
+                            <select class="form-select">
+                                <option value="dark" selected>Sombre</option>
+                                <option value="light">Clair</option>
+                                <option value="trading">Trading</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6>Notifications</h6>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">Conseils IA quotidiens</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">Alertes de performance</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Nouvelles économiques</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Sauvegarder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Informations Compte
+                </h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID Utilisateur:</strong><br>
+                <small class="text-muted">{{ user_id[:12] }}...</small></p>
+                
+                <p><strong>Membre depuis:</strong><br>
+                <small class="text-muted">{{ now.strftime('%d/%m/%Y') }}</small></p>
+                
+                <p><strong>Version:</strong><br>
+                <small class="text-success">Trading Calculator Pro v2.0</small></p>
+                
+                <hr>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-warning">
+                        <i class="fas fa-download me-2"></i>Exporter Données
+                    </button>
+                    <button class="btn btn-outline-danger">
+                        <i class="fas fa-trash me-2"></i>Effacer Historique
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

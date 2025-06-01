@@ -1,0 +1,212 @@
+/* Custom styles for the trading calculator */
+
+:root {
+    --buy-color: #28a745;
+    --sell-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+}
+
+body {
+    background-color: var(--bs-dark);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Card styling */
+.card {
+    border: 1px solid var(--bs-border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--bs-secondary-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+/* Trade summary styling */
+.trade-summary {
+    background-color: var(--bs-secondary-bg);
+    border: 1px solid var(--bs-border-color);
+}
+
+.trade-summary.buy {
+    border-left: 4px solid var(--buy-color);
+}
+
+.trade-summary.sell {
+    border-left: 4px solid var(--sell-color);
+}
+
+/* Metric cards */
+.metric-card {
+    background-color: var(--bs-secondary-bg);
+    border: 1px solid var(--bs-border-color);
+    transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--bs-primary);
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--bs-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Lot size result */
+.lot-size-result {
+    background: linear-gradient(135deg, var(--bs-primary-bg-subtle), var(--bs-secondary-bg));
+    border: 2px solid var(--bs-primary);
+}
+
+.lot-size-result.buy {
+    border-color: var(--buy-color);
+}
+
+.lot-size-result.sell {
+    border-color: var(--sell-color);
+}
+
+/* Direction badges */
+.direction-buy {
+    color: var(--buy-color) !important;
+    font-weight: bold;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.direction-sell {
+    color: var(--sell-color) !important;
+    font-weight: bold;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Calculate button styling based on direction */
+.btn-calculate {
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-calculate.buy-mode {
+    background: linear-gradient(135deg, var(--buy-color), #20c997);
+    border: none;
+    color: white;
+}
+
+.btn-calculate.sell-mode {
+    background: linear-gradient(135deg, var(--sell-color), #fd7e14);
+    border: none;
+    color: white;
+}
+
+/* Results modal */
+.results-modal {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    overflow-y: auto;
+}
+
+.results-modal-content {
+    background: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 20px auto;
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    transform: translateY(-1px);
+}
+
+/* Input group styling */
+.input-group-text {
+    background-color: var(--bs-secondary-bg);
+    border-color: var(--bs-border-color);
+}
+
+/* Loading animation */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .metric-value {
+        font-size: 1.25rem;
+    }
+    
+    .lot-size-result .display-6 {
+        font-size: 2rem;
+    }
+}
+
+/* Animation for results appearing */
+#resultsState {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Error state styling */
+.alert-danger {
+    border-left: 4px solid var(--bs-danger);
+}
+
+/* Success indicators */
+.risk-reward-good {
+    color: var(--buy-color) !important;
+}
+
+.risk-reward-poor {
+    color: var(--sell-color) !important;
+}
+
+.risk-reward-fair {
+    color: var(--warning-color) !important;
+}

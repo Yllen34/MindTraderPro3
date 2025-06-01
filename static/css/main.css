@@ -1,0 +1,178 @@
+/* Trading Calculator Pro - CSS Principal */
+
+/* Variables CSS pour le thème trading */
+:root {
+    --trading-green: #00c851;
+    --trading-red: #ff4444;
+    --trading-gold: #ffc107;
+    --trading-blue: #007bff;
+    --dark-bg: #1a1a1a;
+    --card-bg: #2d2d2d;
+}
+
+/* Style général */
+body {
+    background-color: var(--dark-bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Navigation personnalisée */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Cards avec effets */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Boutons avec styles trading */
+.btn-trading-buy {
+    background: linear-gradient(45deg, var(--trading-green), #28a745);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-trading-sell {
+    background: linear-gradient(45deg, var(--trading-red), #dc3545);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-trading-neutral {
+    background: linear-gradient(45deg, var(--trading-gold), #ffc107);
+    border: none;
+    color: #212529;
+    font-weight: 600;
+}
+
+/* Animations smooth */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Indicateurs de statut */
+.status-online {
+    color: var(--trading-green);
+}
+
+.status-offline {
+    color: var(--trading-red);
+}
+
+.status-warning {
+    color: var(--trading-gold);
+}
+
+/* Style pour les inputs */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #444;
+    background-color: #2d2d2d;
+    color: #fff;
+}
+
+.form-control:focus {
+    border-color: var(--trading-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Tables responsives */
+.table-dark {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Alerts personnalisées */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #444;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Styles pour le calculateur */
+.calculator-result {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.calculator-input {
+    background-color: #2d2d2d;
+    border: 2px solid #444;
+    border-radius: 8px;
+    color: white;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+}
+
+.calculator-input:focus {
+    border-color: var(--trading-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: #2d2d2d;
+    color: white;
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--trading-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

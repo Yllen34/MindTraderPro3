@@ -1,0 +1,34 @@
+Tu es un développeur expert et tu dois modifier uniquement ce qui est demandé, sans toucher au reste de l’application. Ne crée aucun doublon de boutons ou blocs existants. Les modifications doivent remplacer les parties obsolètes si nécessaire.
+
+Voici les tâches à appliquer sur la page `/calculator` :
+
+1. Supprime les anciens boutons BUY/SELL en double. Garde uniquement un bloc de sélection clair et centré.
+2. Le bloc d’affichage du **prix actuel** doit apparaître *sous le champ de la paire de trading*, pas ailleurs. Le format doit être :  
+   `Prix actuel : 1.23456 (source : MetaAPI)` ou `Prix indisponible - API déconnectée` si l’API ne répond pas.
+3. Ajoute un **bloc de résultats complet** sous le bouton "Calculer la Position Optimale". Ce bloc doit contenir :
+   - Taille du lot à ouvrir
+   - Valeur du risque monétaire (ex : "Risque : 100 $")
+   - Valeur du gain potentiel
+   - Ratio risque/rendement (ex : R:R = 1.5)
+   - Un bouton "Réinitialiser les champs"
+4. Le résultat s’affiche uniquement si les champs nécessaires sont remplis et valides.
+5. Permet la **conversion automatique entre Pips et Prix** : 
+   - Quand on change "Pips" en "Prix", l’autre champ se met à jour automatiquement selon la direction (Buy/Sell) et le prix d’entrée.
+6. Gère automatiquement le sens du calcul du TP et du SL en fonction du type d’ordre sélectionné :
+   - Pour un BUY : SL = Prix - X pips | TP = Prix + X pips
+   - Pour un SELL : SL = Prix + X pips | TP = Prix - X pips
+7. Si l’API est hors ligne :
+   - L’utilisateur peut quand même choisir une paire
+   - Le champ prix reste à "--"
+   - Les calculs restent possibles
+8. Corrige le **thème** du calculateur pour qu’il soit identique à la page d’accueil (`/`), avec le design dynamique, les couleurs et polices unifiées.
+9. Ajoute un petit message de rappel sous le champ risque :  
+   `"Risque recommandé : 0.5% à 2% par trade"`
+10. Le bloc résultats doit être bien espacé et responsive, compatible mobile.
+
+Important :
+- Ne modifie rien d’autre que ce qui est listé ici.
+- Ne crée aucun nouveau fichier inutile.
+- Toutes les nouvelles sections doivent s’insérer de façon propre dans le template existant.
+
+Une fois appliqué, je veux que tout fonctionne visuellement et fonctionnellement. Donne-moi confirmation que les instructions sont comprises avant d’agir.

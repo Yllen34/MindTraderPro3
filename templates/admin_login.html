@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Connexion - MindTraderPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3">
+                    <i class="fas fa-shield-alt text-warning me-2"></i>
+                    Administration
+                </h1>
+                <p class="text-muted">Accès réservé aux administrateurs</p>
+            </div>
+
+            <!-- Messages flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{% if category == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-key me-1"></i>
+                                Mot de passe administrateur
+                            </label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Entrez le mot de passe" required>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Se connecter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.dashboard') }}" class="text-muted text-decoration-none">
+                    <i class="fas fa-arrow-left me-1"></i>Retour au dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

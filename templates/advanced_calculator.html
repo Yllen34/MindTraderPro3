@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Avancé Multi-Actifs - Trading Calculator Pro</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .asset-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .asset-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .asset-card.selected {
+            border-color: var(--bs-primary);
+            background: rgba(13, 110, 253, 0.1);
+        }
+        .calculation-result {
+            background: linear-gradient(135deg, rgba(32,201,151,0.1), rgba(40,167,69,0.05));
+            border-left: 4px solid var(--bs-success);
+        }
+        .risk-indicator {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #dc3545 100%);
+            position: relative;
+        }
+        .risk-pointer {
+            position: absolute;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid white;
+        }
+        .asset-type-forex { border-left: 4px solid #007bff; }
+        .asset-type-crypto { border-left: 4px solid #f8c600; }
+        .asset-type-metals { border-left: 4px solid #ffc107; }
+        .asset-type-indices { border-left: 4px solid #6f42c1; }
+        .asset-type-commodities { border-left: 4px solid #fd7e14; }
+        
+        .history-item {
+            border-left: 3px solid var(--bs-secondary);
+            transition: all 0.2s ease;
+        }
+        .history-item:hover {
+            border-left-color: var(--bs-primary);
+            background: rgba(13, 110, 253, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold text-primary">
+                    🎯 Calculateur Avancé Multi-Actifs
+                </h1>
+                <p class="lead text-muted">Calculs de position professionnels pour Forex, Crypto, Indices, Métaux et Matières premières</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-secondary me-2">← Retour Accueil</a>
+            <button class="btn btn-info" onclick="showHistoryModal()">
+                <i class="fas fa-history"></i> Historique
+            </button>
+            <button class="btn btn-success" onclick="exportCalculations()">
+                <i class="fas fa-download"></i> Export CSV
+            </button>
+        </div>
+
+        <div class="row">
+            <!-- Sélection d'actif -->
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line text-primary"></i>
+                            Sélectionner un Actif
+                        </h5>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" id="assetSearch" placeholder="Rechercher un actif..." onkeyup="filterAssets()">
+                        </div>
+                        
+                        <!-- Filtres par type -->
+                        <div class="btn-group-vertical w-100 mb-3" role="group">
+                            <input type="radio" class="btn-check" name="assetType" id="all" value="all" checked>
+                            <label class="btn btn-outline-secondary btn-sm" for="all">📊 Tous les actifs</label>
+                            
+                            <input type="radio" class="btn-check" name="assetType" id="forex" value="forex">
+                            <label class="btn btn-outline-primary btn-sm" for="forex">💱 Forex</label>
+                            
+                            <input type="radio" class="btn-check" name="assetType" id="crypto" value="crypto">
+                            <label class="btn btn-outline-warning btn-sm" for="crypto">₿ Crypto</label>
+                            
+                            <input type="radio" class="btn-check" name="assetType" id="metals" value="metals">
+                            <label class="btn btn-outline-info btn-sm" for="metals">🥇 Métaux</label>
+                            
+                            <input type="radio" class="btn-check" name="assetType" id="indices" value="indices">
+                            <label class="btn btn-outline-purple btn-sm" for="indices">📈 Indices</label>
+                        </div>
+                        
+                        <!-- Liste des actifs -->
+                        <div id="assetsList" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Chargé dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculateur principal -->
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calculator text-success"></i>
+                            Calcul de Position
+                        </h5>
+                        <div>
+                            <span class="badge bg-secondary" id="selectedAssetBadge">Aucun actif sélectionné</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="calculatorForm">
+                            <!-- Paramètres de compte -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Capital de trading (USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="accountCapital" value="10000" min="100" step="100" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Risque par trade</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="riskPercentage" value="2" min="0.1" max="10" step="0.1" required>
+                                        <span class="input-group-text">%</span>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="toggleRiskInput()">$</button>
+                                    </div>
+                                    <input type="number" class="form-control d-none" id="riskAmountUSD" placeholder="Montant en USD">
+                                </div>
+                            </div>
+
+                            <!-- Prix de trading -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Prix d'entrée</label>
+                                    <input type="number" class="form-control" id="entryPrice" step="any" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Stop Loss</label>
+                                    <input type="number" class="form-control" id="stopLoss" step="any" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Take Profit (optionnel)</label>
+                                    <input type="number" class="form-control" id="takeProfit" step="any">
+                                </div>
+                            </div>
+
+                            <!-- Paramètres avancés -->
+                            <div class="card bg-dark bg-opacity-25 mb-3">
+                                <div class="card-header py-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-cog"></i> Paramètres Avancés
+                                        <button class="btn btn-sm btn-outline-info float-end" type="button" data-bs-toggle="collapse" data-bs-target="#advancedParams">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </h6>
+                                </div>
+                                <div class="collapse" id="advancedParams">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Levier</label>
+                                                <select class="form-select" id="leverage">
+                                                    <option value="1">1:1</option>
+                                                    <option value="10">10:1</option>
+                                                    <option value="20">20:1</option>
+                                                    <option value="30" selected>30:1</option>
+                                                    <option value="50">50:1</option>
+                                                    <option value="100">100:1</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Commission</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="commissionRate" value="0" min="0" step="0.1">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Prix actuel (P&L)</label>
+                                                <input type="number" class="form-control" id="currentPrice" step="any" placeholder="Pour calcul P&L">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stratégie et notes -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Stratégie (optionnel)</label>
+                                    <select class="form-select" id="strategy">
+                                        <option value="">Sélectionner...</option>
+                                        <option value="scalping">Scalping</option>
+                                        <option value="day_trading">Day Trading</option>
+                                        <option value="swing_trading">Swing Trading</option>
+                                        <option value="breakout">Breakout</option>
+                                        <option value="trend_following">Suivi de tendance</option>
+                                        <option value="mean_reversion">Mean Reversion</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tags (optionnel)</label>
+                                    <input type="text" class="form-control" id="tags" placeholder="london-session, news-event...">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Notes de calcul (optionnel)</label>
+                                <textarea class="form-control" id="notes" rows="2" placeholder="Commentaires sur ce calcul..."></textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-calculator"></i> Calculer la Position
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="resetForm()">
+                                    <i class="fas fa-eraser"></i> Effacer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résultats et statistiques -->
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-bar text-warning"></i>
+                            Résultats
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="calculationResults">
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-calculator fa-3x mb-3"></i>
+                                <p>Sélectionnez un actif et remplissez les paramètres pour voir les résultats</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistiques utilisateur -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-user-chart text-info"></i>
+                            Mes Statistiques
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="userStats">
+                            <div class="text-center text-muted">
+                                <small>Calculez quelques positions pour voir vos statistiques</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Historique -->
+    <div class="modal fade" id="historyModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-history text-primary"></i>
+                        Historique des Calculs
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select class="form-select" id="historyFilter">
+                                <option value="all">Tous les calculs</option>
+                                <option value="forex">Forex uniquement</option>
+                                <option value="crypto">Crypto uniquement</option>
+                                <option value="metals">Métaux uniquement</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="historyPeriod">
+                                <option value="7">7 derniers jours</option>
+                                <option value="30" selected>30 derniers jours</option>
+                                <option value="90">90 derniers jours</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success w-100" onclick="exportHistory()">
+                                <i class="fas fa-download"></i> Exporter
+                            </button>
+                        </div>
+                    </div>
+                    <div id="historyContent" style="max-height: 500px; overflow-y: auto;">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedAsset = null;
+        let supportedAssets = [];
+        let userSession = 'user_' + Math.random().toString(36).substr(2, 9);
+        let calculationHistory = [];
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSupportedAssets();
+            loadUserStats();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Filtres d'actifs
+            document.querySelectorAll('input[name="assetType"]').forEach(radio => {
+                radio.addEventListener('change', filterAssets);
+            });
+
+            // Formulaire de calcul
+            document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculatePosition();
+            });
+        }
+
+        async function loadSupportedAssets() {
+            try {
+                const response = await fetch('/api/calculator/supported-assets');
+                const data = await response.json();
+                
+                if (data.success) {
+                    supportedAssets = data.assets;
+                    displayAssets(supportedAssets);
+                } else {
+                    // Assets par défaut si l'API ne fonctionne pas
+                    supportedAssets = [
+                        {symbol: 'EURUSD', name: 'Euro/Dollar US', type: 'forex', pip_size: 0.0001},
+                        {symbol: 'GBPUSD', name: 'Livre/Dollar US', type: 'forex', pip_size: 0.0001},
+                        {symbol: 'USDJPY', name: 'Dollar/Yen', type: 'forex', pip_size: 0.01},
+                        {symbol: 'XAUUSD', name: 'Or/Dollar US', type: 'metals', pip_size: 0.1},
+                        {symbol: 'BTCUSD', name: 'Bitcoin/Dollar', type: 'crypto', pip_size: 1.0},
+                        {symbol: 'ETHUSD', name: 'Ethereum/Dollar', type: 'crypto', pip_size: 0.1}
+                    ];
+                    displayAssets(supportedAssets);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur de chargement des actifs');
+            }
+        }
+
+        function displayAssets(assets) {
+            const container = document.getElementById('assetsList');
+            let html = '';
+
+            assets.forEach(asset => {
+                const typeClass = `asset-type-${asset.type}`;
+                const icon = getAssetIcon(asset.type);
+                
+                html += `
+                    <div class="card asset-card ${typeClass} mb-2" onclick="selectAsset('${asset.symbol}')">
+                        <div class="card-body p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">${icon} ${asset.symbol}</h6>
+                                    <small class="text-muted">${asset.name}</small>
+                                </div>
+                                <div class="text-end">
+                                    <small class="badge bg-secondary">${asset.type}</small>
+                                    <div class="small text-muted">Pip: ${asset.pip_size}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function getAssetIcon(type) {
+            const icons = {
+                'forex': '💱',
+                'crypto': '₿',
+                'metals': '🥇',
+                'indices': '📈',
+                'commodities': '🛢️'
+            };
+            return icons[type] || '📊';
+        }
+
+        function selectAsset(symbol) {
+            selectedAsset = symbol;
+            
+            // Mettre à jour l'interface
+            document.querySelectorAll('.asset-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.currentTarget.classList.add('selected');
+            
+            const asset = supportedAssets.find(a => a.symbol === symbol);
+            document.getElementById('selectedAssetBadge').textContent = asset ? asset.name : symbol;
+            document.getElementById('selectedAssetBadge').className = 'badge bg-primary';
+            
+            // Pré-remplir des valeurs par défaut selon l'actif
+            setDefaultValues(asset);
+        }
+
+        function setDefaultValues(asset) {
+            if (!asset) return;
+            
+            const entryPrice = document.getElementById('entryPrice');
+            const stopLoss = document.getElementById('stopLoss');
+            
+            // Valeurs par défaut selon l'actif
+            if (asset.symbol === 'EURUSD') {
+                entryPrice.value = '1.0850';
+                stopLoss.value = '1.0800';
+            } else if (asset.symbol === 'XAUUSD') {
+                entryPrice.value = '2000.00';
+                stopLoss.value = '1980.00';
+            } else if (asset.symbol === 'BTCUSD') {
+                entryPrice.value = '45000';
+                stopLoss.value = '43000';
+            }
+        }
+
+        function filterAssets() {
+            const searchTerm = document.getElementById('assetSearch').value.toLowerCase();
+            const selectedType = document.querySelector('input[name="assetType"]:checked').value;
+            
+            let filtered = supportedAssets;
+            
+            // Filtrer par type
+            if (selectedType !== 'all') {
+                filtered = filtered.filter(asset => asset.type === selectedType);
+            }
+            
+            // Filtrer par recherche
+            if (searchTerm) {
+                filtered = filtered.filter(asset => 
+                    asset.symbol.toLowerCase().includes(searchTerm) ||
+                    asset.name.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            displayAssets(filtered);
+        }
+
+        function toggleRiskInput() {
+            const percentInput = document.getElementById('riskPercentage');
+            const usdInput = document.getElementById('riskAmountUSD');
+            
+            if (percentInput.classList.contains('d-none')) {
+                percentInput.classList.remove('d-none');
+                usdInput.classList.add('d-none');
+            } else {
+                percentInput.classList.add('d-none');
+                usdInput.classList.remove('d-none');
+            }
+        }
+
+        async function calculatePosition() {
+            if (!selectedAsset) {
+                showError('Veuillez sélectionner un actif');
+                return;
+            }
+
+            const formData = {
+                user_session: userSession,
+                asset_symbol: selectedAsset,
+                account_capital: parseFloat(document.getElementById('accountCapital').value),
+                risk_percentage: parseFloat(document.getElementById('riskPercentage').value) || 0,
+                risk_amount_usd: parseFloat(document.getElementById('riskAmountUSD').value) || null,
+                entry_price: parseFloat(document.getElementById('entryPrice').value),
+                stop_loss: parseFloat(document.getElementById('stopLoss').value),
+                take_profit: parseFloat(document.getElementById('takeProfit').value) || null,
+                current_price: parseFloat(document.getElementById('currentPrice').value) || null,
+                leverage: parseFloat(document.getElementById('leverage').value),
+                commission_rate: parseFloat(document.getElementById('commissionRate').value),
+                strategy: document.getElementById('strategy').value,
+                notes: document.getElementById('notes').value,
+                tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()).filter(tag => tag)
+            };
+
+            try {
+                const response = await fetch('/api/calculator/calculate-position', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayResults(result.calculation);
+                    loadUserStats();
+                } else {
+                    showError(result.error || 'Erreur de calcul');
+                }
+            } catch (error) {
+                showError('Erreur de connexion');
+            }
+        }
+
+        function displayResults(calc) {
+            const container = document.getElementById('calculationResults');
+            
+            const riskLevelColors = {
+                'low': 'success',
+                'medium': 'warning', 
+                'high': 'danger',
+                'extreme': 'danger'
+            };
+            
+            const riskColor = riskLevelColors[calc.risk_level] || 'secondary';
+            
+            let html = `
+                <div class="calculation-result p-3 rounded">
+                    <h6 class="fw-bold text-success">✅ Calcul Terminé</h6>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-primary bg-opacity-10 rounded">
+                                <div class="fw-bold">${calc.recommended_lot_size}</div>
+                                <small>Lot Size</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-info bg-opacity-10 rounded">
+                                <div class="fw-bold">$${calc.risk_amount}</div>
+                                <small>Risque</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-success bg-opacity-10 rounded">
+                                <div class="fw-bold">$${calc.potential_profit}</div>
+                                <small>Profit Potentiel</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-warning bg-opacity-10 rounded">
+                                <div class="fw-bold">${calc.risk_reward_ratio}:1</div>
+                                <small>R/R Ratio</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted">Niveau de risque</small>
+                        <div class="d-flex align-items-center">
+                            <div class="risk-indicator me-2">
+                                <div class="risk-pointer" style="left: ${calc.risk_level === 'low' ? '20%' : calc.risk_level === 'medium' ? '50%' : '80%'};"></div>
+                            </div>
+                            <span class="badge bg-${riskColor}">${calc.risk_level}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <small><strong>Détails:</strong></small>
+                        <ul class="small mb-0">
+                            <li>Stop Loss: ${calc.stop_loss_pips} pips</li>
+                            <li>Pip Value: $${calc.pip_value}</li>
+                            <li>Marge: $${calc.margin_required}</li>
+                            <li>Spread: $${calc.spread_cost}</li>
+                        </ul>
+                    </div>
+            `;
+
+            // Ajouter les recommandations
+            if (calc.recommendations && calc.recommendations.length > 0) {
+                html += `
+                    <div class="mb-2">
+                        <small><strong>Recommandations:</strong></small>
+                        <ul class="small mb-0 text-success">
+                `;
+                calc.recommendations.slice(0, 2).forEach(rec => {
+                    html += `<li>${rec}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+
+            // Ajouter les avertissements
+            if (calc.warnings && calc.warnings.length > 0) {
+                html += `
+                    <div class="mb-2">
+                        <small><strong>Avertissements:</strong></small>
+                        <ul class="small mb-0 text-warning">
+                `;
+                calc.warnings.slice(0, 2).forEach(warn => {
+                    html += `<li>${warn}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+
+            html += `</div>`;
+            
+            container.innerHTML = html;
+        }
+
+        async function loadUserStats() {
+            try {
+                const response = await fetch(`/api/calculator/user-stats/${userSession}`);
+                const data = await response.json();
+
+                if (data.success && data.stats) {
+                    displayUserStats(data.stats);
+                }
+            } catch (error) {
+                console.error('Erreur stats:', error);
+            }
+        }
+
+        function displayUserStats(stats) {
+            const container = document.getElementById('userStats');
+            
+            if (stats.message) {
+                container.innerHTML = `<div class="text-center text-muted"><small>${stats.message}</small></div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="row g-2 text-center">
+                    <div class="col-6">
+                        <div class="p-2 bg-primary bg-opacity-10 rounded">
+                            <div class="fw-bold">${stats.total_calculations}</div>
+                            <small>Calculs</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2 bg-success bg-opacity-10 rounded">
+                            <div class="fw-bold">$${stats.average_risk_amount}</div>
+                            <small>Risque Moyen</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <small class="text-muted">Actif préféré: <strong>${stats.most_used_asset || 'N/A'}</strong></small>
+                </div>
+                <div class="mt-2">
+                    <small class="badge bg-${stats.conservative_trader ? 'success' : 'warning'}">
+                        ${stats.conservative_trader ? 'Trader Prudent' : 'Trader Actif'}
+                    </small>
+                </div>
+            `;
+        }
+
+        function resetForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('accountCapital').value = '10000';
+            document.getElementById('riskPercentage').value = '2';
+            document.getElementById('leverage').value = '30';
+            document.getElementById('commissionRate').value = '0';
+            document.getElementById('calculationResults').innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-calculator fa-3x mb-3"></i>
+                    <p>Formulaire réinitialisé</p>
+                </div>
+            `;
+        }
+
+        function showHistoryModal() {
+            const modal = new bootstrap.Modal(document.getElementById('historyModal'));
+            loadCalculationHistory();
+            modal.show();
+        }
+
+        async function loadCalculationHistory() {
+            try {
+                const response = await fetch(`/api/calculator/history/${userSession}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    calculationHistory = data.history;
+                    displayCalculationHistory(calculationHistory);
+                }
+            } catch (error) {
+                document.getElementById('historyContent').innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
+                        <p>Erreur de chargement de l'historique</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayCalculationHistory(history) {
+            const container = document.getElementById('historyContent');
+            
+            if (!history || history.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-history fa-2x mb-2"></i>
+                        <p>Aucun calcul dans l'historique</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            history.forEach(calc => {
+                const date = new Date(calc.calculation_time).toLocaleString('fr-FR');
+                const riskColor = calc.risk_level === 'low' ? 'success' : calc.risk_level === 'medium' ? 'warning' : 'danger';
+                
+                html += `
+                    <div class="card history-item mb-2">
+                        <div class="card-body p-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <h6 class="mb-0">${calc.calculation_id.split('_')[0]}</h6>
+                                    <small class="text-muted">${date}</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold">${calc.recommended_lot_size}</div>
+                                    <small>Lots</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold">$${calc.risk_amount}</div>
+                                    <small>Risque</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold">${calc.risk_reward_ratio}:1</div>
+                                    <small>R/R</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-${riskColor}">${calc.risk_level}</span>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="loadCalculation('${calc.calculation_id}')">
+                                        <i class="fas fa-redo"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function showError(message) {
+            const toast = document.createElement('div');
+            toast.className = 'alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `<i class="fas fa-exclamation-circle me-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function showSuccess(message) {
+            const toast = document.createElement('div');
+            toast.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `<i class="fas fa-check-circle me-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

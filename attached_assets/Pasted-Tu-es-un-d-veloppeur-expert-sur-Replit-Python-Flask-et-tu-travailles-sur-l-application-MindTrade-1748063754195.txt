@@ -1,0 +1,83 @@
+Tu es un développeur expert sur Replit, Python (Flask), et tu travailles sur l'application MindTraderPro.
+
+## Objectif :
+Améliorer et finaliser cette application en intégrant toutes les fonctionnalités décrites ci-dessous, avec un **code propre**, **structuré**, **commenté**, **sécurisé**, et **responsive** pour le Web + future migration Flutter mobile.
+
+---
+
+## Modules à finaliser ou intégrer :
+
+### 🔒 SÉCURITÉ
+- Authentification renforcée avec gestion des sessions
+- Protection CSRF, XSS, validation des entrées
+- Chiffrement des données sensibles
+- Limite des tentatives de login
+- Sauvegarde cloud sécurisée
+
+---
+
+### ✅ MODULES FONCTIONNELS À DÉVELOPPER
+
+1. **Assistant IA (GPT)**  
+   - Feedback sur journal / setup
+   - Coaching quotidien automatique
+   - Détection de revenge trading
+   - Conseils personnalisés
+
+2. **Gamification**
+   - XP, niveaux, badges, récompenses
+   - Système de défis hebdomadaires
+   - Affichage progression dans le profil
+
+3. **Système de vote de fonctionnalités**
+   - Interface utilisateur pour proposer et voter
+   - Classement par votes
+   - Admin = décision finale
+
+4. **Newsletter intelligente**
+   - Récap de la semaine perso + news marché
+   - Intégration SendGrid ou Brevo
+   - Fréquence paramétrable
+
+5. **Marketplace / Partenariats**
+   - Ajout de liens affiliés admin
+   - Visibilité pour offres partenaires
+   - Suivi des clics et conversion
+
+6. **Avatars personnalisés + Premium**
+   - Choix d’avatars et contours (gratuits/premium/lifetime)
+   - Affichage dynamique dans le profil
+
+7. **Simulateur Prop Firm**
+   - Mode FTMO/5%ers
+   - Règles intégrées (DD, TP, jours)
+   - Blocage automatique si infraction
+
+8. **Blocage émotionnel / Mode Safe**
+   - Mode “3 SL → pause”
+   - Mode “Je doute” avec limitations de lot/trades
+   - Alertes émotionnelles visuelles
+
+---
+
+## Architecture technique souhaitée
+
+- Flask/Python backend proprement organisé en modules
+- Templates HTML Jinja2 propres et mobiles responsive
+- Séparation des fonctionnalités (blueprints si possible)
+- Base de données (SQLite ou Mongo) bien structurée
+- Variables d’environnement pour toutes les clés/API
+- Code commenté, factorisé, extensible
+
+---
+
+## Bonus attendus
+- Dashboard admin clair
+- Interface utilisateur fluide et professionnelle
+- Dark/Light Theme dynamique
+- Tout doit être facilement exportable vers Flutter
+
+---
+
+## Résultat attendu
+Une application complète, performante, élégante et fiable, prête pour publication (web, stores mobiles ensuite). Tu codes comme si c’était pour ton propre produit SaaS.

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Calculateur de Position - Trading Calculator Pro{% endblock %}
+
+{% block css %}
+<link href="{{ url_for('static', filename='css/calculator.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-calculator text-primary me-2"></i>
+                Calculateur de Position
+            </h1>
+            <div class="badge bg-success fs-6">
+                <i class="fas fa-circle me-1"></i>En ligne
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Formulaire de calcul -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-sliders-h me-2"></i>
+                    Paramètres de Trading
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="calculatorForm">
+                    <div class="row g-3">
+                        <!-- Symbole -->
+                        <div class="col-md-6">
+                            <label for="symbol" class="form-label">
+                                <i class="fas fa-chart-line me-1"></i>Paire / Symbole
+                            </label>
+                            <select class="form-select calculator-input" id="symbol" name="symbol">
+                                <option value="XAUUSD">XAU/USD (Or)</option>
+                                <option value="EURUSD">EUR/USD</option>
+                                <option value="GBPUSD">GBP/USD</option>
+                                <option value="USDJPY">USD/JPY</option>
+                                <option value="USDCHF">USD/CHF</option>
+                                <option value="AUDUSD">AUD/USD</option>
+                                <option value="USDCAD">USD/CAD</option>
+                                <option value="NZDUSD">NZD/USD</option>
+                                <option value="EURJPY">EUR/JPY</option>
+                                <option value="GBPJPY">GBP/JPY</option>
+                            </select>
+                            <div id="priceDisplay" class="mt-2 text-muted">Prix indisponible actuellement</div>
+                        </div>
+
+
+
+                        <!-- Capital -->
+                        <div class="col-md-6">
+                            <label for="capital" class="form-label">
+                                <i class="fas fa-euro-sign me-1"></i>Capital Total (€)
+                            </label>
+                            <input type="number" class="form-control calculator-input" id="capital" 
+                                   name="capital" value="10000" min="100" step="100" required>
+                        </div>
+
+                        <!-- Risque -->
+                        <div class="col-md-6">
+                            <label for="risk_percent" class="form-label">
+                                <i class="fas fa-percentage me-1"></i>Risque par Trade (%)
+                            </label>
+                            <input type="number" class="form-control calculator-input" id="risk_percent" 
+                                   name="risk_percent" value="1" min="0.1" max="10" step="0.1" required>
+                        </div>
+
+                        <!-- Prix d'entrée -->
+                        <div class="col-md-6">
+                            <label for="entry_price" class="form-label">
+                                <i class="fas fa-sign-in-alt me-1"></i>Prix d'Entrée
+                            </label>
+                            <input type="number" class="form-control calculator-input" id="entry_price" 
+                                   name="entry_price" placeholder="Ex: 2650.50" step="0.01" required>
+                        </div>
+
+                        <!-- Stop Loss -->
+                        <div class="col-md-6">
+                            <label for="stop_loss" class="form-label">
+                                <i class="fas fa-shield-alt me-1"></i>Stop Loss
+                            </label>
+                            <input type="number" class="form-control calculator-input" id="stop_loss" 
+                                   name="stop_loss" placeholder="Ex: 2640.00" step="0.01" required>
+                        </div>
+
+                        <!-- Take Profit (optionnel) -->
+                        <div class="col-md-6">
+                            <label for="take_profit" class="form-label">
+                                <i class="fas fa-target me-1"></i>Take Profit (Optionnel)
+                            </label>
+                            <input type="number" class="form-control calculator-input" id="take_profit" 
+                                   name="take_profit" placeholder="Ex: 2670.00" step="0.01">
+                        </div>
+
+                        <!-- Levier (optionnel) -->
+                        <div class="col-md-6">
+                            <label for="leverage" class="form-label">
+                                <i class="fas fa-compress-arrows-alt me-1"></i>Levier
+                            </label>
+                            <select class="form-select calculator-input" id="leverage" name="leverage">
+                                <option value="1">1:1 (Aucun levier)</option>
+                                <option value="10">1:10</option>
+                                <option value="20">1:20</option>
+                                <option value="30">1:30</option>
+                                <option value="50">1:50</option>
+                                <option value="100" selected>1:100</option>
+                                <option value="200">1:200</option>
+                                <option value="500">1:500</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="calculateBtn">
+                                <i class="fas fa-calculator me-2"></i>
+                                Calculer la Position
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Résultats -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Résultats
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="calculatorResults" class="text-center py-4">
+                    <i class="fas fa-calculator fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Remplissez le formulaire pour voir les résultats</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conseils IA -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Conseils IA
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="aiAdvice">
+                    <div class="alert alert-info">
+                        <i class="fas fa-robot me-2"></i>
+                        L'assistant IA analysera votre position après le calcul.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Historique des calculs -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Historique des Calculs
+                </h5>
+                <button class="btn btn-outline-secondary btn-sm" id="clearHistory">
+                    <i class="fas fa-trash me-1"></i>Effacer
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Heure</th>
+                                <th>Symbole</th>
+                                <th>Direction</th>
+                                <th>Lot Size</th>
+                                <th>Risque (€)</th>
+                                <th>R/R</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="fas fa-inbox me-2"></i>
+                                    Aucun calcul effectué aujourd'hui
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+{% endblock %}

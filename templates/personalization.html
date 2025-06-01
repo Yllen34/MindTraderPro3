@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnalisation - Trading Calculator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .theme-preview {
+            height: 150px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 3px solid transparent;
+        }
+        .theme-preview:hover {
+            transform: scale(1.05);
+        }
+        .theme-preview.active {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 20px rgba(var(--bs-primary-rgb), 0.5);
+        }
+        .widget-placeholder {
+            min-height: 200px;
+            border: 2px dashed #6c757d;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .widget-placeholder:hover {
+            border-color: var(--bs-primary);
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+        }
+        .widget-item {
+            background: var(--bs-card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--bs-border-color);
+            cursor: move;
+        }
+        .profile-card {
+            transition: all 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                🎨 Personnalisation & UX
+            </h1>
+            <p class="lead text-muted">Customisez votre expérience de trading</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="d-flex justify-content-center gap-2 mb-4">
+            <a href="/simple" class="btn btn-outline-primary">
+                📊 Calculateur
+            </a>
+            <a href="/journal" class="btn btn-outline-primary">
+                📈 Journal
+            </a>
+            <a href="/money-management" class="btn btn-outline-warning">
+                🎯 Money Management
+            </a>
+            <a href="/ai-assistant" class="btn btn-outline-info">
+                🤖 Assistant IA
+            </a>
+            <a href="/integrations" class="btn btn-outline-success">
+                🔗 Partage
+            </a>
+            <button class="btn btn-primary" disabled>
+                🎨 Personnalisation
+            </button>
+        </div>
+
+        <div class="row">
+            <!-- Thèmes et Apparence (Gratuit) -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success">
+                        <h5 class="mb-0">
+                            <i class="fas fa-palette"></i>
+                            Thèmes & Apparence (Gratuit)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h6><i class="fas fa-moon"></i> Mode d'Affichage</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="theme-preview bg-dark text-white d-flex flex-column justify-content-center align-items-center active" 
+                                         onclick="setTheme('dark')" id="darkTheme">
+                                        <i class="fas fa-moon fa-2x mb-2"></i>
+                                        <strong>Mode Sombre</strong>
+                                        <small>Idéal pour le trading nocturne</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="theme-preview bg-light text-dark d-flex flex-column justify-content-center align-items-center" 
+                                         onclick="setTheme('light')" id="lightTheme">
+                                        <i class="fas fa-sun fa-2x mb-2"></i>
+                                        <strong>Mode Clair</strong>
+                                        <small>Parfait pour la journée</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6><i class="fas fa-text-height"></i> Taille du Texte</h6>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="setFontSize('small')">
+                                    <small>Petit</small>
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="setFontSize('normal')">
+                                    Normal
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="setFontSize('large')">
+                                    <strong>Grand</strong>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6><i class="fas fa-mobile-alt"></i> Interface Responsive</h6>
+                            <div class="alert alert-info">
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-desktop"></i> Desktop</span>
+                                    <span class="badge bg-success">Optimisé</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-tablet"></i> Tablette</span>
+                                    <span class="badge bg-success">Optimisé</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-mobile"></i> Mobile</span>
+                                    <span class="badge bg-success">Optimisé</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="fas fa-bell"></i> Préférences de Notifications</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="soundNotifs" checked>
+                                <label class="form-check-label" for="soundNotifs">
+                                    Sons de notification
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="browserNotifs" checked>
+                                <label class="form-check-label" for="browserNotifs">
+                                    Notifications du navigateur
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="emailNotifs">
+                                <label class="form-check-label" for="emailNotifs">
+                                    Notifications par email
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100" onclick="savePreferences()">
+                            <i class="fas fa-save"></i> Sauvegarder Préférences
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fonctionnalités Premium -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-crown"></i>
+                            Personnalisation Premium
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="premium-overlay position-relative">
+                            <div class="mb-4">
+                                <h6><i class="fas fa-th-large text-primary"></i> Dashboard Personnalisable</h6>
+                                <p class="text-muted small">Organisez vos widgets comme vous le souhaitez</p>
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="widget-placeholder">
+                                            <div class="text-center text-muted">
+                                                <i class="fas fa-plus fa-2x mb-2"></i>
+                                                <div>Ajouter Widget</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="widget-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span><i class="fas fa-chart-line text-success"></i> P&L Today</span>
+                                                <i class="fas fa-grip-vertical text-muted"></i>
+                                            </div>
+                                            <h4 class="text-success mb-0">+$245</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6><i class="fas fa-users text-info"></i> Multi-Profils</h6>
+                                <p class="text-muted small">Gérez plusieurs stratégies de trading</p>
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="card profile-card bg-primary text-white">
+                                            <div class="card-body text-center p-3">
+                                                <i class="fas fa-chart-line fa-2x mb-2"></i>
+                                                <h6 class="mb-1">Scalping</h6>
+                                                <small>Stratégie court terme</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card profile-card bg-success text-white">
+                                            <div class="card-body text-center p-3">
+                                                <i class="fas fa-mountain fa-2x mb-2"></i>
+                                                <h6 class="mb-1">Swing</h6>
+                                                <small>Positions moyennes</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-paint-brush text-warning"></i> Thèmes Personnalisés</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="theme-preview" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);">
+                                        </div>
+                                        <small class="text-center d-block mt-1">Ocean</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="theme-preview" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);">
+                                        </div>
+                                        <small class="text-center d-block mt-1">Sunset</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="theme-preview" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);">
+                                        </div>
+                                        <small class="text-center d-block mt-1">Ice</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Premium Overlay -->
+                            <div class="premium-lock position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-75 rounded">
+                                <div class="text-center text-white">
+                                    <i class="fas fa-magic fa-3x mb-3"></i>
+                                    <h5>Personnalisation Premium</h5>
+                                    <p>Créez votre expérience unique</p>
+                                    <button class="btn btn-warning" onclick="showPremiumModal()">
+                                        Débloquer Premium - €9.99/mois
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-desktop text-primary"></i>
+                    Aperçu Dashboard Personnalisé
+                    <span class="badge bg-warning ms-2">Premium</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="widget-item">
+                            <h6><i class="fas fa-chart-line text-success"></i> Performance Aujourd'hui</h6>
+                            <h3 class="text-success">+$245.50</h3>
+                            <small class="text-muted">+2.45% depuis ce matin</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-item">
+                            <h6><i class="fas fa-handshake text-primary"></i> Trades Actifs</h6>
+                            <h3 class="text-primary">3</h3>
+                            <small class="text-muted">2 BUY, 1 SELL</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-item">
+                            <h6><i class="fas fa-percentage text-warning"></i> Win Rate</h6>
+                            <h3 class="text-warning">78%</h3>
+                            <small class="text-muted">Cette semaine</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-item">
+                            <h6><i class="fas fa-exclamation-triangle text-danger"></i> Risque Total</h6>
+                            <h3 class="text-danger">$450</h3>
+                            <small class="text-muted">2.25% du capital</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques d'Utilisation -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-eye fa-2x text-primary mb-2"></i>
+                        <h5 id="themeChanges">12</h5>
+                        <small>Changements de Thème</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-mobile-alt fa-2x text-success mb-2"></i>
+                        <h5 id="mobileUsage">65%</h5>
+                        <small>Utilisation Mobile</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                        <h5 id="avgSession">18min</h5>
+                        <small>Session Moyenne</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-star fa-2x text-info mb-2"></i>
+                        <h5 id="userScore">4.8</h5>
+                        <small>Score UX</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="modal fade" id="premiumModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="fas fa-magic"></i> Personnalisation Premium
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>🎨 Personnalisation Avancée</h6>
+                            <ul>
+                                <li>Dashboard avec widgets déplaçables</li>
+                                <li>Thèmes personnalisés et couleurs</li>
+                                <li>Layouts adaptatifs</li>
+                                <li>Raccourcis clavier personnalisés</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>👥 Multi-Profils</h6>
+                            <ul>
+                                <li>Stratégies de trading séparées</li>
+                                <li>Paramètres indépendants</li>
+                                <li>Statistiques par profil</li>
+                                <li>Basculement rapide</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <div class="pricing-box p-4 bg-light rounded">
+                            <h3 class="text-warning">€9.99<small>/mois</small></h3>
+                            <p>Expérience personnalisée complète</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Plus tard</button>
+                    <button type="button" class="btn btn-warning">Personnaliser Maintenant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Gestion des thèmes
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            
+            // Mettre à jour l'affichage
+            document.querySelectorAll('.theme-preview').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById(theme + 'Theme').classList.add('active');
+            
+            // Sauvegarder la préférence
+            localStorage.setItem('preferred-theme', theme);
+            
+            // Animation de feedback
+            showNotification(`Mode ${theme === 'dark' ? 'sombre' : 'clair'} activé !`);
+        }
+
+        // Gestion de la taille de police
+        function setFontSize(size) {
+            const root = document.documentElement;
+            
+            if (size === 'small') {
+                root.style.fontSize = '14px';
+            } else if (size === 'large') {
+                root.style.fontSize = '18px';
+            } else {
+                root.style.fontSize = '16px';
+            }
+            
+            localStorage.setItem('font-size', size);
+            showNotification(`Taille de texte ${size} appliquée !`);
+        }
+
+        // Sauvegarde des préférences
+        function savePreferences() {
+            const preferences = {
+                theme: document.documentElement.getAttribute('data-bs-theme'),
+                fontSize: localStorage.getItem('font-size') || 'normal',
+                soundNotifs: document.getElementById('soundNotifs').checked,
+                browserNotifs: document.getElementById('browserNotifs').checked,
+                emailNotifs: document.getElementById('emailNotifs').checked
+            };
+            
+            localStorage.setItem('user-preferences', JSON.stringify(preferences));
+            
+            showNotification('✅ Préférences sauvegardées avec succès !');
+        }
+
+        // Charger les préférences au démarrage
+        function loadPreferences() {
+            const saved = localStorage.getItem('user-preferences');
+            if (saved) {
+                const prefs = JSON.parse(saved);
+                
+                // Appliquer le thème
+                if (prefs.theme) {
+                    setTheme(prefs.theme);
+                }
+                
+                // Appliquer la taille de police
+                if (prefs.fontSize) {
+                    setFontSize(prefs.fontSize);
+                }
+                
+                // Appliquer les notifications
+                document.getElementById('soundNotifs').checked = prefs.soundNotifs;
+                document.getElementById('browserNotifs').checked = prefs.browserNotifs;
+                document.getElementById('emailNotifs').checked = prefs.emailNotifs;
+            }
+        }
+
+        // Notification système
+        function showNotification(message) {
+            // Créer une notification toast
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-white bg-success border-0 position-fixed top-0 end-0 m-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Supprimer après fermeture
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        // Modal Premium
+        function showPremiumModal() {
+            const modal = new bootstrap.Modal(document.getElementById('premiumModal'));
+            modal.show();
+        }
+
+        // Initialisation
+        window.addEventListener('load', function() {
+            loadPreferences();
+            
+            // Simuler des statistiques d'utilisation
+            const stats = {
+                themeChanges: Math.floor(Math.random() * 20) + 5,
+                mobileUsage: Math.floor(Math.random() * 40) + 50,
+                avgSession: Math.floor(Math.random() * 30) + 10,
+                userScore: (Math.random() * 1 + 4).toFixed(1)
+            };
+            
+            document.getElementById('themeChanges').textContent = stats.themeChanges;
+            document.getElementById('mobileUsage').textContent = stats.mobileUsage + '%';
+            document.getElementById('avgSession').textContent = stats.avgSession + 'min';
+            document.getElementById('userScore').textContent = stats.userScore;
+        });
+
+        // Détection de l'appareil pour les statistiques
+        function detectDevice() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isTablet = /iPad|Android(?=.*\bMobile\b)/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                document.body.classList.add('mobile-device');
+            } else if (isTablet) {
+                document.body.classList.add('tablet-device');
+            } else {
+                document.body.classList.add('desktop-device');
+            }
+        }
+
+        detectDevice();
+    </script>
+</body>
+</html>

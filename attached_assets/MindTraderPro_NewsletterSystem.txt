@@ -1,0 +1,71 @@
+
+# MindTraderPro - Système de Newsletter Intelligente Automatique
+
+## 🎯 Objectif
+Envoyer automatiquement à la communauté MindTraderPro une **newsletter hebdomadaire (ou quotidienne)** contenant :
+- Les **actu importantes du marché** (trading, crypto, macroéconomie)
+- Les **offres partenaires à jour**
+- Un **conseil ou contenu inspirant personnalisé**
+- Les **promotions ou nouveautés dans l'application**
+
+---
+
+## 🧠 Contenu de la Newsletter
+
+### A) Actus Marché (Crypto / Forex / Or)
+- Résumé macro : décisions Fed/BCE, inflation, taux
+- Résumé crypto : mouvements BTC, ETH, actualité blockchain
+- Indices clés : DXY, S&P500, XAUUSD
+
+### B) Actu Partenaires / Affiliation
+- Nouvelles promotions partenaires (formations, challenges, brokers…)
+- Mises à jour de services
+- Ajout automatique de codes promo actifs
+
+### C) Conseils et Ajouts MindTraderPro
+- Astuce de la semaine (ex. : “Ne trade pas sous stress”)
+- Citation inspirante ou feedback utilisateur
+- Top 3 trades / stats utilisateurs (si activé)
+
+---
+
+## ⚙️ Sources Automatiques à Intégrer
+
+| Source                         | Type de contenu                 | Intégration possible |
+|-------------------------------|----------------------------------|----------------------|
+| CoinGecko / CoinMarketCap     | Crypto News + prix              | API gratuite         |
+| Investing.com / ForexFactory  | Calendrier économique, actu     | RSS ou scraping      |
+| Twitter (X) des partenaires   | Offres, updates, tweets         | API X / Zapier       |
+| Google News (trading/crypto)  | Articles filtrés par mots-clés  | RSS / `newspaper3k`  |
+
+---
+
+## ✉️ Envoi Automatique
+
+- Récupération auto via script (Python : requests + feedparser + beautifulsoup)
+- Génération d’un template Markdown ou HTML
+- Envoi via :
+  - **Mailchimp** (facile à utiliser)
+  - **SendGrid** (via Flask)
+  - **Brevo (ex-Sendinblue)** pour un envoi gratuit jusqu’à 300 mails/jour
+
+---
+
+## 🛠️ Fonctionnalités Bonus à Ajouter
+
+- Archives des anciennes newsletters
+- Version web de la newsletter (hébergée)
+- Option pour recevoir des notifications en push
+- Liens trackés intégrés automatiquement pour chaque offre partenaire
+
+---
+
+## 👑 Idée de monétisation
+- Bonus newsletter réservé aux abonnés premium
+- Réductions exclusives disponibles uniquement via la newsletter
+- Mise en avant sponsorisée possible (ex : prop firm partenaire)
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

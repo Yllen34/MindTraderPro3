@@ -1,0 +1,256 @@
+/* CSS spécialisé pour le calculateur de trading */
+
+/* Inputs du calculateur */
+.calculator-input {
+    background-color: #2d2d2d !important;
+    border: 2px solid #444 !important;
+    border-radius: 8px !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease;
+}
+
+.calculator-input:focus {
+    border-color: var(--trading-blue) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    background-color: #2d2d2d !important;
+    color: white !important;
+}
+
+.calculator-input:valid {
+    border-color: var(--trading-green) !important;
+}
+
+.calculator-input:invalid {
+    border-color: var(--trading-red) !important;
+}
+
+/* Résultats du calculateur */
+.calculator-result {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Direction indicators */
+.direction-buy {
+    background: linear-gradient(45deg, var(--trading-green), #28a745);
+}
+
+.direction-sell {
+    background: linear-gradient(45deg, var(--trading-red), #dc3545);
+}
+
+/* Input groupes avec icônes */
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group .input-group-text {
+    background-color: #444;
+    border-color: #444;
+    color: var(--trading-blue);
+}
+
+/* Boutons spécialisés trading */
+.btn-calculate {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn-calculate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.btn-calculate:active {
+    transform: translateY(0);
+}
+
+/* Table d'historique */
+.history-table {
+    font-size: 0.9rem;
+}
+
+.history-table th {
+    background-color: #333;
+    border-color: #555;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.history-table td {
+    border-color: #555;
+    vertical-align: middle;
+}
+
+.history-table .badge {
+    font-size: 0.8rem;
+    padding: 0.4em 0.8em;
+}
+
+/* Loading state */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    z-index: 10;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--trading-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Conseils IA */
+.ai-advice {
+    border-left: 4px solid var(--trading-blue);
+    background: rgba(0, 123, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Indicateurs de validation */
+.form-control.is-valid {
+    border-color: var(--trading-green);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300c851' d='m2.3 6.73.13-.13L6.6 2.43l.87.87-4.4 4.38L.9 5.51l.87-.87L2.3 6.73z'/%3e%3c/svg%3e");
+}
+
+.form-control.is-invalid {
+    border-color: var(--trading-red);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ff4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.1 2.4 2.4M8.2 4.1 5.8 6.5'/%3e%3c/svg%3e");
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .calculator-result {
+        padding: 1.5rem 1rem;
+    }
+    
+    .calculator-result h4 {
+        font-size: 1.3rem;
+    }
+    
+    .calculator-result h3 {
+        font-size: 1.8rem;
+    }
+    
+    .calculator-input {
+        font-size: 1rem !important;
+        padding: 10px 12px !important;
+    }
+    
+    .btn-calculate {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .history-table {
+        font-size: 0.8rem;
+    }
+}
+
+/* Animations pour les résultats */
+.result-animate {
+    animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Hover effects pour les cards */
+.card-calculator:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card-results {
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.card-results.has-results {
+    border-color: var(--trading-blue);
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
+}
+
+/* Symbol badges */
+.symbol-badge {
+    background: linear-gradient(45deg, #ffc107, #ff8c00);
+    color: #000;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Risk indicators */
+.risk-low {
+    color: var(--trading-green);
+}
+
+.risk-medium {
+    color: var(--trading-gold);
+}
+
+.risk-high {
+    color: var(--trading-red);
+}
+
+/* Progress bars pour R/R */
+.rr-progress {
+    height: 8px;
+    background: #333;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rr-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--trading-red), var(--trading-green));
+    transition: width 0.5s ease;
+}

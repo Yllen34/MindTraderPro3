@@ -1,0 +1,100 @@
+
+# MindTraderPro - Journal de Trading Professionnel & Émotionnel (Ultra Complet)
+
+## 🎯 Objectif
+Créer un journal de trading évolué, intelligent, visuel et émotionnel qui rivalise avec les meilleurs du marché (TraderSync, Edgewonk, TradeZella).
+
+---
+
+## ✅ Saisie de trade manuelle ou semi-automatique
+
+- Actif (symbole)
+- Type : Achat / Vente
+- Date / Heure d'entrée
+- Date / Heure de sortie
+- Prix d'entrée, SL, TP, Prix de sortie
+- Résultat en pips, en €, en R
+- Style de trade (Breakout, Pullback, SMC, etc.)
+- Capture d'écran ou graphique (upload ou annotation)
+- Émotion avant / pendant / après (choix + intensité 1 à 10)
+- Note écrite
+- Note vocale (enregistrement intégré)
+- Checklist “avant trade” + validation mentale
+- Marquage “Setup validé” / “Erreur” / “Impulsif”…
+
+---
+
+## 📈 Statistiques et indicateurs
+
+- Gain/perte net (en €/$/pips)
+- Win rate
+- R moyen
+- Nombre de trades
+- % setup gagnants par catégorie
+- Récurrence erreurs (ex : SL touché après entrée impulsive)
+- Temps moyen en position
+- Drawdown max / drawdown courant
+- Évolution psychologique (stress, confiance, doute)
+
+---
+
+## 📊 Graphiques interactifs
+
+- Évolution capital (balance + equity)
+- Histogramme P&L par jour / semaine / actif
+- Heatmap performances par jour / heure / session
+- Radar d’erreurs (impulsion, manque de plan, SL déplacé…)
+- Courbe des émotions
+- Corrélations émotions ↔️ performance
+
+---
+
+## 🔍 Filtres puissants
+
+- Par symbole / style / émotion / type de journée
+- Rechercher tous les trades en colère / après une perte
+- Voir seulement les setups “Breakout sur H1 gagnants”
+
+---
+
+## 🧠 IA intégrée (optionnel)
+
+- Analyse émotionnelle vocale ou écrite
+- Feedback mental post-journée : “Tu trades bien après une pause, moins après 2 SL”
+- Recommandations IA de correction mentale
+- Suggestions : “Prends un break”, “Réduis ton lot demain matin”
+
+---
+
+## 🛠️ Fonctionnalités additionnelles
+
+- Statut de la journée : Gagnante / Perdante / Équilibrée
+- Feedback automatique quotidien + hebdomadaire
+- Export PDF, CSV, image partagée
+- Section “Top 3 trades du mois”
+- Comparaison entre semaines
+- Objectifs fixés / atteints
+- Section “Trade planifié vs Trade réel”
+
+---
+
+## 📱 Ergonomie
+
+- Interface fluide, responsive
+- Résumé quotidien clair
+- Interface de notation émotionnelle simple
+- Mode sombre / clair
+
+---
+
+## 🔐 Sécurité
+
+- Sauvegarde cloud chiffrée
+- Données associées au compte utilisateur
+- Accès journal privé ou partageable
+- Journal vocal avec transcription IA (en option)
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

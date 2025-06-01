@@ -1,0 +1,10 @@
+{
+  "app_name": "MindTraderPro",
+  "version": "1.0.0",
+  "admin_password": "admin123",
+  "default_settings": {
+    "theme": "dark",
+    "language": "fr",
+    "currency": "USD"
+  }
+}

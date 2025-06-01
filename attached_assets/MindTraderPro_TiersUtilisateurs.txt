@@ -1,0 +1,61 @@
+
+# MindTraderPro - Tiers d'utilisateurs & Comparaison des privilèges
+
+## 🎯 Objectif
+Présenter clairement les différences entre les niveaux d’abonnement : Gratuit, Premium et Lifetime
+
+---
+
+## 🆓 TIER 1 : UTILISATEUR GRATUIT
+
+- ✅ 3 calculs de lot par jour
+- ✅ 3 entrées dans le journal de trading / jour
+- ❌ Pas d’accès à l’IA
+- ❌ Pas de simulateur de prop firm
+- ❌ Pas de thème premium
+- ❌ Pas d’export de statistiques
+- ❌ Pas d’historique de calcul / journal
+- ❌ Aucune personnalisation avatar
+- ✅ Notification journalière “Mindset du jour”
+- ✅ Citation et rappel motivation
+
+---
+
+## 💎 TIER 2 : PREMIUM (14,99 €/mois)
+
+- ✅ Calculs de lot illimités
+- ✅ Journal illimité + IA émotionnelle
+- ✅ Assistant IA stratégique
+- ✅ Simulateur prop firm avec validation de règles
+- ✅ Accès à TOUS les templates sauf Lifetime
+- ✅ Historique avancé + graphiques
+- ✅ Badges, niveaux, récompenses
+- ✅ Avatar personnalisable
+- ✅ Contours de prestige Premium
+- ✅ Système de progression XP et statistiques personnelles
+
+---
+
+## 👑 TIER 3 : LIFETIME (Paiement unique)
+
+- ✅ TOUS les avantages Premium À VIE
+- ✅ Badge exclusif “Lifetime Elite”
+- ✅ Avatar premium unique + contour animé
+- ✅ Thème spécial “Platine Visionnaire”
+- ✅ Accès à un canal privé Lifetime
+- ✅ Peut proposer et voter pour des nouvelles fonctionnalités
+- ✅ Reconnaissance publique dans l’application (Top Lifetime)
+- ✅ Statut spécial dans les classements
+- ✅ Priorité support / fonctionnalités bêta
+
+---
+
+## 🎯 Conclusion
+
+Ce système de tiers permet :
+- Une montée en valeur progressive
+- Une offre claire et motivante
+- Une communauté solide autour des Lifetime
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

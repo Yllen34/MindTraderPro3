@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal de Trading Intelligent - Trading Calculator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .smart-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--bs-primary);
+        }
+        .smart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .confluence-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .confluence-tag {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            background: var(--bs-primary);
+            color: white;
+        }
+        .emotion-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .trade-card {
+            border-left: 4px solid var(--bs-secondary);
+        }
+        .trade-card.profit { border-left-color: var(--bs-success); }
+        .trade-card.loss { border-left-color: var(--bs-danger); }
+        .trade-card.open { border-left-color: var(--bs-warning); }
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .insight-card {
+            background: linear-gradient(135deg, rgba(32,201,151,0.1), rgba(40,167,69,0.05));
+            border-left: 4px solid var(--bs-success);
+        }
+        .import-zone {
+            border: 2px dashed var(--bs-primary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .import-zone:hover {
+            background: rgba(13, 110, 253, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                🧠 Journal de Trading Intelligent
+            </h1>
+            <p class="lead text-muted">Analyse avancée et insights automatiques pour vos trades</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-primary me-2">← Retour Calculateur</a>
+            <button class="btn btn-success" onclick="exportJournal()">
+                <i class="fas fa-download"></i> Export CSV
+            </button>
+        </div>
+
+        <!-- Import automatique -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card smart-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-magic text-primary"></i>
+                            Import Automatique
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="import-zone" onclick="showImportModal()">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                            <h6>Connecter vos plateformes de trading</h6>
+                            <p class="text-muted">Import automatique depuis MT4, MT5, TradingView, cTrader</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-link"></i> Connecter Maintenant
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card insight-card">
+                    <div class="card-body text-center">
+                        <h6><i class="fas fa-lightbulb text-success"></i> Insight IA</h6>
+                        <p class="small" id="aiInsight">Analysez vos patterns de trading pour des recommandations personnalisées</p>
+                        <button class="btn btn-success btn-sm" onclick="generateInsights()">
+                            Analyser mes Trades
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres et recherche intelligente -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-search text-info"></i>
+                    Recherche et Filtres Intelligents
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="searchQuery" 
+                               placeholder="🔍 Rechercher dans notes, tags..." onkeyup="smartSearch()">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="filterStrategy" onchange="applyFilters()">
+                            <option value="">Toutes stratégies</option>
+                            <option value="scalping">Scalping</option>
+                            <option value="day_trading">Day Trading</option>
+                            <option value="swing_trading">Swing Trading</option>
+                            <option value="smc">Smart Money</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="filterEmotion" onchange="applyFilters()">
+                            <option value="">Toutes émotions</option>
+                            <option value="confident">Confiant</option>
+                            <option value="calm">Calme</option>
+                            <option value="anxious">Anxieux</option>
+                            <option value="excited">Excité</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="filterStatus" onchange="applyFilters()">
+                            <option value="">Tous statuts</option>
+                            <option value="open">Ouverts</option>
+                            <option value="closed">Fermés</option>
+                            <option value="profitable">Profitables</option>
+                            <option value="loss">En perte</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" id="filterDate" onchange="applyFilters()">
+                    </div>
+                </div>
+                
+                <!-- Filtres rapides -->
+                <div class="quick-filters mt-3">
+                    <span class="badge bg-primary filter-tag" onclick="quickFilter('today')">Aujourd'hui</span>
+                    <span class="badge bg-info filter-tag" onclick="quickFilter('week')">Cette semaine</span>
+                    <span class="badge bg-success filter-tag" onclick="quickFilter('profitable')">Trades gagnants</span>
+                    <span class="badge bg-danger filter-tag" onclick="quickFilter('losses')">Trades perdants</span>
+                    <span class="badge bg-warning filter-tag" onclick="quickFilter('high-rr')">R/R > 2</span>
+                    <span class="badge bg-secondary filter-tag" onclick="quickFilter('london-session')">Session Londres</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire d'ajout intelligent -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-plus text-success"></i>
+                    Nouveau Trade Intelligent
+                </h5>
+                <button class="btn btn-outline-warning btn-sm" onclick="loadDraft()">
+                    <i class="fas fa-history"></i> Charger Brouillon
+                </button>
+            </div>
+            <div class="card-body">
+                <form id="smartTradeForm">
+                    <!-- Informations de base -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Paire / Instrument</label>
+                            <select class="form-select" id="pairSymbol" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="XAUUSD">🥇 XAUUSD - Or</option>
+                                <option value="EURUSD">🇪🇺 EURUSD - Euro/Dollar</option>
+                                <option value="GBPUSD">🇬🇧 GBPUSD - Livre/Dollar</option>
+                                <option value="USDJPY">🇯🇵 USDJPY - Dollar/Yen</option>
+                                <option value="USDCAD">🇨🇦 USDCAD - Dollar Canadien</option>
+                                <option value="AUDUSD">🇦🇺 AUDUSD - Dollar Australien</option>
+                                <option value="BTCUSD">₿ BTCUSD - Bitcoin</option>
+                                <option value="ETHUSD">⟡ ETHUSD - Ethereum</option>
+                                <option value="USOIL">🛢️ USOIL - Pétrole</option>
+                                <option value="SPX500">📈 SPX500 - S&P 500</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Direction</label>
+                            <select class="form-select" id="direction" required onchange="updateRiskReward()">
+                                <option value="">Choisir...</option>
+                                <option value="BUY">🟢 Long (BUY)</option>
+                                <option value="SELL">🔴 Short (SELL)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Lot Size</label>
+                            <input type="number" class="form-control" id="lotSize" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Prix d'entrée</label>
+                            <input type="number" class="form-control" id="entryPrice" step="0.00001" required onchange="updateRiskReward()">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date/Heure</label>
+                            <input type="datetime-local" class="form-control" id="entryDateTime" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Gestion du risque -->
+                    <div class="row mt-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Stop Loss</label>
+                            <input type="number" class="form-control" id="stopLoss" step="0.00001" required onchange="updateRiskReward()">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Take Profit</label>
+                            <input type="number" class="form-control" id="takeProfit" step="0.00001" required onchange="updateRiskReward()">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Prix de sortie</label>
+                            <input type="number" class="form-control" id="exitPrice" step="0.00001">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="status">
+                                <option value="open">🟡 Ouvert</option>
+                                <option value="closed">✅ Fermé</option>
+                                <option value="cancelled">❌ Annulé</option>
+                                <option value="pending">⏳ En attente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Timeframe</label>
+                            <select class="form-select" id="timeframe">
+                                <option value="M5">M5</option>
+                                <option value="M15">M15</option>
+                                <option value="M30">M30</option>
+                                <option value="H1" selected>H1</option>
+                                <option value="H4">H4</option>
+                                <option value="D1">D1</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Ratio R/R</label>
+                            <input type="text" class="form-control" id="rrDisplay" readonly style="font-weight: bold;">
+                        </div>
+                    </div>
+                    
+                    <!-- Stratégie et analyse technique -->
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Stratégie de trading</label>
+                            <select class="form-select" id="strategy">
+                                <option value="">Sélectionner...</option>
+                                <option value="scalping">⚡ Scalping</option>
+                                <option value="day_trading">📈 Day Trading</option>
+                                <option value="swing_trading">🎯 Swing Trading</option>
+                                <option value="breakout">💥 Breakout</option>
+                                <option value="trend_following">📊 Suivi de tendance</option>
+                                <option value="mean_reversion">🔄 Mean Reversion</option>
+                                <option value="smc">🧠 Smart Money Concepts</option>
+                                <option value="ict">💎 ICT Concepts</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Structure de marché</label>
+                            <select class="form-select" id="marketStructure">
+                                <option value="">Analyser...</option>
+                                <option value="uptrend">📈 Tendance haussière</option>
+                                <option value="downtrend">📉 Tendance baissière</option>
+                                <option value="sideways">↔️ Marché latéral</option>
+                                <option value="consolidation">🔄 Consolidation</option>
+                                <option value="reversal">🔃 Retournement</option>
+                                <option value="accumulation">📊 Accumulation</option>
+                                <option value="distribution">📉 Distribution</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Facteurs de confluence</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluenceSupport">
+                                        <label class="form-check-label">Support/Résistance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluenceFibo">
+                                        <label class="form-check-label">Retracement Fibonacci</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluenceMA">
+                                        <label class="form-check-label">Moyennes mobiles</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluenceVolume">
+                                        <label class="form-check-label">Analyse volume</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluenceDivergence">
+                                        <label class="form-check-label">Divergence</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confluencePattern">
+                                        <label class="form-check-label">Pattern chartiste</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- État mental et psychologie -->
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label class="form-label">État émotionnel</label>
+                            <select class="form-select" id="emotionalState">
+                                <option value="calm">😌 Calme et serein</option>
+                                <option value="confident">😎 Confiant</option>
+                                <option value="anxious">😰 Anxieux</option>
+                                <option value="excited">🤩 Excité</option>
+                                <option value="fearful">😨 Craintif</option>
+                                <option value="frustrated">😤 Frustré</option>
+                                <option value="euphoric">🥳 Euphorique</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Confiance dans le trade (1-10)</label>
+                            <input type="range" class="form-range" id="confidenceLevel" min="1" max="10" value="7" oninput="updateSlider('confidence')">
+                            <div class="d-flex justify-content-between">
+                                <small>Faible</small>
+                                <strong id="confidenceValue">7</strong>
+                                <small>Élevée</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Niveau de stress (1-10)</label>
+                            <input type="range" class="form-range" id="stressLevel" min="1" max="10" value="3" oninput="updateSlider('stress')">
+                            <div class="d-flex justify-content-between">
+                                <small>Zen</small>
+                                <strong id="stressValue">3</strong>
+                                <small>Stressé</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Qualité du setup (1-10)</label>
+                            <input type="range" class="form-range" id="setupQuality" min="1" max="10" value="7" oninput="updateSlider('setup')">
+                            <div class="d-flex justify-content-between">
+                                <small>Moyen</small>
+                                <strong id="setupValue">7</strong>
+                                <small>Parfait</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notes et tags -->
+                    <div class="row mt-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Notes détaillées et analyse</label>
+                            <textarea class="form-control" id="tradeNotes" rows="4" 
+                                      placeholder="📝 Analysez votre trade en détail:&#10;• Pourquoi cette entrée? &#10;• Quel était le contexte de marché?&#10;• Quelles émotions avez-vous ressenties?&#10;• Qu'avez-vous appris de ce trade?&#10;• Y a-t-il des améliorations possibles?"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tags personnalisés</label>
+                            <input type="text" class="form-control" id="customTags" 
+                                   placeholder="london-open, news-event, perfect-setup">
+                            <small class="text-muted">Séparer par des virgules</small>
+                            
+                            <div class="mt-2">
+                                <label class="form-label">Tags rapides</label>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <span class="badge bg-primary tag-btn" onclick="addQuickTag('london-session')">London</span>
+                                    <span class="badge bg-info tag-btn" onclick="addQuickTag('ny-session')">NY</span>
+                                    <span class="badge bg-warning tag-btn" onclick="addQuickTag('news-impact')">News</span>
+                                    <span class="badge bg-success tag-btn" onclick="addQuickTag('perfect-setup')">Perfect</span>
+                                    <span class="badge bg-danger tag-btn" onclick="addQuickTag('fomo')">FOMO</span>
+                                    <span class="badge bg-secondary tag-btn" onclick="addQuickTag('revenge-trade')">Revenge</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-outline-info btn-sm w-100" onclick="addScreenshot()">
+                                    <i class="fas fa-camera"></i> Ajouter Screenshot
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-brain"></i> Enregistrer Trade Intelligent
+                        </button>
+                        <button type="button" class="btn btn-outline-warning btn-lg ms-2" onclick="saveDraft()">
+                            <i class="fas fa-save"></i> Sauvegarder Brouillon
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="clearForm()">
+                            <i class="fas fa-eraser"></i> Effacer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Liste des trades avec pagination -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-history text-info"></i>
+                    Historique des Trades
+                    <span class="badge bg-primary" id="tradeCount">0 trades</span>
+                </h5>
+                <div class="d-flex gap-2">
+                    <select class="form-select form-select-sm" id="tradesPerPage" onchange="updatePagination()">
+                        <option value="10">10 par page</option>
+                        <option value="25" selected>25 par page</option>
+                        <option value="50">50 par page</option>
+                        <option value="100">100 par page</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="tradesContainer">
+                    <!-- Trades chargés dynamiquement -->
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-chart-line fa-3x mb-3"></i>
+                        <h5>Votre journal intelligent vous attend !</h5>
+                        <p>Commencez par ajouter votre premier trade pour voir l'intelligence artificielle en action.</p>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination générée dynamiquement -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'import -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-download text-primary"></i>
+                        Import Automatique depuis vos Plateformes
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fab fa-bitcoin fa-3x text-warning mb-3"></i>
+                                    <h6>MetaTrader 4/5</h6>
+                                    <p class="small">Import automatique de vos trades MT4/MT5</p>
+                                    <button class="btn btn-warning" onclick="connectMT4()">
+                                        Connecter MT4/5
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                                    <h6>TradingView</h6>
+                                    <p class="small">Synchronisation avec TradingView</p>
+                                    <button class="btn btn-info" onclick="connectTradingView()">
+                                        Connecter TV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let userTrades = [];
+        let currentPage = 1;
+        let tradesPerPage = 25;
+        let filteredTrades = [];
+        let userSession = 'user_' + Math.random().toString(36).substr(2, 9);
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDateTime();
+            loadUserTrades();
+            generateInsights();
+        });
+
+        function initializeDateTime() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('entryDateTime').value = now.toISOString().slice(0, 16);
+        }
+
+        function updateSlider(type) {
+            const value = document.getElementById(`${type}Level`).value;
+            document.getElementById(`${type}Value`).textContent = value;
+        }
+
+        function updateRiskReward() {
+            const direction = document.getElementById('direction').value;
+            const entryPrice = parseFloat(document.getElementById('entryPrice').value);
+            const stopLoss = parseFloat(document.getElementById('stopLoss').value);
+            const takeProfit = parseFloat(document.getElementById('takeProfit').value);
+
+            if (direction && entryPrice && stopLoss && takeProfit) {
+                let risk, reward;
+                
+                if (direction === 'BUY') {
+                    risk = Math.abs(entryPrice - stopLoss);
+                    reward = Math.abs(takeProfit - entryPrice);
+                } else {
+                    risk = Math.abs(stopLoss - entryPrice);
+                    reward = Math.abs(entryPrice - takeProfit);
+                }
+                
+                const ratio = reward / risk;
+                const display = document.getElementById('rrDisplay');
+                display.value = `1:${ratio.toFixed(2)}`;
+                
+                // Coloration selon la qualité du ratio
+                if (ratio >= 2) {
+                    display.style.color = '#28a745';
+                } else if (ratio >= 1.5) {
+                    display.style.color = '#ffc107';
+                } else {
+                    display.style.color = '#dc3545';
+                }
+            }
+        }
+
+        function addQuickTag(tag) {
+            const tagsInput = document.getElementById('customTags');
+            const currentTags = tagsInput.value;
+            
+            if (currentTags === '') {
+                tagsInput.value = tag;
+            } else if (!currentTags.includes(tag)) {
+                tagsInput.value = currentTags + ', ' + tag;
+            }
+        }
+
+        function saveDraft() {
+            const formData = getFormData();
+            localStorage.setItem('tradeDraft', JSON.stringify(formData));
+            showSuccess('Brouillon sauvegardé !');
+        }
+
+        function loadDraft() {
+            const draft = localStorage.getItem('tradeDraft');
+            if (draft) {
+                const data = JSON.parse(draft);
+                fillForm(data);
+                showInfo('Brouillon chargé !');
+            } else {
+                showInfo('Aucun brouillon trouvé');
+            }
+        }
+
+        function getFormData() {
+            const confluenceFactors = [];
+            ['Support', 'Fibo', 'MA', 'Volume', 'Divergence', 'Pattern'].forEach(factor => {
+                if (document.getElementById(`confluence${factor}`).checked) {
+                    confluenceFactors.push(factor.toLowerCase());
+                }
+            });
+
+            return {
+                user_session: userSession,
+                pair_symbol: document.getElementById('pairSymbol').value,
+                direction: document.getElementById('direction').value,
+                lot_size: parseFloat(document.getElementById('lotSize').value),
+                entry_price: parseFloat(document.getElementById('entryPrice').value),
+                stop_loss: parseFloat(document.getElementById('stopLoss').value),
+                take_profit: parseFloat(document.getElementById('takeProfit').value),
+                exit_price: document.getElementById('exitPrice').value ? parseFloat(document.getElementById('exitPrice').value) : null,
+                entry_time: document.getElementById('entryDateTime').value,
+                status: document.getElementById('status').value,
+                timeframe: document.getElementById('timeframe').value,
+                strategy: document.getElementById('strategy').value,
+                market_structure: document.getElementById('marketStructure').value,
+                confluence_factors: confluenceFactors,
+                emotional_state: document.getElementById('emotionalState').value,
+                confidence_level: parseInt(document.getElementById('confidenceLevel').value),
+                stress_level: parseInt(document.getElementById('stressLevel').value),
+                setup_quality: parseInt(document.getElementById('setupQuality').value),
+                notes: document.getElementById('tradeNotes').value,
+                tags: document.getElementById('customTags').value.split(',').map(tag => tag.trim()).filter(tag => tag)
+            };
+        }
+
+        async function submitTrade() {
+            const formData = getFormData();
+            
+            try {
+                const response = await fetch('/api/smart-journal/add-trade', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccess('Trade intelligent enregistré avec succès !');
+                    clearForm();
+                    loadUserTrades();
+                    localStorage.removeItem('tradeDraft');
+                } else {
+                    showError(result.error || 'Erreur lors de l\'enregistrement');
+                }
+            } catch (error) {
+                showError('Erreur de connexion');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('smartTradeForm').reset();
+            initializeDateTime();
+            document.getElementById('rrDisplay').value = '';
+            updateSlider('confidence');
+            updateSlider('stress');
+            updateSlider('setup');
+        }
+
+        async function loadUserTrades() {
+            try {
+                const response = await fetch(`/api/smart-journal/trades/${userSession}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    userTrades = data.trades;
+                    filteredTrades = userTrades;
+                    displayTrades();
+                    updateTradeCount();
+                }
+            } catch (error) {
+                console.error('Erreur chargement trades:', error);
+                // Affichage de trades de démonstration
+                displayDemoTrades();
+            }
+        }
+
+        function displayDemoTrades() {
+            const demoTrades = [
+                {
+                    trade_id: 'demo_1',
+                    pair_symbol: 'XAUUSD',
+                    direction: 'BUY',
+                    entry_price: 1985.50,
+                    exit_price: 2010.25,
+                    lot_size: 0.5,
+                    profit_loss: 247.50,
+                    status: 'closed',
+                    strategy: 'breakout',
+                    emotional_state: 'confident',
+                    confidence_level: 8,
+                    risk_reward_ratio: 2.5,
+                    notes: 'Breakout parfait sur résistance majeure avec volume de confirmation',
+                    tags: ['london-session', 'perfect-setup', 'high-volume'],
+                    entry_time: '2024-01-15T09:30:00'
+                },
+                {
+                    trade_id: 'demo_2',
+                    pair_symbol: 'EURUSD',
+                    direction: 'SELL',
+                    entry_price: 1.0875,
+                    exit_price: 1.0825,
+                    lot_size: 1.0,
+                    profit_loss: 500.00,
+                    status: 'closed',
+                    strategy: 'trend_following',
+                    emotional_state: 'calm',
+                    confidence_level: 7,
+                    risk_reward_ratio: 2.0,
+                    notes: 'Continuation de tendance baissière, excellent point d\'entrée',
+                    tags: ['trend-continuation', 'fibonacci-61.8'],
+                    entry_time: '2024-01-14T14:15:00'
+                }
+            ];
+            
+            userTrades = demoTrades;
+            filteredTrades = demoTrades;
+            displayTrades();
+            updateTradeCount();
+        }
+
+        function displayTrades() {
+            const container = document.getElementById('tradesContainer');
+            const startIndex = (currentPage - 1) * tradesPerPage;
+            const endIndex = startIndex + tradesPerPage;
+            const tradesToShow = filteredTrades.slice(startIndex, endIndex);
+
+            if (tradesToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-search fa-3x mb-3"></i>
+                        <h5>Aucun trade trouvé</h5>
+                        <p>Essayez de modifier vos filtres de recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            tradesToShow.forEach(trade => {
+                const profitClass = trade.profit_loss > 0 ? 'profit' : trade.profit_loss < 0 ? 'loss' : 'open';
+                const emotionEmoji = getEmotionEmoji(trade.emotional_state);
+                const tagsHtml = trade.tags ? trade.tags.map(tag => `<span class="confluence-tag">${tag}</span>`).join(' ') : '';
+
+                html += `
+                    <div class="card trade-card ${profitClass} mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <h6 class="fw-bold">${trade.pair_symbol}</h6>
+                                    <span class="badge bg-${trade.direction === 'BUY' ? 'success' : 'danger'}">${trade.direction}</span>
+                                    <div class="small text-muted">${trade.lot_size} lots</div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="small">Entrée: <strong>${trade.entry_price}</strong></div>
+                                    <div class="small">Sortie: <strong>${trade.exit_price || 'En cours'}</strong></div>
+                                    <div class="small">R/R: <strong>${trade.risk_reward_ratio || 'N/A'}</strong></div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="emotion-indicator bg-secondary">
+                                        ${emotionEmoji}
+                                    </div>
+                                    <div class="small mt-1">Conf: ${trade.confidence_level}/10</div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <h5 class="mb-0 text-${profitClass === 'profit' ? 'success' : profitClass === 'loss' ? 'danger' : 'warning'}">
+                                        ${trade.profit_loss ? (trade.profit_loss > 0 ? '+' : '') + trade.profit_loss.toFixed(2) + '€' : 'En cours'}
+                                    </h5>
+                                    <small class="text-muted">${trade.status}</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="small mb-1">${trade.notes ? trade.notes.substring(0, 100) + '...' : 'Pas de notes'}</div>
+                                    <div class="confluence-tags">
+                                        ${tagsHtml}
+                                    </div>
+                                    <div class="small text-muted mt-1">${new Date(trade.entry_time).toLocaleString('fr-FR')}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            updatePagination();
+        }
+
+        function getEmotionEmoji(emotion) {
+            const emojis = {
+                'calm': '😌',
+                'confident': '😎',
+                'anxious': '😰',
+                'excited': '🤩',
+                'fearful': '😨',
+                'frustrated': '😤',
+                'euphoric': '🥳'
+            };
+            return emojis[emotion] || '😐';
+        }
+
+        function updateTradeCount() {
+            document.getElementById('tradeCount').textContent = `${filteredTrades.length} trades`;
+        }
+
+        function smartSearch() {
+            const query = document.getElementById('searchQuery').value.toLowerCase();
+            if (query === '') {
+                filteredTrades = userTrades;
+            } else {
+                filteredTrades = userTrades.filter(trade => 
+                    (trade.notes && trade.notes.toLowerCase().includes(query)) ||
+                    (trade.tags && trade.tags.some(tag => tag.toLowerCase().includes(query))) ||
+                    trade.pair_symbol.toLowerCase().includes(query) ||
+                    (trade.strategy && trade.strategy.toLowerCase().includes(query))
+                );
+            }
+            currentPage = 1;
+            displayTrades();
+            updateTradeCount();
+        }
+
+        function applyFilters() {
+            let filtered = userTrades;
+
+            const strategy = document.getElementById('filterStrategy').value;
+            const emotion = document.getElementById('filterEmotion').value;
+            const status = document.getElementById('filterStatus').value;
+            const date = document.getElementById('filterDate').value;
+
+            if (strategy) {
+                filtered = filtered.filter(trade => trade.strategy === strategy);
+            }
+
+            if (emotion) {
+                filtered = filtered.filter(trade => trade.emotional_state === emotion);
+            }
+
+            if (status) {
+                if (status === 'profitable') {
+                    filtered = filtered.filter(trade => trade.profit_loss > 0);
+                } else if (status === 'loss') {
+                    filtered = filtered.filter(trade => trade.profit_loss < 0);
+                } else {
+                    filtered = filtered.filter(trade => trade.status === status);
+                }
+            }
+
+            if (date) {
+                filtered = filtered.filter(trade => trade.entry_time.startsWith(date));
+            }
+
+            filteredTrades = filtered;
+            currentPage = 1;
+            displayTrades();
+            updateTradeCount();
+        }
+
+        async function generateInsights() {
+            try {
+                const response = await fetch(`/api/smart-journal/insights/${userSession}`);
+                const data = await response.json();
+
+                if (data.success && data.insights) {
+                    const insights = Object.values(data.insights);
+                    if (insights.length > 0) {
+                        document.getElementById('aiInsight').textContent = insights[0];
+                    }
+                }
+            } catch (error) {
+                document.getElementById('aiInsight').textContent = 
+                    "Commencez à trader pour recevoir des insights personnalisés de l'IA !";
+            }
+        }
+
+        function showImportModal() {
+            const modal = new bootstrap.Modal(document.getElementById('importModal'));
+            modal.show();
+        }
+
+        function connectMT4() {
+            showInfo('Connexion MT4/MT5 en cours de développement. Contactez le support pour l\'activation !');
+        }
+
+        function connectTradingView() {
+            showInfo('Intégration TradingView disponible en version Premium !');
+        }
+
+        async function exportJournal() {
+            try {
+                const response = await fetch(`/api/smart-journal/export/${userSession}`);
+                const csvData = await response.text();
+                
+                const blob = new Blob([csvData], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `trading_journal_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                showSuccess('Journal exporté en CSV !');
+            } catch (error) {
+                showError('Erreur lors de l\'export');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('smartTradeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitTrade();
+        });
+
+        function showSuccess(message) {
+            showToast(message, 'success');
+        }
+
+        function showError(message) {
+            showToast(message, 'danger');
+        }
+
+        function showInfo(message) {
+            showToast(message, 'info');
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+            toast.style.zIndex = '9999';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

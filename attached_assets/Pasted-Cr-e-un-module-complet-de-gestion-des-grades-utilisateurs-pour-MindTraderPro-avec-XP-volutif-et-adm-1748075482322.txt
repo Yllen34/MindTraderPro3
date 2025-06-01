@@ -1,0 +1,65 @@
+Crée un module complet de gestion des grades utilisateurs pour MindTraderPro avec XP évolutif et administration avancée.
+
+### 1. MODULE GRADES ÉVOLUTIFS
+
+Crée un système qui attribue un grade automatiquement selon l'XP de l'utilisateur :
+
+- Débutant : 0–50 XP
+- Actif : 51–200 XP
+- Trader régulier : 201–500 XP
+- Expert : 501–1000 XP
+- Légende : 1001+ XP
+- Lifetime : grade fixe non modifiable (rôle "lifetime")
+
+L'XP est stocké dans la base utilisateur, et augmenté par actions comme :
+- Calculateur utilisé : +5 XP
+- Trade ajouté : +10 XP
+- Suggestion envoyée : +20 XP
+- Vote : +3 XP
+- Connexion quotidienne : +2 XP
+
+Chaque changement d'XP ou de grade est logué avec date, type d'action et valeur.
+
+### 2. MODULE ADMIN : /admin/grades
+
+Permet à l'administrateur de :
+
+- Voir la liste des utilisateurs avec leur XP et grade
+- Ajouter ou retirer manuellement de l’XP à n’importe quel utilisateur
+- Modifier le grade d’un utilisateur manuellement
+- Voir l’historique complet des actions XP de chaque utilisateur
+- Créer de nouveaux grades personnalisés avec :
+  - nom
+  - seuil d’XP
+  - icône (emoji ou classe CSS)
+  - couleur
+  - description
+  - grade fixe (oui/non)
+  - avantages associés (texte libre)
+- Modifier ou supprimer un grade existant
+- Ajouter/modifier/supprimer des règles d’XP (ex. “Publier un avis” = +50 XP)
+- Activer ou désactiver des règles temporairement
+- Voir les statistiques globales :
+  - nombre d’utilisateurs par grade
+  - XP moyen
+  - XP moyen par jour
+  - graphiques (Chart.js)
+
+### 3. INTÉGRATION ET INTERFACE
+
+- Ajoute une page /grades accessible par les utilisateurs avec leur progression
+- Ajoute la vue grade + XP dans /profile
+- Ajoute la navigation vers /admin/grades depuis /admin
+
+### 4. TECHNIQUE
+
+- Fichiers :
+  - modules/grade_manager.py (logique)
+  - routes/grade_routes.py (routes utilisateur)
+  - routes/admin_routes.py (ajouts côté admin)
+- Utilise SQLite
+- Code commenté et structuré
+- Responsive mobile
+- Sécurité des accès (admin uniquement pour /admin/grades)
+
+NE modifie pas les modules existants sauf si nécessaire pour afficher les grades.

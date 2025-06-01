@@ -1,0 +1,57 @@
+🚀 Crée un module complet de parrainage pour MindTraderPro.
+
+📁 Structure technique :
+- Crée modules/referral_manager.py pour la logique métier
+- Crée routes/referral_routes.py pour les routes utilisateur et admin
+- Enregistre le blueprint dans app_clean.py + ajoute un lien dans la navigation vers /parrainage
+
+👤 Côté utilisateur :
+- Génère un lien unique d’invitation
+- Peut voir le nombre de filleuls, leur statut, les XP gagnés et les récompenses débloquées
+- Peut désactiver l’affichage des bannières promotionnelles dans son profil
+- Accès à une page /parrainage dédiée
+
+🎁 Côté filleul :
+- Rejoint via lien affilié
+- Bénéficie de :
+  - 1 mois Premium à 4,99 € (au lieu de 14,99 €)
+  - Réduction Lifetime à 149 € pendant 30 jours
+- Est validé uniquement si :
+  - Son email est vérifié
+  - Il a effectué un paiement
+
+🔒 Anti-triche :
+- Bloque les doublons d’adresse IP, emails et appareils
+- Logs détaillés des connexions pour détecter les abus
+
+🛠️ Interface admin (/admin/parrainage) :
+- Liste complète des parrains et filleuls avec filtres
+- Possibilité de modifier :
+  - Les règles de validation
+  - Les XP attribués
+  - Les récompenses par paliers
+  - Le statut d’un filleul
+- Historique de tous les changements effectués
+
+🏆 Récompenses :
+- Parrain :
+  - +5 XP par inscription
+  - +25 XP par filleul validé
+  - Déblocage de badges (Bronze : 5 / Argent : 10 / Or : 20 / Platine : 50)
+- Filleul :
+  - Accès Premium 4,99 €
+  - Réduction Lifetime pendant 30 jours
+- Bonus au parrain d’origine si son filleul devient lui-même parrain actif
+
+📊 Leaderboard :
+- Page /leaderboard_parrainage avec :
+  - Classement des meilleurs parrains
+  - Nombre de filleuls validés
+  - XP gagné via parrainage
+  - Affichage du rang
+
+🗄️ Technique :
+- Base de données SQLite avec tables : referrals, referral_rewards, referral_rules
+- API pour création de lien, suivi de conversion, changement de statut, export CSV
+- Ne modifie aucun autre module existant
+- Une fois terminé, propose de tester toutes les routes concernées

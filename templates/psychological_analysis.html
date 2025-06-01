@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse Psychologique - Trading Calculator Pro</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .emotion-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .emotion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .emotion-card.selected {
+            border-color: var(--bs-primary);
+            background: rgba(13, 110, 253, 0.1);
+        }
+        
+        .emotion-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #dc3545, #ffc107, #28a745);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .emotion-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid var(--bs-primary);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .mental-score {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        .score-excellent { background: linear-gradient(135deg, #28a745, #20c997); color: white; }
+        .score-good { background: linear-gradient(135deg, #20c997, #0dcaf0); color: white; }
+        .score-average { background: linear-gradient(135deg, #ffc107, #fd7e14); color: white; }
+        .score-poor { background: linear-gradient(135deg, #fd7e14, #dc3545); color: white; }
+        
+        .insight-card {
+            border-left: 4px solid var(--bs-info);
+            background: rgba(13, 202, 240, 0.1);
+        }
+        
+        .recommendation-card {
+            border-left: 4px solid var(--bs-warning);
+            background: rgba(255, 193, 7, 0.1);
+        }
+        
+        .emotion-chart {
+            height: 300px;
+        }
+        
+        .time-pattern {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .pattern-excellent { background: rgba(40, 167, 69, 0.2); border: 1px solid var(--bs-success); }
+        .pattern-good { background: rgba(32, 201, 151, 0.2); border: 1px solid var(--bs-info); }
+        .pattern-average { background: rgba(255, 193, 7, 0.2); border: 1px solid var(--bs-warning); }
+        .pattern-poor { background: rgba(220, 53, 69, 0.2); border: 1px solid var(--bs-danger); }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                🧠 Analyse Psychologique
+            </h1>
+            <p class="lead text-muted">Suivi des émotions et impact sur vos performances de trading</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-primary me-2">← Retour Accueil</a>
+            <button class="btn btn-info" onclick="showHelpModal()">
+                <i class="fas fa-question-circle"></i> Guide d'utilisation
+            </button>
+        </div>
+
+        <!-- Onglets principaux -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill" id="psychoTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="record-tab" data-bs-toggle="pill" data-bs-target="#record" type="button">
+                            <i class="fas fa-heart"></i> Enregistrer Émotions
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="score-tab" data-bs-toggle="pill" data-bs-target="#score" type="button">
+                            <i class="fas fa-brain"></i> Score Mental
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="analysis-tab" data-bs-toggle="pill" data-bs-target="#analysis" type="button">
+                            <i class="fas fa-chart-line"></i> Analyses
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reports-tab" data-bs-toggle="pill" data-bs-target="#reports" type="button">
+                            <i class="fas fa-file-alt"></i> Rapports
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="psychoTabContent">
+            <!-- Onglet Enregistrement Émotions -->
+            <div class="tab-pane fade show active" id="record" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-heart text-danger"></i>
+                                    Comment vous sentez-vous avant ce trade ?
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="emotionForm">
+                                    <!-- Sélection de l'émotion principale -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Émotion principale</label>
+                                        <div class="row g-2" id="emotionSelector">
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="calm">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-zen fa-2x text-success mb-2"></i>
+                                                        <h6>😌 Calme</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="confident">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-muscle fa-2x text-primary mb-2"></i>
+                                                        <h6>💪 Confiant</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="anxious">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-sweat fa-2x text-warning mb-2"></i>
+                                                        <h6>😰 Anxieux</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="fearful">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-ghost fa-2x text-danger mb-2"></i>
+                                                        <h6>😨 Peureux</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="greedy">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                                                        <h6>🤑 Cupide</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="frustrated">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-angry fa-2x text-danger mb-2"></i>
+                                                        <h6>😤 Frustré</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="excited">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-star fa-2x text-info mb-2"></i>
+                                                        <h6>🤩 Excité</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="card emotion-card" data-emotion="euphoric">
+                                                    <div class="card-body text-center p-3">
+                                                        <i class="fas fa-rocket fa-2x text-success mb-2"></i>
+                                                        <h6>🚀 Euphorique</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Niveaux émotionnels -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Niveau de confiance (1-10)</label>
+                                            <input type="range" class="emotion-slider" id="confidenceLevel" min="1" max="10" value="5">
+                                            <div class="d-flex justify-content-between small text-muted">
+                                                <span>Très faible</span>
+                                                <span id="confidenceValue">5</span>
+                                                <span>Très élevé</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Niveau de stress (1-10)</label>
+                                            <input type="range" class="emotion-slider" id="stressLevel" min="1" max="10" value="5">
+                                            <div class="d-flex justify-content-between small text-muted">
+                                                <span>Très calme</span>
+                                                <span id="stressValue">5</span>
+                                                <span>Très stressé</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Niveau de peur (1-10)</label>
+                                            <input type="range" class="emotion-slider" id="fearLevel" min="1" max="10" value="5">
+                                            <div class="d-flex justify-content-between small text-muted">
+                                                <span>Aucune peur</span>
+                                                <span id="fearValue">5</span>
+                                                <span>Très peureux</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Niveau de patience (1-10)</label>
+                                            <input type="range" class="emotion-slider" id="patienceLevel" min="1" max="10" value="5">
+                                            <div class="d-flex justify-content-between small text-muted">
+                                                <span>Impatient</span>
+                                                <span id="patienceValue">5</span>
+                                                <span>Très patient</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contexte -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Moment de la journée</label>
+                                            <select class="form-select" id="timeOfDay">
+                                                <option value="morning">🌅 Matin</option>
+                                                <option value="afternoon">🌞 Après-midi</option>
+                                                <option value="evening">🌆 Soirée</option>
+                                                <option value="night">🌙 Nuit</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Qualité du sommeil (1-10)</label>
+                                            <input type="number" class="form-control" id="sleepQuality" min="1" max="10" value="7">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Stress externe (1-10)</label>
+                                            <input type="number" class="form-control" id="externalStress" min="1" max="10" value="3">
+                                        </div>
+                                    </div>
+
+                                    <!-- Notes -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Notes émotionnelles (optionnel)</label>
+                                        <textarea class="form-control" id="emotionalNotes" rows="3" 
+                                                placeholder="Décrivez ce que vous ressentez, ce qui vous préoccupe..."></textarea>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-save"></i> Enregistrer État Émotionnel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Score Mental -->
+            <div class="tab-pane fade" id="score" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-brain text-info"></i>
+                                    Score Mental Actuel
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="currentMentalScore">
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="fas fa-brain fa-3x mb-3"></i>
+                                        <p>Enregistrez votre état émotionnel pour voir votre score mental</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insights rapides -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    Insights Rapides
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="quickInsights">
+                                    <p class="text-muted">Aucune donnée disponible pour le moment</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-chart-line text-success"></i>
+                                    Évolution du Score Mental
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="mentalScoreChart" class="emotion-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Analyses -->
+            <div class="tab-pane fade" id="analysis" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-area text-primary"></i>
+                                    Patterns Émotionnels
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="emotionPatternsChart" class="emotion-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-clock text-info"></i>
+                                    Patterns Temporels
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="timePatterns">
+                                    <div class="text-center py-3 text-muted">
+                                        <i class="fas fa-hourglass-half fa-2x mb-2"></i>
+                                        <p>Aucune donnée disponible</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-star text-warning"></i>
+                                    Recommandations
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="recommendations">
+                                    <p class="text-muted">Enregistrez plus de données pour recevoir des recommandations personnalisées</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Rapports -->
+            <div class="tab-pane fade" id="reports" role="tabpanel">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-file-alt text-success"></i>
+                                    Rapport Psychologique Complet
+                                </h5>
+                                <button class="btn btn-outline-success" onclick="generatePsychologicalReport()">
+                                    <i class="fas fa-sync-alt"></i> Générer Rapport
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="psychologicalReport">
+                                    <div class="text-center py-5 text-muted">
+                                        <i class="fas fa-file-alt fa-4x mb-3"></i>
+                                        <h5>Rapport Psychologique</h5>
+                                        <p>Cliquez sur "Générer Rapport" pour obtenir une analyse complète de vos patterns émotionnels</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'aide -->
+    <div class="modal fade" id="helpModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-question-circle text-info"></i>
+                        Guide de l'Analyse Psychologique
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-heart text-danger"></i> Suivi des Émotions</h6>
+                            <ul class="small">
+                                <li>Enregistrez vos émotions avant chaque trade</li>
+                                <li>Soyez honnête sur votre état mental</li>
+                                <li>Notez le contexte (sommeil, stress externe)</li>
+                                <li>Plus de données = analyses plus précises</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-brain text-info"></i> Score Mental</h6>
+                            <ul class="small">
+                                <li>Score calculé selon vos émotions</li>
+                                <li>8-10 : Excellent pour trader</li>
+                                <li>6-7 : Bon état mental</li>
+                                <li>4-5 : Soyez prudent</li>
+                                <li>1-3 : Évitez de trader</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6><i class="fas fa-lightbulb text-warning"></i> Conseils d'Utilisation</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Régularité</strong>
+                            <p class="small">Enregistrez vos émotions quotidiennement pour identifier les patterns</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Honnêteté</strong>
+                            <p class="small">Soyez sincère avec vous-même sur votre état émotionnel</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Action</strong>
+                            <p class="small">Utilisez les recommandations pour améliorer votre trading</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let userSession = 'user_' + Math.random().toString(36).substr(2, 9);
+        let selectedEmotion = 'calm';
+        let mentalScoreChart = null;
+        let emotionPatternsChart = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEmotionSliders();
+            setupEmotionSelector();
+            loadQuickInsights();
+        });
+
+        function setupEmotionSliders() {
+            const sliders = ['confidence', 'stress', 'fear', 'patience'];
+            
+            sliders.forEach(emotion => {
+                const slider = document.getElementById(emotion + 'Level');
+                const valueDisplay = document.getElementById(emotion + 'Value');
+                
+                slider.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value;
+                });
+            });
+        }
+
+        function setupEmotionSelector() {
+            const emotionCards = document.querySelectorAll('.emotion-card');
+            
+            emotionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Retirer la sélection des autres cartes
+                    emotionCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Sélectionner cette carte
+                    this.classList.add('selected');
+                    selectedEmotion = this.dataset.emotion;
+                });
+            });
+            
+            // Sélectionner "calme" par défaut
+            document.querySelector('[data-emotion="calm"]').classList.add('selected');
+        }
+
+        // Gestion du formulaire d'émotions
+        document.getElementById('emotionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await recordEmotionalState();
+        });
+
+        async function recordEmotionalState() {
+            const emotionalData = {
+                user_session: userSession,
+                primary_emotion: selectedEmotion,
+                confidence_level: parseInt(document.getElementById('confidenceLevel').value),
+                stress_level: parseInt(document.getElementById('stressLevel').value),
+                fear_level: parseInt(document.getElementById('fearLevel').value),
+                patience_level: parseInt(document.getElementById('patienceLevel').value),
+                time_of_day: document.getElementById('timeOfDay').value,
+                sleep_quality: parseInt(document.getElementById('sleepQuality').value),
+                external_stress: parseInt(document.getElementById('externalStress').value),
+                emotional_notes: document.getElementById('emotionalNotes').value,
+                phase: 'before_trade'
+            };
+
+            try {
+                const response = await fetch('/api/psychology/record-emotion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(emotionalData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess('État émotionnel enregistré avec succès !');
+                    
+                    // Calculer et afficher le score mental
+                    await calculateMentalScore(emotionalData);
+                    
+                    // Réinitialiser le formulaire
+                    document.getElementById('emotionForm').reset();
+                    setupEmotionSelector();
+                    setupEmotionSliders();
+                    
+                    // Recharger les insights
+                    loadQuickInsights();
+                    
+                } else {
+                    showError('Erreur lors de l\'enregistrement: ' + result.error);
+                }
+            } catch (error) {
+                showError('Erreur de connexion');
+            }
+        }
+
+        async function calculateMentalScore(emotionalData) {
+            try {
+                const response = await fetch('/api/psychology/mental-score', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(emotionalData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayMentalScore(result.score_data);
+                    updateMentalScoreChart();
+                }
+            } catch (error) {
+                console.error('Erreur calcul score mental:', error);
+            }
+        }
+
+        function displayMentalScore(scoreData) {
+            const container = document.getElementById('currentMentalScore');
+            
+            const scoreClass = `score-${scoreData.mental_state === 'excellent' ? 'excellent' : 
+                                     scoreData.mental_state === 'bon' ? 'good' : 
+                                     scoreData.mental_state === 'moyen' ? 'average' : 'poor'}`;
+            
+            container.innerHTML = `
+                <div class="mental-score ${scoreClass}">
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <h1 class="display-4 mb-0">${scoreData.mental_score}</h1>
+                            <small>/ 10</small>
+                        </div>
+                        <div class="col-8 text-start">
+                            <h5 class="mb-2">${scoreData.mental_state.charAt(0).toUpperCase() + scoreData.mental_state.slice(1)}</h5>
+                            <p class="mb-0">${scoreData.trade_recommendation}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <h6 class="text-success">✅ Facteurs Positifs</h6>
+                        <small>Confiance: ${scoreData.factors.positive.confidence}/10</small><br>
+                        <small>Patience: ${scoreData.factors.positive.patience}/10</small><br>
+                        <small>Sommeil: ${scoreData.factors.positive.sleep_quality}/10</small>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-warning">⚠️ Facteurs à Surveiller</h6>
+                        <small>Stress: ${scoreData.factors.negative.stress}/10</small><br>
+                        <small>Peur: ${scoreData.factors.negative.fear}/10</small><br>
+                        <small>Stress externe: ${scoreData.factors.negative.external_stress}/10</small>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadQuickInsights() {
+            try {
+                const response = await fetch(`/api/psychology/insights/${userSession}`);
+                const data = await response.json();
+
+                const container = document.getElementById('quickInsights');
+                
+                if (data.insights && data.insights.length > 0) {
+                    let html = `<p class="small text-muted mb-2">${data.message}</p>`;
+                    
+                    data.insights.forEach(insight => {
+                        html += `
+                            <div class="insight-card card mb-2">
+                                <div class="card-body p-2">
+                                    <small>${insight}</small>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `<p class="text-muted">${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Erreur chargement insights:', error);
+            }
+        }
+
+        async function generatePsychologicalReport() {
+            try {
+                const response = await fetch(`/api/psychology/report/${userSession}`);
+                const data = await response.json();
+
+                const container = document.getElementById('psychologicalReport');
+                
+                if (data.success) {
+                    displayPsychologicalReport(data);
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-4 text-muted">
+                            <i class="fas fa-info-circle fa-2x mb-3"></i>
+                            <p>${data.error}</p>
+                            <small>Enregistrez vos émotions pendant quelques jours pour générer un rapport</small>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showError('Erreur lors de la génération du rapport');
+            }
+        }
+
+        function displayPsychologicalReport(reportData) {
+            const container = document.getElementById('psychologicalReport');
+            
+            container.innerHTML = `
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-primary">${reportData.total_records}</h4>
+                            <small>Enregistrements</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-success">${reportData.emotional_summary.avg_confidence}</h4>
+                            <small>Confiance Moyenne</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-warning">${reportData.emotional_summary.avg_stress}</h4>
+                            <small>Stress Moyen</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h4 class="text-info">${reportData.emotional_summary.avg_patience}</h4>
+                            <small>Patience Moyenne</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>🏆 Émotions Dominantes</h6>
+                        <ul class="list-unstyled">
+                            ${reportData.emotional_summary.dominant_emotions.map(([emotion, count]) => 
+                                `<li><span class="badge bg-primary me-2">${count}</span>${emotion}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>💡 Recommandations</h6>
+                        <ul class="list-unstyled">
+                            ${reportData.recommendations.map(rec => 
+                                `<li class="recommendation-card card mb-1">
+                                    <div class="card-body p-2">
+                                        <small>${rec}</small>
+                                    </div>
+                                </li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <small class="text-muted">Rapport généré le ${new Date(reportData.generated_at).toLocaleDateString('fr-FR')}</small>
+            `;
+        }
+
+        async function updateMentalScoreChart() {
+            try {
+                const response = await fetch(`/api/psychology/mental-score-history/${userSession}`);
+                const data = await response.json();
+
+                if (data.length === 0) return;
+
+                const ctx = document.getElementById('mentalScoreChart').getContext('2d');
+                
+                if (mentalScoreChart) {
+                    mentalScoreChart.destroy();
+                }
+
+                const labels = data.map(point => new Date(point.timestamp).toLocaleDateString('fr-FR'));
+                const scores = data.map(point => point.mental_score);
+
+                mentalScoreChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Score Mental',
+                            data: scores,
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '/10';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Erreur mise à jour graphique:', error);
+            }
+        }
+
+        function showHelpModal() {
+            const modal = new bootstrap.Modal(document.getElementById('helpModal'));
+            modal.show();
+        }
+
+        function showSuccess(message) {
+            showToast(message, 'success');
+        }
+
+        function showError(message) {
+            showToast(message, 'danger');
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+            toast.style.zIndex = '9999';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+</html>

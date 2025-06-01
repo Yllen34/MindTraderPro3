@@ -1,0 +1,319 @@
+2025-05-25 11:12:35,399 - root - INFO - Utilisateur connecté: demo@mindtraderpro.com (Role: premium)
+2025-05-25 11:16:29,091 - root - INFO - Session sur /home: {'_permanent': True, 'user_email': 'demo@mindtraderpro.com', 'user_id': 1, 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:16:29,091 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:16:29,105 - root - INFO - Session sur /home: {}
+2025-05-25 11:16:29,105 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:16:29,776 - root - INFO - Session sur /home: {}
+2025-05-25 11:16:29,777 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:07,776 - root - INFO - Session sur /home: {'_permanent': True, 'user_email': 'demo@mindtraderpro.com', 'user_id': 1, 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:19:07,776 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:07,805 - root - INFO - Session sur /home: {}
+2025-05-25 11:19:07,805 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:07,825 - root - INFO - Session sur /home: {}
+2025-05-25 11:19:07,825 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:08,237 - root - INFO - Session sur /home: {}
+2025-05-25 11:19:08,237 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:39,261 - root - INFO - Session sur /home: {'_permanent': True, 'user_email': 'demo@mindtraderpro.com', 'user_id': 1, 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:19:39,261 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:39,744 - root - INFO - Session sur /home: {}
+2025-05-25 11:19:39,744 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:19:39,747 - root - INFO - Session sur /home: {}
+2025-05-25 11:19:39,748 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:21:03,892 - root - INFO - Session sur /home: {'_permanent': True, 'user_email': 'demo@mindtraderpro.com', 'user_id': 1, 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:21:03,892 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:21:14,944 - root - INFO - Tentative de connexion pour: demo@mindtraderpro.com
+2025-05-25 11:21:15,035 - root - INFO - Utilisateur connecté: demo@mindtraderpro.com (Role: premium)
+2025-05-25 11:21:15,035 - root - INFO - Session créée avec ID: 1
+2025-05-25 11:21:15,035 - root - INFO - Session après connexion: {'_permanent': True, 'user_email': 'demo@mindtraderpro.com', 'user_id': 1, 'user_name': 'Demo User', 'user_role': 'premium', 'user_first_name': 'Demo', 'user_last_name': 'User', 'is_authenticated': True}
+2025-05-25 11:21:17,100 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:21:17,100 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:21:34,905 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:21:34,905 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:21:34,919 - root - INFO - Session sur /home: {}
+2025-05-25 11:21:34,919 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:22:04,708 - root - INFO - Tentative de connexion pour: demo@mindtraderpro.com
+2025-05-25 11:22:04,807 - root - INFO - Utilisateur connecté: demo@mindtraderpro.com (Role: premium)
+2025-05-25 11:22:04,807 - root - INFO - Session créée avec ID: 1
+2025-05-25 11:22:04,807 - root - INFO - Session après connexion: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:22:06,876 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:22:06,877 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:32:21,460 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:32:21,463 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:32:21,885 - root - INFO - Session sur /home: {}
+2025-05-25 11:32:21,885 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:35:25,134 - app_clean - ERROR - Exception on /login [GET]
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app_clean.py", line 2468, in login
+    min-height: 100vh;
+        ^^^^^^
+NameError: name 'height' is not defined
+2025-05-25 11:35:25,136 - app_clean - ERROR - Server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2025-05-25 11:35:49,878 - root - INFO - Session sur /home: {}
+2025-05-25 11:35:49,879 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:36:08,920 - app_clean - ERROR - Exception on /login [GET]
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app_clean.py", line 2468, in login
+    min-height: 100vh;
+        ^^^^^^
+NameError: name 'height' is not defined
+2025-05-25 11:36:08,922 - app_clean - ERROR - Server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2025-05-25 11:36:19,100 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:36:19,100 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:36:19,575 - root - INFO - Session sur /home: {}
+2025-05-25 11:36:19,575 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:42:08,595 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:42:08,595 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:42:08,597 - root - INFO - Session sur /home: {}
+2025-05-25 11:42:08,597 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:42:09,030 - root - INFO - Session sur /home: {}
+2025-05-25 11:42:09,030 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:42:40,496 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 11:42:40,602 - root - INFO - Connexion directe réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 11:42:40,602 - root - INFO - Session directe créée: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:42:40,745 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:42:40,745 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:43:29,967 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:43:29,967 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:43:30,395 - root - INFO - Session sur /home: {}
+2025-05-25 11:43:30,395 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:43:59,352 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 11:43:59,432 - root - INFO - Connexion directe réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 11:43:59,433 - root - INFO - Session directe créée: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:43:59,576 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:43:59,576 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:45:08,055 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:45:08,055 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com'}
+2025-05-25 11:45:08,471 - root - INFO - Session sur /home: {}
+2025-05-25 11:45:08,471 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None}
+2025-05-25 11:46:39,656 - root - INFO - Session sur /home: {}
+2025-05-25 11:46:39,656 - root - INFO - Session actuelle: {}
+2025-05-25 11:46:39,656 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:46:39,656 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:46:39,816 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:46:39,816 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:46:39,816 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:46:39,816 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:46:39,818 - root - INFO - Session sur /home: {}
+2025-05-25 11:46:39,818 - root - INFO - Session actuelle: {}
+2025-05-25 11:46:39,818 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:46:39,818 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:14,743 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:48:14,744 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 11:48:14,744 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:14,744 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:14,941 - root - INFO - Session sur /home: {}
+2025-05-25 11:48:14,941 - root - INFO - Session actuelle: {}
+2025-05-25 11:48:14,941 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:14,941 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:15,207 - root - INFO - Session sur /home: {}
+2025-05-25 11:48:15,207 - root - INFO - Session actuelle: {}
+2025-05-25 11:48:15,207 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 11:48:15,207 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:10:23,379 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 12:10:23,385 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User', 'user_role': 'premium'}
+2025-05-25 12:10:23,385 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:10:23,386 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:10:23,390 - root - INFO - Session sur /home: {}
+2025-05-25 12:10:23,390 - root - INFO - Session actuelle: {}
+2025-05-25 12:10:23,390 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:10:23,390 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:10:49,114 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 12:10:49,203 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 12:10:49,204 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 12:10:49,367 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:10:49,367 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:10:49,367 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:10:49,367 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:11:03,153 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:11:03,153 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:11:03,153 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:11:03,153 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:11:45,320 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:11:45,320 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 12:11:45,321 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:11:45,321 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 12:13:27,488 - root - INFO - Session sur /home: {}
+2025-05-25 12:13:27,488 - root - INFO - Session actuelle: {}
+2025-05-25 12:13:27,491 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:13:27,492 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:13:48,096 - root - INFO - Session sur /home: {}
+2025-05-25 12:13:48,097 - root - INFO - Session actuelle: {}
+2025-05-25 12:13:48,097 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 12:13:48,097 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:22:26,112 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:22:26,200 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:22:26,200 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:22:26,355 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:22:26,355 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:22:26,355 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:22:26,355 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:22:39,426 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:22:39,426 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:22:39,427 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:22:39,427 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:23:30,224 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:23:30,224 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:23:30,224 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:23:30,224 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:24:39,971 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:24:39,971 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:24:39,972 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:24:39,972 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:24:40,420 - root - INFO - Session sur /home: {}
+2025-05-25 13:24:40,420 - root - INFO - Session actuelle: {}
+2025-05-25 13:24:40,420 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:24:40,420 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:25:27,753 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:25:27,753 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:25:27,753 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:25:27,753 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:25:28,275 - root - INFO - Session sur /home: {}
+2025-05-25 13:25:28,276 - root - INFO - Session actuelle: {}
+2025-05-25 13:25:28,276 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:25:28,276 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:25:53,722 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:25:53,722 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:25:53,722 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:25:53,722 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:25:53,854 - root - INFO - Session sur /home: {}
+2025-05-25 13:25:53,855 - root - INFO - Session actuelle: {}
+2025-05-25 13:25:53,855 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:25:53,855 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:27:00,481 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:00,482 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:00,482 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:27:00,483 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:27:23,031 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:27:23,133 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:27:23,133 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:27:25,763 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:25,763 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:25,763 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:27:25,763 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:27:54,376 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:27:54,494 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:27:54,495 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:27:57,164 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:57,164 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:27:57,164 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:27:57,164 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:29:56,215 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:29:56,215 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:29:56,215 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:29:56,215 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:32:50,545 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:32:50,545 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:32:50,545 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:32:50,545 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:33:16,991 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:33:17,084 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:33:17,085 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:33:17,085 - root - INFO - ✅ Session complète: {'user_id': 1, 'role': 'premium', 'user_name': 'Demo User', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_last_name': 'User', 'is_authenticated': True, '_permanent': True}
+2025-05-25 13:33:21,289 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:33:21,290 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:33:21,290 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:33:21,290 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:33:34,680 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:33:34,680 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:33:34,680 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:33:34,680 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:33:34,685 - root - INFO - Session sur /home: {}
+2025-05-25 13:33:34,685 - root - INFO - Session actuelle: {}
+2025-05-25 13:33:34,685 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:33:34,685 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:35:08,011 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:35:08,011 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:35:08,011 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:35:08,011 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:38:14,312 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:38:14,312 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:38:14,312 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:38:14,312 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:39:29,051 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:39:29,052 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:39:29,052 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:39:29,052 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:39:29,287 - root - INFO - Session sur /home: {}
+2025-05-25 13:39:29,288 - root - INFO - Session actuelle: {}
+2025-05-25 13:39:29,288 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:39:29,288 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:39:49,641 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:39:49,729 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:39:49,729 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:39:49,729 - root - INFO - ✅ Session complète: {'user_id': 1, 'role': 'premium', 'user_name': 'Demo User', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_last_name': 'User', 'is_authenticated': True, '_permanent': True}
+2025-05-25 13:40:30,201 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:40:30,201 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:40:30,201 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:40:30,201 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:41:45,269 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:41:45,270 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:41:45,270 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:41:45,270 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:43:28,513 - root - INFO - Tentative de connexion directe pour: demo@mindtraderpro.com
+2025-05-25 13:43:28,599 - root - INFO - ✅ Connexion réussie: demo@mindtraderpro.com (Role: premium)
+2025-05-25 13:43:28,599 - root - INFO - ✅ Session créée: user_id=1, role=premium
+2025-05-25 13:43:28,599 - root - INFO - ✅ Session complète: {'user_id': 1, 'role': 'premium', 'user_name': 'Demo User', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_last_name': 'User', 'is_authenticated': True, '_permanent': True}
+2025-05-25 13:43:28,746 - root - INFO - 🔍 SESSION SUR /dashboard: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:43:28,746 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:43:28,746 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:43:28,746 - root - INFO - 🔍 USER_INFO: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:45:36,256 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:45:36,256 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:45:36,257 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:45:36,257 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:46:25,585 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:46:25,585 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:46:25,585 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:46:25,586 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:48:26,201 - root - INFO - Session sur /home: {}
+2025-05-25 13:48:26,201 - root - INFO - Session actuelle: {}
+2025-05-25 13:48:26,201 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:48:26,202 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:49:14,213 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:49:14,213 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 13:49:14,213 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:49:14,213 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 13:49:14,221 - root - INFO - Session sur /home: {}
+2025-05-25 13:49:14,221 - root - INFO - Session actuelle: {}
+2025-05-25 13:49:14,221 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 13:49:14,221 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 16:10:09,541 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 16:10:09,542 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 16:10:09,542 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 16:10:09,543 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 16:10:09,545 - root - INFO - Session sur /home: {}
+2025-05-25 16:10:09,545 - root - INFO - Session actuelle: {}
+2025-05-25 16:10:09,545 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 16:10:09,545 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 16:10:39,107 - root - INFO - Session sur /home: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 16:10:39,107 - root - INFO - Session actuelle: {'_permanent': True, 'is_authenticated': True, 'role': 'premium', 'user_email': 'demo@mindtraderpro.com', 'user_first_name': 'Demo', 'user_id': 1, 'user_last_name': 'User', 'user_name': 'Demo User'}
+2025-05-25 16:10:39,107 - root - INFO - ✅ Utilisateur connecté détecté: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 16:10:39,107 - root - INFO - User info: {'is_authenticated': True, 'name': 'Demo User', 'first_name': 'Demo', 'role': 'premium', 'email': 'demo@mindtraderpro.com', 'user_id': 1}
+2025-05-25 16:10:39,586 - root - INFO - Session sur /home: {}
+2025-05-25 16:10:39,586 - root - INFO - Session actuelle: {}
+2025-05-25 16:10:39,586 - root - INFO - ❌ Aucune session valide: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}
+2025-05-25 16:10:39,586 - root - INFO - User info: {'is_authenticated': False, 'name': 'Visiteur', 'first_name': 'Visiteur', 'role': 'anonymous', 'email': None, 'user_id': None}

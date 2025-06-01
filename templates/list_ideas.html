@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+{% block title %}Idées Communauté - MindTraderPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- En-tête -->
+    <div class="text-center mb-5">
+        <h1 class="h2 mb-3">
+            <i class="fas fa-users text-info me-2"></i>
+            Idées de la Communauté
+        </h1>
+        <p class="lead text-muted">
+            Découvrez et votez pour les meilleures idées ! Votre vote aide à prioriser les développements.
+        </p>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="d-flex gap-2 mb-2">
+                    <a href="{{ url_for('ideas.submit_idea') }}" class="btn btn-warning">
+                        <i class="fas fa-plus me-2"></i>Proposer une Idée
+                    </a>
+                    <a href="{{ url_for('ideas.contact') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-envelope me-2"></i>Contact
+                    </a>
+                </div>
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    {{ ideas|length }} idée{{ 's' if ideas|length != 1 else '' }} au total
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtres par statut -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-body py-2">
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <small class="text-muted me-2">Filtrer par statut:</small>
+                        <button class="btn btn-sm btn-outline-secondary filter-btn active" data-status="all">
+                            Toutes
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning filter-btn" data-status="pending">
+                            En attente
+                        </button>
+                        <button class="btn btn-sm btn-outline-success filter-btn" data-status="accepted">
+                            Acceptées
+                        </button>
+                        <button class="btn btn-sm btn-outline-info filter-btn" data-status="in_development">
+                            En développement
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des idées -->
+    <div class="row g-4" id="ideasContainer">
+        {% if ideas %}
+            {% for idea in ideas %}
+                <div class="col-12 idea-card" data-status="{{ idea.status }}">
+                    <div class="card {% if idea.status == 'accepted' %}border-success{% elif idea.status == 'in_development' %}border-info{% else %}border-secondary{% endif %}">
+                        <div class="card-body">
+                            <div class="row align-items-start">
+                                <!-- Votes à gauche -->
+                                <div class="col-auto text-center">
+                                    <div class="vote-section">
+                                        <button class="btn btn-outline-primary vote-btn{% if idea.user_voted %} voted{% endif %}" 
+                                                data-idea-id="{{ idea.id }}"
+                                                {% if idea.user_voted %}disabled{% endif %}>
+                                            <i class="fas fa-thumbs-up"></i>
+                                        </button>
+                                        <div class="vote-count mt-1 fw-bold text-primary">
+                                            {{ idea.votes }}
+                                        </div>
+                                        <small class="text-muted">vote{{ 's' if idea.votes != 1 else '' }}</small>
+                                    </div>
+                                </div>
+
+                                <!-- Contenu de l'idée -->
+                                <div class="col">
+                                    <!-- En-tête avec titre et statut -->
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0">{{ idea.title }}</h5>
+                                        <div class="ms-2">
+                                            {% if idea.status == 'pending' %}
+                                                <span class="badge bg-warning">En attente</span>
+                                            {% elif idea.status == 'accepted' %}
+                                                <span class="badge bg-success">✅ Acceptée</span>
+                                            {% elif idea.status == 'in_development' %}
+                                                <span class="badge bg-info">🚀 En développement</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="card-text text-muted">
+                                        {{ idea.description[:200] }}{% if idea.description|length > 200 %}...{% endif %}
+                                    </p>
+
+                                    <!-- Métadonnées -->
+                                    <div class="d-flex flex-wrap align-items-center gap-3 small text-muted">
+                                        <span>
+                                            <i class="fas fa-user me-1"></i>
+                                            {{ idea.username }}
+                                        </span>
+                                        <span>
+                                            <i class="fas fa-tag me-1"></i>
+                                            {% if idea.category == 'suggestion' %}💡 Suggestion
+                                            {% elif idea.category == 'amelioration' %}⚡ Amélioration
+                                            {% elif idea.category == 'bug' %}🐛 Bug
+                                            {% elif idea.category == 'fonctionnalite' %}🚀 Nouvelle Fonctionnalité
+                                            {% elif idea.category == 'interface' %}🎨 Interface
+                                            {% elif idea.category == 'performance' %}⚡ Performance
+                                            {% else %}🔧 {{ idea.category|title }}
+                                            {% endif %}
+                                        </span>
+                                        <span>
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ moment(idea.timestamp).fromNow() if moment else 'Récemment' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Description complète (cachée par défaut) -->
+                                    {% if idea.description|length > 200 %}
+                                        <div class="collapse mt-2" id="desc-{{ loop.index }}">
+                                            <p class="card-text">{{ idea.description }}</p>
+                                        </div>
+                                        <button class="btn btn-sm btn-link p-0 mt-1" type="button" 
+                                                data-bs-toggle="collapse" data-bs-target="#desc-{{ loop.index }}">
+                                            <small>Voir plus</small>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Aucune idée -->
+            <div class="col-12">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-lightbulb fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Aucune idée pour le moment</h5>
+                        <p class="text-muted mb-4">Soyez le premier à proposer une amélioration !</p>
+                        <a href="{{ url_for('ideas.submit_idea') }}" class="btn btn-warning">
+                            <i class="fas fa-plus me-2"></i>Proposer la Première Idée
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Retour au dashboard -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Retour au Dashboard
+        </a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des votes
+    document.querySelectorAll('.vote-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const ideaId = this.dataset.ideaId;
+            const voteCount = this.parentElement.querySelector('.vote-count');
+            
+            // Désactiver le bouton pendant la requête
+            this.disabled = true;
+            
+            fetch(`/ideas/ideas/vote/${ideaId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mettre à jour le compteur
+                    voteCount.textContent = data.new_votes;
+                    
+                    // Marquer comme voté
+                    this.classList.add('voted');
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    // Notification de succès
+                    showNotification(data.message, 'success');
+                } else {
+                    // Réactiver le bouton si erreur
+                    this.disabled = false;
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                this.disabled = false;
+                showNotification('Erreur lors du vote', 'error');
+                console.error('Erreur:', error);
+            });
+        });
+    });
+    
+    // Filtrage par statut
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const status = this.dataset.status;
+            
+            // Mettre à jour les boutons actifs
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filtrer les idées
+            document.querySelectorAll('.idea-card').forEach(card => {
+                if (status === 'all' || card.dataset.status === status) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Fonction pour afficher les notifications
+    function showNotification(message, type) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const notification = document.createElement('div');
+        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed`;
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.zIndex = '9999';
+        notification.style.minWidth = '300px';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Supprimer automatiquement après 5 secondes
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+});
+</script>
+
+<style>
+.vote-section {
+    min-width: 60px;
+}
+
+.vote-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.vote-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.vote-btn.voted {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+
+.vote-count {
+    font-size: 1.1rem;
+}
+
+.idea-card {
+    transition: all 0.3s ease;
+}
+
+.idea-card:hover {
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+</style>
+{% endblock %}

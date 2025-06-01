@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertes et Notifications - Trading Calculator Pro</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .alert-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--bs-secondary);
+        }
+        .alert-card.active { border-left-color: var(--bs-success); }
+        .alert-card.triggered { border-left-color: var(--bs-warning); }
+        .alert-card.expired { border-left-color: var(--bs-danger); }
+        
+        .channel-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .channel-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .channel-card:hover {
+            transform: translateY(-2px);
+        }
+        .channel-card.selected {
+            border-color: var(--bs-primary);
+            background: rgba(13, 110, 253, 0.1);
+        }
+        
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .priority-low { background: var(--bs-secondary); }
+        .priority-medium { background: var(--bs-warning); }
+        .priority-high { background: var(--bs-danger); }
+        .priority-critical { background: #dc3545; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .notification-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold text-primary">
+                    🔔 Alertes et Notifications Avancées
+                </h1>
+                <p class="lead text-muted">SMS, Email, Push, Discord et Telegram - Restez informé en temps réel</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-secondary me-2">← Retour Accueil</a>
+            <button class="btn btn-success" onclick="testNotifications()">
+                <i class="fas fa-paper-plane"></i> Test Notifications
+            </button>
+            <button class="btn btn-info" onclick="showStatsModal()">
+                <i class="fas fa-chart-bar"></i> Statistiques
+            </button>
+        </div>
+
+        <div class="row">
+            <!-- Configuration des canaux -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cog text-primary"></i>
+                            Configuration des Canaux
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferencesForm">
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label class="form-label">📧 Email</label>
+                                <input type="email" class="form-control" id="userEmail" placeholder="votre@email.com">
+                                <small class="text-muted">Pour les alertes et confirmations</small>
+                            </div>
+
+                            <!-- SMS -->
+                            <div class="mb-3">
+                                <label class="form-label">📱 Numéro de téléphone (SMS)</label>
+                                <input type="tel" class="form-control" id="userPhone" placeholder="+33 6 12 34 56 78">
+                                <small class="text-muted">Format international requis</small>
+                            </div>
+
+                            <!-- Discord -->
+                            <div class="mb-3">
+                                <label class="form-label">🎮 Discord Webhook URL</label>
+                                <input type="url" class="form-control" id="discordWebhook" placeholder="https://discord.com/api/webhooks/...">
+                                <small class="text-muted">Pour envoyer dans votre serveur Discord</small>
+                            </div>
+
+                            <!-- Telegram -->
+                            <div class="mb-3">
+                                <label class="form-label">📲 Telegram Chat ID</label>
+                                <input type="text" class="form-control" id="telegramChatId" placeholder="123456789">
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="getTelegramChatId()">
+                                        <i class="fas fa-question-circle"></i> Comment obtenir mon Chat ID ?
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-save"></i> Sauvegarder Configuration
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Canaux de notification disponibles -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-broadcast-tower text-info"></i>
+                            Canaux Disponibles
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="card channel-card text-center p-2" data-channel="email">
+                                    <i class="fas fa-envelope fa-2x text-primary mb-1"></i>
+                                    <small>Email</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card channel-card text-center p-2" data-channel="sms">
+                                    <i class="fas fa-sms fa-2x text-success mb-1"></i>
+                                    <small>SMS</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card channel-card text-center p-2" data-channel="push">
+                                    <i class="fas fa-bell fa-2x text-warning mb-1"></i>
+                                    <small>Push</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card channel-card text-center p-2" data-channel="discord">
+                                    <i class="fab fa-discord fa-2x text-info mb-1"></i>
+                                    <small>Discord</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Création d'alertes -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-plus text-success"></i>
+                            Créer une Alerte
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="alertForm">
+                            <!-- Sélection d'actif -->
+                            <div class="mb-3">
+                                <label class="form-label">Actif / Paire</label>
+                                <select class="form-select" id="alertPair" required>
+                                    <option value="">Sélectionner...</option>
+                                    <option value="EURUSD">🇪🇺 EURUSD - Euro/Dollar</option>
+                                    <option value="GBPUSD">🇬🇧 GBPUSD - Livre/Dollar</option>
+                                    <option value="USDJPY">🇯🇵 USDJPY - Dollar/Yen</option>
+                                    <option value="XAUUSD">🥇 XAUUSD - Or/Dollar</option>
+                                    <option value="BTCUSD">₿ BTCUSD - Bitcoin</option>
+                                    <option value="ETHUSD">⟡ ETHUSD - Ethereum</option>
+                                    <option value="USOIL">🛢️ USOIL - Pétrole</option>
+                                </select>
+                            </div>
+
+                            <!-- Prix actuel et cible -->
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Prix actuel</label>
+                                    <input type="text" class="form-control" id="currentPrice" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Prix cible</label>
+                                    <input type="number" class="form-control" id="targetPrice" step="any" required>
+                                </div>
+                            </div>
+
+                            <!-- Direction et condition -->
+                            <div class="mb-3">
+                                <label class="form-label">Condition d'alerte</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="direction" id="above" value="above">
+                                    <label class="btn btn-outline-success" for="above">
+                                        <i class="fas fa-arrow-up"></i> Au-dessus
+                                    </label>
+                                    <input type="radio" class="btn-check" name="direction" id="touch" value="touch" checked>
+                                    <label class="btn btn-outline-primary" for="touch">
+                                        <i class="fas fa-bullseye"></i> Atteint
+                                    </label>
+                                    <input type="radio" class="btn-check" name="direction" id="below" value="below">
+                                    <label class="btn btn-outline-danger" for="below">
+                                        <i class="fas fa-arrow-down"></i> En-dessous
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Canaux de notification -->
+                            <div class="mb-3">
+                                <label class="form-label">Canaux de notification</label>
+                                <div class="channel-selector">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="channelEmail" value="email" checked>
+                                        <label class="form-check-label">📧 Email</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="channelSms" value="sms">
+                                        <label class="form-check-label">📱 SMS</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="channelPush" value="push">
+                                        <label class="form-check-label">🔔 Push</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="channelDiscord" value="discord">
+                                        <label class="form-check-label">🎮 Discord</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Message personnalisé -->
+                            <div class="mb-3">
+                                <label class="form-label">Message personnalisé (optionnel)</label>
+                                <textarea class="form-control" id="customMessage" rows="2" placeholder="ex: Niveau de résistance important atteint..."></textarea>
+                            </div>
+
+                            <!-- Options avancées -->
+                            <div class="card bg-dark bg-opacity-25 mb-3">
+                                <div class="card-header py-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-cogs"></i> Options Avancées
+                                        <button class="btn btn-sm btn-outline-info float-end" type="button" data-bs-toggle="collapse" data-bs-target="#advancedOptions">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </h6>
+                                </div>
+                                <div class="collapse" id="advancedOptions">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="form-label">Expiration (jours)</label>
+                                                <select class="form-select" id="expirationDays">
+                                                    <option value="1">1 jour</option>
+                                                    <option value="7">1 semaine</option>
+                                                    <option value="30" selected>1 mois</option>
+                                                    <option value="90">3 mois</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label">Répétitions max</label>
+                                                <input type="number" class="form-control" id="maxTriggers" value="1" min="1" max="10">
+                                            </div>
+                                        </div>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" id="isRecurring">
+                                            <label class="form-check-label">Alerte récurrente</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 btn-lg">
+                                <i class="fas fa-bell"></i> Créer l'Alerte
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des alertes actives -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list text-warning"></i>
+                            Mes Alertes
+                            <span class="badge bg-primary" id="alertCount">0</span>
+                        </h5>
+                        <button class="btn btn-outline-danger btn-sm" onclick="clearAllAlerts()">
+                            <i class="fas fa-trash"></i> Tout supprimer
+                        </button>
+                    </div>
+                    <div class="card-body p-0" style="max-height: 600px; overflow-y: auto;">
+                        <div id="alertsList">
+                            <div class="text-center p-4 text-muted">
+                                <i class="fas fa-bell-slash fa-3x mb-3"></i>
+                                <p>Aucune alerte active</p>
+                                <small>Créez votre première alerte pour être notifié !</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Statistiques -->
+    <div class="modal fade" id="statsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-chart-bar text-primary"></i>
+                        Statistiques des Notifications
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="statsContent">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zone de notifications -->
+    <div class="notification-status" id="notificationArea"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let userSession = 'user_' + Math.random().toString(36).substr(2, 9);
+        let userAlerts = [];
+        let selectedChannels = ['email'];
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserPreferences();
+            loadUserAlerts();
+            setupEventListeners();
+            startPriceMonitoring();
+        });
+
+        function setupEventListeners() {
+            // Formulaire de préférences
+            document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveUserPreferences();
+            });
+
+            // Formulaire d'alerte
+            document.getElementById('alertForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                createAlert();
+            });
+
+            // Sélection d'actif
+            document.getElementById('alertPair').addEventListener('change', function() {
+                updateCurrentPrice(this.value);
+            });
+
+            // Sélection des canaux
+            document.querySelectorAll('.channel-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    updateSelectedChannels();
+                });
+            });
+        }
+
+        function updateCurrentPrice(pairSymbol) {
+            if (!pairSymbol) return;
+
+            // Simulation des prix actuels
+            const prices = {
+                'EURUSD': 1.0850,
+                'GBPUSD': 1.2650,
+                'USDJPY': 149.50,
+                'XAUUSD': 2000.00,
+                'BTCUSD': 45000.00,
+                'ETHUSD': 2800.00,
+                'USOIL': 75.50
+            };
+
+            const currentPrice = prices[pairSymbol];
+            if (currentPrice) {
+                document.getElementById('currentPrice').value = currentPrice;
+            }
+        }
+
+        function updateSelectedChannels() {
+            selectedChannels = [];
+            document.querySelectorAll('.channel-card.selected').forEach(card => {
+                selectedChannels.push(card.dataset.channel);
+            });
+        }
+
+        async function saveUserPreferences() {
+            const preferences = {
+                email: document.getElementById('userEmail').value,
+                phone_number: document.getElementById('userPhone').value,
+                discord_webhook: document.getElementById('discordWebhook').value,
+                telegram_chat_id: document.getElementById('telegramChatId').value,
+                preferred_channels: selectedChannels
+            };
+
+            try {
+                const response = await fetch('/api/alerts/preferences', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_session: userSession,
+                        preferences: preferences
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ Préférences sauvegardées !', 'success');
+                } else {
+                    showNotification('❌ Erreur: ' + result.error, 'danger');
+                }
+            } catch (error) {
+                showNotification('❌ Erreur de connexion', 'danger');
+            }
+        }
+
+        async function createAlert() {
+            const selectedDirection = document.querySelector('input[name="direction"]:checked');
+            if (!selectedDirection) {
+                showNotification('⚠️ Sélectionnez une condition', 'warning');
+                return;
+            }
+
+            const selectedChannels = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            if (selectedChannels.length === 0) {
+                showNotification('⚠️ Sélectionnez au moins un canal', 'warning');
+                return;
+            }
+
+            const alertData = {
+                user_session: userSession,
+                pair_symbol: document.getElementById('alertPair').value,
+                target_price: parseFloat(document.getElementById('targetPrice').value),
+                direction: selectedDirection.value,
+                channels: selectedChannels,
+                custom_message: document.getElementById('customMessage').value,
+                title: `Alerte ${document.getElementById('alertPair').value}`,
+                expires_days: parseInt(document.getElementById('expirationDays').value),
+                max_triggers: parseInt(document.getElementById('maxTriggers').value),
+                is_recurring: document.getElementById('isRecurring').checked
+            };
+
+            try {
+                const response = await fetch('/api/alerts/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(alertData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('🎯 Alerte créée avec succès !', 'success');
+                    document.getElementById('alertForm').reset();
+                    loadUserAlerts();
+                } else {
+                    showNotification('❌ Erreur: ' + result.error, 'danger');
+                }
+            } catch (error) {
+                showNotification('❌ Erreur de création', 'danger');
+            }
+        }
+
+        async function loadUserAlerts() {
+            try {
+                const response = await fetch(`/api/alerts/user/${userSession}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    userAlerts = data.alerts;
+                    displayAlerts(userAlerts);
+                } else {
+                    // Affichage d'alertes de démonstration
+                    displayDemoAlerts();
+                }
+            } catch (error) {
+                displayDemoAlerts();
+            }
+        }
+
+        function displayDemoAlerts() {
+            const demoAlerts = [
+                {
+                    alert_id: 'demo_1',
+                    pair_symbol: 'XAUUSD',
+                    target_price: 2050.00,
+                    current_price: 2000.00,
+                    direction: 'above',
+                    priority: 'high',
+                    is_active: true,
+                    created_at: new Date().toISOString(),
+                    notification_channels: ['email', 'sms']
+                },
+                {
+                    alert_id: 'demo_2',
+                    pair_symbol: 'EURUSD',
+                    target_price: 1.0800,
+                    current_price: 1.0850,
+                    direction: 'below',
+                    priority: 'medium',
+                    is_active: true,
+                    created_at: new Date().toISOString(),
+                    notification_channels: ['email']
+                }
+            ];
+            
+            userAlerts = demoAlerts;
+            displayAlerts(demoAlerts);
+        }
+
+        function displayAlerts(alerts) {
+            const container = document.getElementById('alertsList');
+            document.getElementById('alertCount').textContent = alerts.length;
+
+            if (alerts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-4 text-muted">
+                        <i class="fas fa-bell-slash fa-3x mb-3"></i>
+                        <p>Aucune alerte active</p>
+                        <small>Créez votre première alerte !</small>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            alerts.forEach(alert => {
+                const priorityClass = `priority-${alert.priority}`;
+                const statusClass = alert.is_active ? 'active' : 'expired';
+                const directionIcon = {
+                    'above': 'fa-arrow-up text-success',
+                    'below': 'fa-arrow-down text-danger',
+                    'touch': 'fa-bullseye text-primary'
+                };
+
+                const channelsHtml = alert.notification_channels.map(channel => {
+                    const icons = {
+                        'email': 'fa-envelope',
+                        'sms': 'fa-sms',
+                        'push': 'fa-bell',
+                        'discord': 'fab fa-discord'
+                    };
+                    return `<i class="fas ${icons[channel] || 'fa-question'}"></i>`;
+                }).join(' ');
+
+                html += `
+                    <div class="alert-card ${statusClass} card mb-2">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">
+                                    <span class="priority-indicator ${priorityClass}"></span>
+                                    ${alert.pair_symbol}
+                                </h6>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteAlert('${alert.alert_id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <small class="text-muted">Cible:</small>
+                                    <div class="fw-bold">${alert.target_price}</div>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Actuel:</small>
+                                    <div class="fw-bold">${alert.current_price}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    <i class="fas ${directionIcon[alert.direction]}"></i>
+                                    <small class="text-muted ms-1">${alert.direction}</small>
+                                </div>
+                                <div>
+                                    ${channelsHtml}
+                                </div>
+                            </div>
+                            
+                            <small class="text-muted">
+                                Créé: ${new Date(alert.created_at).toLocaleDateString('fr-FR')}
+                            </small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function deleteAlert(alertId) {
+            if (!confirm('Supprimer cette alerte ?')) return;
+
+            try {
+                const response = await fetch(`/api/alerts/delete/${alertId}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_session: userSession })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('🗑️ Alerte supprimée', 'info');
+                    loadUserAlerts();
+                } else {
+                    showNotification('❌ Erreur de suppression', 'danger');
+                }
+            } catch (error) {
+                showNotification('❌ Erreur de connexion', 'danger');
+            }
+        }
+
+        async function testNotifications() {
+            showNotification('📡 Test des notifications en cours...', 'info');
+            
+            try {
+                const response = await fetch('/api/alerts/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_session: userSession,
+                        channels: selectedChannels
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ Test envoyé sur tous les canaux !', 'success');
+                } else {
+                    showNotification('❌ Erreur: ' + result.error, 'danger');
+                }
+            } catch (error) {
+                showNotification('❌ Erreur de test', 'danger');
+            }
+        }
+
+        function startPriceMonitoring() {
+            // Simulation de monitoring des prix
+            setInterval(() => {
+                updateCurrentPrice(document.getElementById('alertPair').value);
+            }, 30000); // Toutes les 30 secondes
+        }
+
+        function showStatsModal() {
+            const modal = new bootstrap.Modal(document.getElementById('statsModal'));
+            loadNotificationStats();
+            modal.show();
+        }
+
+        async function loadNotificationStats() {
+            try {
+                const response = await fetch(`/api/alerts/stats/${userSession}`);
+                const data = await response.json();
+
+                if (data.success && data.stats) {
+                    displayStats(data.stats);
+                } else {
+                    document.getElementById('statsContent').innerHTML = `
+                        <div class="text-center text-muted">
+                            <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                            <p>Aucune statistique disponible</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('statsContent').innerHTML = `
+                    <div class="text-center text-danger">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                        <p>Erreur de chargement des statistiques</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayStats(stats) {
+            const content = document.getElementById('statsContent');
+            
+            if (stats.message) {
+                content.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="fas fa-info-circle fa-2x mb-2"></i>
+                        <p>${stats.message}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card bg-primary bg-opacity-10 text-center p-3">
+                            <h3 class="text-primary">${stats.total_notifications}</h3>
+                            <small>Notifications Envoyées</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-success bg-opacity-10 text-center p-3">
+                            <h3 class="text-success">${stats.successful_notifications}</h3>
+                            <small>Notifications Réussies</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-danger bg-opacity-10 text-center p-3">
+                            <h3 class="text-danger">${stats.failed_notifications}</h3>
+                            <small>Échecs</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-warning bg-opacity-10 text-center p-3">
+                            <h3 class="text-warning">$${stats.total_cost.toFixed(3)}</h3>
+                            <small>Coût Total</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h6>Canaux Utilisés:</h6>
+                    <div class="d-flex gap-2">
+                        ${stats.channels_used.map(channel => `<span class="badge bg-secondary">${channel}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <small class="text-muted">Dernière notification: ${new Date(stats.last_notification).toLocaleString('fr-FR')}</small>
+                </div>
+            `;
+        }
+
+        function getTelegramChatId() {
+            alert(`Pour obtenir votre Chat ID Telegram :
+            
+1. Ajoutez @userinfobot sur Telegram
+2. Envoyez /start au bot  
+3. Le bot vous donnera votre Chat ID
+4. Copiez ce numéro dans le champ ci-dessus
+
+Note: Vous devez aussi créer un bot Telegram ou nous contacter pour l'activation.`);
+        }
+
+        function clearAllAlerts() {
+            if (!confirm('Supprimer TOUTES vos alertes ?')) return;
+            
+            userAlerts.forEach(alert => {
+                deleteAlert(alert.alert_id);
+            });
+        }
+
+        function loadUserPreferences() {
+            // Charger les préférences sauvegardées
+            const saved = localStorage.getItem('alertPreferences');
+            if (saved) {
+                const prefs = JSON.parse(saved);
+                document.getElementById('userEmail').value = prefs.email || '';
+                document.getElementById('userPhone').value = prefs.phone_number || '';
+                document.getElementById('discordWebhook').value = prefs.discord_webhook || '';
+                document.getElementById('telegramChatId').value = prefs.telegram_chat_id || '';
+            }
+        }
+
+        function showNotification(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.getElementById('notificationArea').appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

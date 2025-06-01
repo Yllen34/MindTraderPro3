@@ -1,0 +1,76 @@
+
+# MindTraderPro - Module Calculateur de Lot (Ultra Complet)
+
+## 🎯 Objectif
+Créer le calculateur de lot le plus précis, rapide et intuitif du marché pour les traders Forex, Crypto, Indices, Métaux.
+
+---
+
+## ✅ Paramètres à renseigner par l'utilisateur
+
+- Symbole (ex: XAUUSD, BTCUSD, EURUSD…)
+- Type de compte (Standard, ECN, Crypto, Prop Firm…)
+- Taille du capital (ex: 20 000 $)
+- Risque par trade (% ou montant fixe)
+- Entrée, SL, TP
+- Valeur du pip auto (selon l’actif)
+- Devise du compte
+- Type de trade (Buy/Sell)
+
+---
+
+## ⚙️ Calculs à afficher
+
+- Lot size exact (arrondi à 0.01 prêt)
+- Montant en € ou $ risqué sur le trade
+- Valeur en pips du SL / TP
+- Ratio R:R
+- Gain potentiel en € ou $
+- Perte potentielle en € ou $
+- Nombre de lots max autorisé si prop firm (en option)
+- Marge nécessaire (si connecté au levier)
+
+---
+
+## 🔍 Fonctionnalités avancées
+
+- Sélecteur visuel d'entrée / SL / TP avec mini chart
+- Mode rapide (remplit les champs de base)
+- Historique des calculs
+- Multi-calculateur (ex : calculer 3 setups à la suite)
+- Préférences enregistrées (risque par défaut, SL type, actif favori)
+- Prise en compte des restrictions prop firms (ex : max 1.5 lots XAUUSD)
+
+---
+
+## 📊 Visualisation
+- Graphique du R:R
+- Diagramme “gain vs risque”
+- Thermomètre de confiance (si intégré avec IA/Journal)
+
+---
+
+## 🚀 IA intégrée (optionnel)
+- Analyse du setup proposé : “SL trop large ? Risque trop élevé ?”
+- Suggestion d’ajustement
+- Prédiction de probabilité de réussite (optionnel)
+
+---
+
+## 📱 Ergonomie
+- Boutons clairs : “Calculer”, “Réinitialiser”
+- Saisie simplifiée (clavier mobile)
+- Résultat bien mis en valeur
+- Mode sombre / clair
+
+---
+
+## 🛡️ Sécurité & tracking
+- Enregistrer les calculs (si user connecté)
+- Bloquer l’accès après 3 calculs pour les comptes gratuits
+- Statistiques anonymes pour admin
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

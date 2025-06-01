@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}Proposer une Idée - MindTraderPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- En-tête -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    Proposer une Idée
+                </h1>
+                <p class="lead text-muted">
+                    Votre feedback nous aide à améliorer MindTraderPro ! Partagez vos suggestions et améliorations.
+                </p>
+            </div>
+
+            <!-- Messages flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{% if category == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Formulaire de soumission d'idée -->
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST" id="ideaForm">
+                        <div class="row g-3">
+                            <!-- Titre de l'idée (obligatoire) -->
+                            <div class="col-12">
+                                <label for="title" class="form-label">
+                                    <i class="fas fa-heading me-1"></i>
+                                    Titre de l'idée <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="title" name="title" 
+                                       placeholder="Ex: Ajouter des graphiques en temps réel" 
+                                       required maxlength="150">
+                                <div class="form-text">
+                                    <span id="titleCount">0</span>/150 caractères
+                                </div>
+                            </div>
+
+                            <!-- Catégorie -->
+                            <div class="col-md-6">
+                                <label for="category" class="form-label">
+                                    <i class="fas fa-tags me-1"></i>
+                                    Catégorie
+                                </label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="suggestion">💡 Suggestion</option>
+                                    <option value="amelioration">⚡ Amélioration</option>
+                                    <option value="bug">🐛 Signaler un Bug</option>
+                                    <option value="fonctionnalite">🚀 Nouvelle Fonctionnalité</option>
+                                    <option value="interface">🎨 Interface Utilisateur</option>
+                                    <option value="performance">⚡ Performance</option>
+                                    <option value="autre">🔧 Autre</option>
+                                </select>
+                            </div>
+
+                            <!-- Pseudo utilisateur (facultatif) -->
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">
+                                    <i class="fas fa-user me-1"></i>
+                                    Pseudo <small class="text-muted">(facultatif)</small>
+                                </label>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       placeholder="Votre pseudo" maxlength="50">
+                            </div>
+
+                            <!-- Description (obligatoire) -->
+                            <div class="col-12">
+                                <label for="description" class="form-label">
+                                    <i class="fas fa-align-left me-1"></i>
+                                    Description détaillée <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" id="description" name="description" rows="6" 
+                                          placeholder="Décrivez votre idée en détail. Pourquoi cette fonctionnalité serait-elle utile ? Comment l'imaginez-vous ?" 
+                                          required maxlength="2000"></textarea>
+                                <div class="form-text">
+                                    <span id="descCount">0</span>/2000 caractères
+                                </div>
+                            </div>
+
+                            <!-- Bouton de soumission -->
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-warning btn-lg">
+                                        <i class="fas fa-rocket me-2"></i>
+                                        Soumettre l'Idée
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Conseils pour une bonne suggestion -->
+            <div class="card mt-4 bg-dark border-info">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        Conseils pour une bonne suggestion
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Soyez précis dans votre description
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Expliquez pourquoi c'est utile
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Donnez des exemples concrets
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Pensez à l'expérience utilisateur
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Proposez des solutions simples
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Vérifiez si ça n'existe pas déjà
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="card mt-4 bg-dark border-secondary">
+                <div class="card-body text-center">
+                    <h6 class="card-title">
+                        <i class="fas fa-compass me-2"></i>
+                        Autres Actions
+                    </h6>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-list me-1"></i>Voir Toutes les Idées
+                        </a>
+                        <a href="{{ url_for('ideas.contact') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Nous Contacter
+                        </a>
+                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-home me-1"></i>Retour au Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Compteurs de caractères
+    const titleInput = document.getElementById('title');
+    const titleCount = document.getElementById('titleCount');
+    const descTextarea = document.getElementById('description');
+    const descCount = document.getElementById('descCount');
+    
+    // Compteur pour le titre
+    titleInput.addEventListener('input', function() {
+        const length = this.value.length;
+        titleCount.textContent = length;
+        
+        if (length > 120) {
+            titleCount.className = 'text-warning';
+        } else if (length > 140) {
+            titleCount.className = 'text-danger';
+        } else {
+            titleCount.className = 'text-muted';
+        }
+    });
+    
+    // Compteur pour la description
+    descTextarea.addEventListener('input', function() {
+        const length = this.value.length;
+        descCount.textContent = length;
+        
+        if (length > 1500) {
+            descCount.className = 'text-warning';
+        } else if (length > 1900) {
+            descCount.className = 'text-danger';
+        } else {
+            descCount.className = 'text-muted';
+        }
+    });
+    
+    // Validation du formulaire
+    document.getElementById('ideaForm').addEventListener('submit', function(e) {
+        const title = document.getElementById('title').value.trim();
+        const description = document.getElementById('description').value.trim();
+        
+        if (!title || !description) {
+            e.preventDefault();
+            alert('Le titre et la description sont obligatoires !');
+            
+            if (!title) {
+                document.getElementById('title').focus();
+            } else {
+                document.getElementById('description').focus();
+            }
+        }
+    });
+    
+    // Animation du bouton de soumission
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.addEventListener('click', function() {
+        if (document.getElementById('ideaForm').checkValidity()) {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Envoi en cours...';
+            this.disabled = true;
+        }
+    });
+});
+</script>
+{% endblock %}

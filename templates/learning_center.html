@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre d'Apprentissage - Trading Calculator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .learning-card {
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .learning-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .premium-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 0 0.375rem 0 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .difficulty-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .glossary-term {
+            border-left: 4px solid var(--bs-primary);
+            transition: all 0.3s ease;
+        }
+        .glossary-term:hover {
+            border-left-color: var(--bs-warning);
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        
+        .article-preview {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .progress-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .quiz-result {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                🎓 Centre d'Apprentissage
+            </h1>
+            <p class="lead text-muted">Maîtrisez le trading de A à Z</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-primary me-2">← Retour Calculateur</a>
+        </div>
+
+        <!-- Parcours d'apprentissage -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-route text-success"></i>
+                            Votre Parcours d'Apprentissage
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Choisissez votre niveau :</label>
+                            <select class="form-select" id="learningLevel" onchange="updateLearningPath()">
+                                <option value="beginner">🌱 Débutant - Je découvre le trading</option>
+                                <option value="intermediate">📈 Intermédiaire - J'ai des bases</option>
+                                <option value="advanced">🚀 Avancé - Je veux me perfectionner</option>
+                            </select>
+                        </div>
+                        
+                        <div id="learningPath">
+                            <!-- Parcours généré dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-crown text-warning"></i>
+                            Plan Premium
+                        </h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3 class="text-warning">€9.99/mois</h3>
+                        <ul class="list-unstyled text-start">
+                            <li>✅ Tutoriels vidéo HD</li>
+                            <li>✅ Quiz interactifs</li>
+                            <li>✅ Stratégies avancées</li>
+                            <li>✅ Support prioritaire</li>
+                            <li>✅ Certificats</li>
+                        </ul>
+                        <button class="btn btn-warning btn-lg w-100" onclick="upgradeToPremium()">
+                            <i class="fas fa-crown"></i> Débloquer Tout
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Progression -->
+                <div class="card mt-3">
+                    <div class="card-body text-center">
+                        <h6>Votre Progression</h6>
+                        <div class="progress-circle bg-primary">
+                            <span class="text-white fw-bold" id="progressPercent">15%</span>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Articles lus : <span id="articlesRead">2/10</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglets du contenu -->
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-glossary-tab" data-bs-toggle="tab" data-bs-target="#nav-glossary" type="button">
+                    📚 Glossaire <span class="badge bg-success">Gratuit</span>
+                </button>
+                <button class="nav-link" id="nav-articles-tab" data-bs-toggle="tab" data-bs-target="#nav-articles" type="button">
+                    📄 Articles
+                </button>
+                <button class="nav-link" id="nav-videos-tab" data-bs-toggle="tab" data-bs-target="#nav-videos" type="button">
+                    🎥 Vidéos <span class="badge bg-warning">Premium</span>
+                </button>
+                <button class="nav-link" id="nav-quiz-tab" data-bs-toggle="tab" data-bs-target="#nav-quiz" type="button">
+                    🧠 Quiz <span class="badge bg-warning">Premium</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <!-- Glossaire -->
+            <div class="tab-pane fade show active" id="nav-glossary" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-book text-success"></i>
+                            Glossaire Trading
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <select class="form-select form-select-sm" id="glossaryCategory">
+                                <option value="">Toutes catégories</option>
+                                <option value="bases">Bases</option>
+                                <option value="risque">Gestion Risque</option>
+                                <option value="analyse-technique">Analyse Technique</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm" placeholder="Rechercher..." id="glossarySearch">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="glossaryTerms">
+                            <!-- Termes chargés dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Articles -->
+            <div class="tab-pane fade" id="nav-articles" role="tabpanel">
+                <div class="row mt-3">
+                    <div class="col-md-4 mb-4">
+                        <div class="card learning-card position-relative">
+                            <div class="difficulty-badge">
+                                <span class="badge bg-success">Débutant</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">Les bases du trading Forex</h6>
+                                <div class="article-preview">
+                                    <p class="card-text small">Guide complet pour débuter en trading Forex : paires de devises, pips, lots, effet de levier...</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> 8 min
+                                    </small>
+                                    <button class="btn btn-primary btn-sm" onclick="readArticle('basics-forex')">
+                                        Lire <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card learning-card position-relative">
+                            <div class="difficulty-badge">
+                                <span class="badge bg-warning">Intermédiaire</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">Gestion du risque avancée</h6>
+                                <div class="article-preview">
+                                    <p class="card-text small">Maîtrisez les techniques de gestion du risque : position sizing, stop loss, money management...</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> 6 min
+                                    </small>
+                                    <button class="btn btn-primary btn-sm" onclick="readArticle('risk-management')">
+                                        Lire <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card learning-card position-relative">
+                            <div class="premium-overlay">
+                                <i class="fas fa-crown"></i> Premium
+                            </div>
+                            <div class="difficulty-badge">
+                                <span class="badge bg-danger">Avancé</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">Stratégies de scalping</h6>
+                                <div class="article-preview">
+                                    <p class="card-text small">Techniques avancées de scalping, setups rentables et gestion du stress...</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> 12 min
+                                    </small>
+                                    <button class="btn btn-warning btn-sm" onclick="showPremiumModal('article')">
+                                        <i class="fas fa-crown"></i> Premium
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vidéos -->
+            <div class="tab-pane fade" id="nav-videos" role="tabpanel">
+                <div class="row mt-3">
+                    <div class="col-md-6 mb-4">
+                        <div class="card learning-card position-relative">
+                            <div class="premium-overlay">
+                                <i class="fas fa-crown"></i> Premium
+                            </div>
+                            <img src="https://via.placeholder.com/400x200/1a1a1a/fff?text=MT5+Setup" 
+                                 class="video-thumbnail" alt="Configuration MT5">
+                            <div class="card-body">
+                                <h6 class="card-title">Configuration MetaTrader 5</h6>
+                                <p class="card-text small">Apprenez à configurer MT5 professionnellement : indicateurs, EA, et trading automatique.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-play-circle"></i> 30 min
+                                    </small>
+                                    <button class="btn btn-warning btn-sm" onclick="showPremiumModal('video')">
+                                        <i class="fas fa-crown"></i> Regarder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="card learning-card position-relative">
+                            <div class="premium-overlay">
+                                <i class="fas fa-crown"></i> Premium
+                            </div>
+                            <img src="https://via.placeholder.com/400x200/1a1a1a/fff?text=Scalping+Strategy" 
+                                 class="video-thumbnail" alt="Stratégie Scalping">
+                            <div class="card-body">
+                                <h6 class="card-title">Stratégie Scalping EURUSD</h6>
+                                <p class="card-text small">Stratégie complète avec 75% de réussite. Setup, entrée, sortie et money management.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-play-circle"></i> 40 min
+                                    </small>
+                                    <button class="btn btn-warning btn-sm" onclick="showPremiumModal('video')">
+                                        <i class="fas fa-crown"></i> Regarder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz -->
+            <div class="tab-pane fade" id="nav-quiz" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain text-warning"></i>
+                            Quiz : Les bases du Forex
+                            <span class="badge bg-warning">Premium</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="quizContent">
+                            <div class="text-center">
+                                <i class="fas fa-lock fa-3x text-warning mb-3"></i>
+                                <h5>Contenu Premium</h5>
+                                <p>Débloquez les quiz interactifs pour tester vos connaissances et obtenir votre certification.</p>
+                                <button class="btn btn-warning btn-lg" onclick="showPremiumModal('quiz')">
+                                    <i class="fas fa-crown"></i> Débloquer les Quiz
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Quiz réel (caché par défaut) -->
+                        <div id="quizQuestions" style="display: none;">
+                            <div class="quiz-question" data-question="1">
+                                <h6>Question 1/3</h6>
+                                <p>Que signifie un pip pour la paire EUR/USD ?</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" value="0">
+                                    <label class="form-check-label">0.01</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" value="1">
+                                    <label class="form-check-label">0.001</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" value="2">
+                                    <label class="form-check-label">0.0001</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" value="3">
+                                    <label class="form-check-label">0.00001</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <button class="btn btn-primary" onclick="nextQuestion()">Question Suivante</button>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-result" id="quizResult">
+                            <div class="text-center">
+                                <div class="progress-circle bg-success mb-3">
+                                    <span class="text-white fw-bold">85%</span>
+                                </div>
+                                <h5>Félicitations !</h5>
+                                <p>Vous avez obtenu 85% - Quiz réussi !</p>
+                                <button class="btn btn-success">Obtenir votre Certificat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Article -->
+    <div class="modal fade" id="articleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="articleTitle">Titre de l'article</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="articleContent">
+                    <!-- Contenu de l'article -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="markAsRead()">
+                        <i class="fas fa-check"></i> Marquer comme lu
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentQuizQuestion = 1;
+        let quizAnswers = {};
+        let readArticles = new Set(['basics-forex']); // Articles déjà lus
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGlossaryTerms();
+            updateLearningPath();
+            updateProgress();
+        });
+
+        // Glossaire
+        async function loadGlossaryTerms(category = '', search = '') {
+            try {
+                const response = await fetch(`/api/learning/glossary?category=${category}&search=${search}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayGlossaryTerms(data.terms);
+                }
+            } catch (error) {
+                // Affichage des termes de démonstration
+                displayGlossaryTerms([
+                    {
+                        term: "Pip",
+                        definition: "Unité de mesure la plus petite d'une devise. Pour la plupart des paires, 1 pip = 0.0001.",
+                        category: "bases",
+                        difficulty: "beginner",
+                        examples: ["EURUSD passe de 1.1000 à 1.1001 = +1 pip"]
+                    },
+                    {
+                        term: "Lot",
+                        definition: "Unité de trading standard. 1 lot standard = 100 000 unités de la devise de base.",
+                        category: "bases", 
+                        difficulty: "beginner",
+                        examples: ["1 lot EURUSD = 100 000 EUR"]
+                    },
+                    {
+                        term: "Stop Loss",
+                        definition: "Ordre automatique pour fermer une position en perte à un niveau prédéfini.",
+                        category: "gestion-risque",
+                        difficulty: "beginner",
+                        examples: ["Achat EURUSD à 1.1000, Stop Loss à 1.0950 = -50 pips max"]
+                    }
+                ]);
+            }
+        }
+
+        function displayGlossaryTerms(terms) {
+            const container = document.getElementById('glossaryTerms');
+            
+            if (terms.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">Aucun terme trouvé</p>';
+                return;
+            }
+
+            let html = '';
+            terms.forEach(term => {
+                const difficultyColor = term.difficulty === 'beginner' ? 'success' : 
+                                      term.difficulty === 'intermediate' ? 'warning' : 'danger';
+                
+                html += `
+                    <div class="glossary-term card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold text-primary">${term.term}</h6>
+                                    <p class="mb-2">${term.definition}</p>
+                                    ${term.examples && term.examples.length > 0 ? 
+                                        `<div class="small text-muted">
+                                            <strong>Exemple :</strong> ${term.examples[0]}
+                                        </div>` : ''
+                                    }
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-${difficultyColor} mb-1">${term.difficulty}</span>
+                                    <br>
+                                    <span class="badge bg-secondary">${term.category}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Filtres glossaire
+        document.getElementById('glossaryCategory').addEventListener('change', function() {
+            const search = document.getElementById('glossarySearch').value;
+            loadGlossaryTerms(this.value, search);
+        });
+
+        document.getElementById('glossarySearch').addEventListener('input', function() {
+            const category = document.getElementById('glossaryCategory').value;
+            loadGlossaryTerms(category, this.value);
+        });
+
+        // Articles
+        function readArticle(articleId) {
+            const articles = {
+                'basics-forex': {
+                    title: 'Les bases du trading Forex : Guide complet pour débutants',
+                    content: `
+                        <h4>Les bases du trading Forex</h4>
+                        <p>Le marché des changes (Forex) est le plus grand marché financier au monde avec plus de 6 000 milliards de dollars échangés quotidiennement.</p>
+                        
+                        <h5>Qu'est-ce que le Forex ?</h5>
+                        <p>Le Forex consiste à échanger une devise contre une autre dans l'espoir de réaliser un profit sur les variations de taux de change.</p>
+                        
+                        <h6>Les paires de devises principales :</h6>
+                        <ul>
+                            <li><strong>EUR/USD</strong> : Euro contre Dollar US (la plus tradée)</li>
+                            <li><strong>GBP/USD</strong> : Livre Sterling contre Dollar US</li>
+                            <li><strong>USD/JPY</strong> : Dollar US contre Yen Japonais</li>
+                            <li><strong>USD/CHF</strong> : Dollar US contre Franc Suisse</li>
+                        </ul>
+                        
+                        <h5>Les concepts essentiels</h5>
+                        
+                        <h6>1. Le Pip</h6>
+                        <p>Un pip est la plus petite unité de mesure d'une paire de devises.</p>
+                        <ul>
+                            <li>Pour EUR/USD : 1 pip = 0.0001</li>
+                            <li>Pour USD/JPY : 1 pip = 0.01</li>
+                        </ul>
+                        
+                        <h6>2. Le Lot</h6>
+                        <p>Unité de trading standard :</p>
+                        <ul>
+                            <li>1 lot standard = 100 000 unités</li>
+                            <li>1 mini lot = 10 000 unités</li>
+                            <li>1 micro lot = 1 000 unités</li>
+                        </ul>
+                        
+                        <h6>3. L'effet de levier</h6>
+                        <p>Permet de trader avec plus d'argent que votre capital :</p>
+                        <div class="alert alert-warning">
+                            <strong>Attention :</strong> Le levier augmente les gains ET les pertes !
+                        </div>
+                        
+                        <h5>Gestion du risque : LA RÈGLE D'OR</h5>
+                        <div class="alert alert-danger">
+                            <strong>⚠️ Ne jamais risquer plus de 1-2% de son capital par trade</strong>
+                        </div>
+                        
+                        <p>Utilisez toujours :</p>
+                        <ul>
+                            <li><strong>Stop Loss</strong> : limite vos pertes</li>
+                            <li><strong>Take Profit</strong> : sécurise vos gains</li>
+                            <li><strong>Ratio Risk/Reward</strong> : visez au minimum 1:2</li>
+                        </ul>
+                    `
+                },
+                'risk-management': {
+                    title: 'Gestion du risque : La clé du succès en trading',
+                    content: `
+                        <h4>Gestion du risque en trading</h4>
+                        <p>La gestion du risque n'est pas optionnelle - c'est LA compétence qui différencie les traders qui réussissent de ceux qui perdent tout.</p>
+                        
+                        <h5>Règle n°1 : Ne jamais risquer plus de 1-2% par trade</h5>
+                        <p>Cette règle fondamentale vous permet de survivre aux séries de pertes inévitables.</p>
+                        
+                        <div class="alert alert-info">
+                            <h6>Calcul pratique :</h6>
+                            <ul>
+                                <li>Capital : 10 000€</li>
+                                <li>Risque max par trade : 2% = 200€</li>
+                                <li>Si Stop Loss à 50 pips : Lot size = 200€ ÷ 50 pips = 0.4 lot</li>
+                            </ul>
+                        </div>
+                        
+                        <h5>Les outils de gestion du risque</h5>
+                        
+                        <h6>Stop Loss obligatoire</h6>
+                        <ul>
+                            <li>Jamais de trade sans Stop Loss</li>
+                            <li>Placez-le AVANT d'entrer en position</li>
+                            <li>Ne le déplacez JAMAIS contre vous</li>
+                        </ul>
+                        
+                        <h6>Position Sizing (taille de position)</h6>
+                        <p><strong>Formule :</strong> Taille position = (Capital × %Risque) ÷ (Stop Loss en €)</p>
+                        
+                        <h6>Ratio Risk/Reward minimum 1:2</h6>
+                        <p>Risquez 50 pips pour gagner 100 pips minimum. Sur 10 trades : même avec 60% de pertes, vous êtes profitable !</p>
+                        
+                        <h5>Les erreurs fatales à éviter</h5>
+                        <div class="alert alert-danger">
+                            <ul>
+                                <li>❌ Moyenner à la baisse : ajouter quand vous perdez</li>
+                                <li>❌ Déplacer le Stop Loss contre vous</li>
+                                <li>❌ Trader sans plan défini à l'avance</li>
+                                <li>❌ Risquer plus après une perte pour "récupérer"</li>
+                                <li>❌ Trader avec l'argent du loyer</li>
+                            </ul>
+                        </div>
+                        
+                        <p>La gestion du risque n'est pas sexy, mais c'est ce qui vous permettra de trader dans 5 ans encore !</p>
+                    `
+                }
+            };
+            
+            const article = articles[articleId];
+            if (article) {
+                document.getElementById('articleTitle').textContent = article.title;
+                document.getElementById('articleContent').innerHTML = article.content;
+                
+                const modal = new bootstrap.Modal(document.getElementById('articleModal'));
+                modal.show();
+            }
+        }
+
+        function markAsRead() {
+            readArticles.add('current-article');
+            updateProgress();
+            showSuccess('Article marqué comme lu !');
+        }
+
+        // Parcours d'apprentissage
+        function updateLearningPath() {
+            const level = document.getElementById('learningLevel').value;
+            const container = document.getElementById('learningPath');
+            
+            const paths = {
+                beginner: [
+                    { title: '📚 Maîtrisez le vocabulaire', desc: 'Apprenez les termes essentiels', status: 'completed' },
+                    { title: '📄 Les bases du Forex', desc: 'Comprenez le fonctionnement', status: 'current' },
+                    { title: '🎯 Gestion du risque', desc: 'Protégez votre capital', status: 'pending' },
+                    { title: '🧠 Quiz de validation', desc: 'Testez vos connaissances', status: 'locked', premium: true }
+                ],
+                intermediate: [
+                    { title: '📈 Analyse technique', desc: 'Supports, résistances, tendances', status: 'current' },
+                    { title: '🎥 Configuration MT5', desc: 'Setup professionnel', status: 'pending', premium: true },
+                    { title: '🚀 Stratégies avancées', desc: 'Scalping et swing trading', status: 'pending', premium: true }
+                ],
+                advanced: [
+                    { title: '🎥 Stratégies de scalping', desc: 'Techniques avancées', status: 'current', premium: true },
+                    { title: '🧠 Psychologie du trading', desc: 'Maîtrisez vos émotions', status: 'pending', premium: true },
+                    { title: '🤖 Trading algorithmique', desc: 'Automatisation', status: 'pending', premium: true }
+                ]
+            };
+            
+            const path = paths[level] || paths.beginner;
+            let html = '<div class="row">';
+            
+            path.forEach((step, index) => {
+                const statusColors = {
+                    completed: 'success',
+                    current: 'primary', 
+                    pending: 'secondary',
+                    locked: 'warning'
+                };
+                
+                const statusIcons = {
+                    completed: 'fa-check-circle',
+                    current: 'fa-play-circle',
+                    pending: 'fa-clock',
+                    locked: 'fa-lock'
+                };
+                
+                html += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card ${step.status === 'current' ? 'border-primary' : ''}">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas ${statusIcons[step.status]} fa-2x text-${statusColors[step.status]}"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">
+                                            ${step.title}
+                                            ${step.premium ? '<span class="badge bg-warning">Premium</span>' : ''}
+                                        </h6>
+                                        <small class="text-muted">${step.desc}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Progression
+        function updateProgress() {
+            const totalArticles = 10;
+            const readCount = readArticles.size;
+            const percentage = Math.round((readCount / totalArticles) * 100);
+            
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('articlesRead').textContent = `${readCount}/${totalArticles}`;
+        }
+
+        // Quiz (Premium)
+        function nextQuestion() {
+            if (currentQuizQuestion < 3) {
+                currentQuizQuestion++;
+                // Logique pour afficher la question suivante
+            } else {
+                // Afficher les résultats
+                document.getElementById('quizQuestions').style.display = 'none';
+                document.getElementById('quizResult').style.display = 'block';
+            }
+        }
+
+        // Premium
+        function upgradeToPremium() {
+            showPremiumModal('upgrade');
+        }
+
+        function showPremiumModal(type) {
+            const messages = {
+                article: 'Accédez aux articles avancés avec des stratégies professionnelles !',
+                video: 'Débloquez les tutoriels vidéo HD avec des experts du trading !',
+                quiz: 'Testez vos connaissances avec nos quiz interactifs et obtenez votre certification !',
+                upgrade: 'Débloquez tout le contenu Premium pour maîtriser le trading !'
+            };
+            
+            alert(`🎓 CONTENU PREMIUM\n\n${messages[type]}\n\n💎 Plan Premium €9.99/mois :\n✅ Tutoriels vidéo exclusifs\n✅ Quiz et certifications\n✅ Stratégies avancées\n✅ Support prioritaire\n\nContactez-nous pour vous abonner !`);
+        }
+
+        function showSuccess(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+            alert.style.zIndex = '9999';
+            alert.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

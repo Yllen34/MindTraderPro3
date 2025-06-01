@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Créer un Compte - MindTraderPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- En-tête -->
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3">
+                    <i class="fas fa-user-plus text-warning me-2"></i>
+                    Créer votre compte
+                </h1>
+                <p class="text-muted">Rejoignez MindTraderPro et commencez à trader intelligemment</p>
+            </div>
+
+            <!-- Formulaire d'inscription -->
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <form id="registerForm">
+                        <div class="row g-3">
+                            <!-- Prénom -->
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label">
+                                    <i class="fas fa-user me-1"></i>Prénom
+                                </label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+
+                            <!-- Nom -->
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label">
+                                    <i class="fas fa-user me-1"></i>Nom
+                                </label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-12">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>Email
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+
+                            <!-- Mot de passe -->
+                            <div class="col-12">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>Mot de passe
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="form-text">Minimum 6 caractères</div>
+                            </div>
+
+                            <!-- Choix du plan -->
+                            <div class="col-12">
+                                <label class="form-label">
+                                    <i class="fas fa-crown me-1"></i>Choisissez votre plan
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <div class="card border-primary">
+                                            <div class="card-body text-center p-3">
+                                                <input type="radio" class="btn-check" name="plan" id="plan_free" value="free" checked>
+                                                <label class="btn btn-outline-primary w-100" for="plan_free">
+                                                    <strong>Gratuit</strong><br>
+                                                    <small>5 calculs/jour</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-warning">
+                                            <div class="card-body text-center p-3">
+                                                <input type="radio" class="btn-check" name="plan" id="plan_premium" value="premium">
+                                                <label class="btn btn-outline-warning w-100" for="plan_premium">
+                                                    <strong>Premium</strong><br>
+                                                    <small>€9.99/mois</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-success">
+                                            <div class="card-body text-center p-3">
+                                                <input type="radio" class="btn-check" name="plan" id="plan_lifetime" value="lifetime">
+                                                <label class="btn btn-outline-success w-100" for="plan_lifetime">
+                                                    <strong>Lifetime</strong><br>
+                                                    <small>€149 une fois</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conditions -->
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        J'accepte les <a href="#" class="text-decoration-none">conditions d'utilisation</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Bouton inscription -->
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-warning btn-lg" id="submitBtn">
+                                        <i class="fas fa-user-plus me-2"></i>
+                                        <span id="btnText">Créer mon compte</span>
+                                        <div class="spinner-border spinner-border-sm d-none ms-2" id="spinner"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Message de résultat -->
+                    <div id="result" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Lien connexion -->
+            <div class="text-center mt-4">
+                <p class="text-muted">
+                    Déjà un compte ? 
+                    <a href="/auth/login" class="text-decoration-none text-warning">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    const result = document.getElementById('result');
+    
+    // Récupérer les données du formulaire
+    const formData = {
+        first_name: document.getElementById('first_name').value.trim(),
+        last_name: document.getElementById('last_name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value,
+        plan: document.querySelector('input[name="plan"]:checked').value
+    };
+    
+    // Validation
+    if (!formData.first_name || !formData.last_name || !formData.email || !formData.password) {
+        showResult('Veuillez remplir tous les champs', 'danger');
+        return;
+    }
+    
+    if (formData.password.length < 6) {
+        showResult('Le mot de passe doit contenir au moins 6 caractères', 'danger');
+        return;
+    }
+    
+    if (!document.getElementById('terms').checked) {
+        showResult('Veuillez accepter les conditions d\'utilisation', 'danger');
+        return;
+    }
+    
+    // Afficher le chargement
+    submitBtn.disabled = true;
+    btnText.textContent = 'Création en cours...';
+    spinner.classList.remove('d-none');
+    result.innerHTML = '';
+    
+    // Envoyer la requête
+    fetch('/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showResult('✅ ' + data.message + ' Redirection en cours...', 'success');
+            
+            // Redirection vers le dashboard après 2 secondes
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 2000);
+        } else {
+            showResult('❌ ' + data.error, 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        showResult('❌ Erreur de connexion au serveur', 'danger');
+    })
+    .finally(() => {
+        // Restaurer le bouton
+        submitBtn.disabled = false;
+        btnText.textContent = 'Créer mon compte';
+        spinner.classList.add('d-none');
+    });
+});
+
+function showResult(message, type) {
+    const result = document.getElementById('result');
+    result.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindTraderPro - Calculateur de Trading Professionnel</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .pricing-card {
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        .pricing-card:hover {
+            border-color: var(--bs-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-chart-line me-2"></i>MindTraderPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Tarifs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary px-3 ms-2" href="/auth/register">
+                            <i class="fas fa-user-plus me-1"></i>Inscription
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Calculateur de Trading Professionnel
+                    </h1>
+                    <p class="lead text-white-50 mb-4">
+                        Optimisez vos positions de trading avec notre calculateur intelligent. 
+                        Gestion du risque, calcul de lots, et bien plus pour maximiser vos profits.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="/auth/register" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Commencer Gratuitement
+                        </a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-play me-2"></i>Découvrir
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="fas fa-calculator text-white" style="font-size: 12rem; opacity: 0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="display-5 fw-bold">Fonctionnalités Puissantes</h2>
+                    <p class="lead text-muted">Tout ce dont vous avez besoin pour trader intelligemment</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-calculator text-primary mb-3" style="font-size: 3rem;"></i>
+                            <h4>Calculateur Intelligent</h4>
+                            <p class="text-muted">Calcul automatique des lots basé sur votre capital et gestion du risque</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-shield-alt text-success mb-3" style="font-size: 3rem;"></i>
+                            <h4>Gestion du Risque</h4>
+                            <p class="text-muted">Système avancé de protection et alertes personnalisées</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-robot text-info mb-3" style="font-size: 3rem;"></i>
+                            <h4>Assistant IA</h4>
+                            <p class="text-muted">Coach intelligent pour améliorer vos performances de trading</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-chart-line text-warning mb-3" style="font-size: 3rem;"></i>
+                            <h4>Analytics Avancées</h4>
+                            <p class="text-muted">Tableaux de bord détaillés et rapports de performance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-book text-danger mb-3" style="font-size: 3rem;"></i>
+                            <h4>Journal de Trading</h4>
+                            <p class="text-muted">Enregistrement automatique et analyse de vos trades</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-mobile-alt text-purple mb-3" style="font-size: 3rem;"></i>
+                            <h4>Multi-Plateforme</h4>
+                            <p class="text-muted">Accès depuis n'importe quel appareil, partout dans le monde</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="display-5 fw-bold">Plans Tarifaires</h2>
+                    <p class="lead text-muted">Choisissez le plan qui correspond à vos besoins</p>
+                </div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4">
+                    <div class="card pricing-card h-100 shadow">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title">Gratuit</h3>
+                            <h2 class="display-4 fw-bold">0€</h2>
+                            <p class="text-muted">Pour commencer</p>
+                            <ul class="list-unstyled mt-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Calculateur de base</li>
+                                <li><i class="fas fa-check text-success me-2"></i>3 calculs par jour</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Support email</li>
+                                <li><i class="fas fa-times text-muted me-2"></i>Analytics avancées</li>
+                                <li><i class="fas fa-times text-muted me-2"></i>Assistant IA</li>
+                            </ul>
+                            <a href="/auth/register" class="btn btn-outline-primary btn-lg w-100 mt-4">
+                                Commencer Gratuitement
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card pricing-card h-100 shadow border-primary">
+                        <div class="card-body text-center p-4">
+                            <div class="badge bg-primary mb-3">Le plus populaire</div>
+                            <h3 class="card-title">Premium</h3>
+                            <h2 class="display-4 fw-bold">9,99€<small class="fs-6">/mois</small></h2>
+                            <p class="text-muted">Pour les traders actifs</p>
+                            <ul class="list-unstyled mt-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Calculateur avancé</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Calculs illimités</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Assistant IA</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Analytics complètes</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Support prioritaire</li>
+                            </ul>
+                            <a href="/auth/register" class="btn btn-primary btn-lg w-100 mt-4">
+                                Essayer Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card pricing-card h-100 shadow">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title">Lifetime</h3>
+                            <h2 class="display-4 fw-bold">149€<small class="fs-6">unique</small></h2>
+                            <p class="text-muted">Accès à vie</p>
+                            <ul class="list-unstyled mt-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Toutes les fonctionnalités</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Mises à jour à vie</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Support VIP</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Fonctionnalités exclusives</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Accès anticipé</li>
+                            </ul>
+                            <a href="/auth/register" class="btn btn-warning btn-lg w-100 mt-4">
+                                Achat Unique
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>MindTraderPro</h5>
+                    <p class="mb-0">Plateforme professionnelle pour traders</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 MindTraderPro. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

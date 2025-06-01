@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Analyse Psychologique - Trading Calculator Pro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-brain text-primary me-2"></i>
+                Analyse Psychologique
+            </h1>
+            <span class="badge bg-success fs-6">
+                <i class="fas fa-heart me-1"></i>Score: 8.5/10
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Score Mental Actuel -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-thermometer-half me-2"></i>
+                    État Mental Actuel
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <div class="progress mx-auto" style="width: 80px; height: 80px; border-radius: 50%;">
+                                <div class="progress-bar bg-success" style="width: 85%"></div>
+                            </div>
+                            <h4 class="mt-2 text-success">8.5</h4>
+                            <small class="text-muted">Confiance</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <div class="progress mx-auto" style="width: 80px; height: 80px; border-radius: 50%;">
+                                <div class="progress-bar bg-info" style="width: 75%"></div>
+                            </div>
+                            <h4 class="mt-2 text-info">7.5</h4>
+                            <small class="text-muted">Discipline</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <div class="progress mx-auto" style="width: 80px; height: 80px; border-radius: 50%;">
+                                <div class="progress-bar bg-warning" style="width: 90%"></div>
+                            </div>
+                            <h4 class="mt-2 text-warning">9.0</h4>
+                            <small class="text-muted">Patience</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <div class="progress mx-auto" style="width: 80px; height: 80px; border-radius: 50%;">
+                                <div class="progress-bar bg-danger" style="width: 25%"></div>
+                            </div>
+                            <h4 class="mt-2 text-success">2.5</h4>
+                            <small class="text-muted">Stress</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="alert alert-success">
+                    <i class="fas fa-thumbs-up me-2"></i>
+                    <strong>Excellent état mental !</strong> Vous êtes dans de bonnes dispositions pour trader. Votre niveau de stress est bas et votre patience élevée.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clipboard-check me-2"></i>
+                    Check-up Rapide
+                </h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Comment vous sentez-vous aujourd'hui ?</label>
+                        <select class="form-select">
+                            <option>Excellent</option>
+                            <option>Bon</option>
+                            <option>Moyen</option>
+                            <option>Fatigué</option>
+                            <option>Stressé</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Niveau de confiance (1-10)</label>
+                        <input type="range" class="form-range" min="1" max="10" value="8">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dernière perte vous affecte-t-elle ?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="lastLoss" value="no" checked>
+                            <label class="form-check-label">Non, c'est du passé</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="lastLoss" value="little">
+                            <label class="form-check-label">Un peu</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="lastLoss" value="much">
+                            <label class="form-check-label">Beaucoup</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-check me-2"></i>Mettre à Jour
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Historique et Conseils -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Évolution Psychologique
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-area fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Graphique de votre évolution psychologique</p>
+                    <small class="text-muted">Disponible avec plus de données historiques</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Conseils Personnalisés
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>💡 Conseil du jour :</strong><br>
+                    Votre patience est excellente ! Utilisez cette force pour attendre les meilleures opportunités.
+                </div>
+                
+                <div class="alert alert-warning">
+                    <strong>⚠️ Point d'attention :</strong><br>
+                    Travaillez sur votre discipline. Quelques écarts récents par rapport à votre plan.
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>✅ Continue comme ça :</strong><br>
+                    Votre gestion du stress s'améliore constamment. Excellent travail !
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

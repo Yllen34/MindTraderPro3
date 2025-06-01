@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier Économique - Trading Calculator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .impact-high { border-left: 4px solid #dc3545; }
+        .impact-medium { border-left: 4px solid #ffc107; }
+        .impact-low { border-left: 4px solid #6c757d; }
+        
+        .event-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .event-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .country-flag {
+            width: 24px;
+            height: 16px;
+            display: inline-block;
+            background-size: cover;
+            border-radius: 2px;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        
+        .time-until {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                📅 Calendrier Économique
+            </h1>
+            <p class="lead text-muted">Événements financiers en temps réel avec notifications</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-primary me-2">← Retour Calculateur</a>
+            <button class="btn btn-primary" id="refreshCalendar">
+                <i class="fas fa-sync-alt"></i> Actualiser
+            </button>
+        </div>
+
+        <!-- Filtres et Notifications -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-filter text-primary"></i>
+                            Filtres
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Impact</label>
+                                <select class="form-select" id="impactFilter">
+                                    <option value="">Tous</option>
+                                    <option value="high">🔴 Fort Impact</option>
+                                    <option value="medium">🟡 Impact Moyen</option>
+                                    <option value="low">⚫ Faible Impact</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Devise</label>
+                                <select class="form-select" id="currencyFilter">
+                                    <option value="">Toutes</option>
+                                    <option value="USD">USD - Dollar US</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - Livre Sterling</option>
+                                    <option value="JPY">JPY - Yen</option>
+                                    <option value="CAD">CAD - Dollar Canadien</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Période</label>
+                                <select class="form-select" id="periodFilter">
+                                    <option value="today">Aujourd'hui</option>
+                                    <option value="tomorrow">Demain</option>
+                                    <option value="week" selected>Cette semaine</option>
+                                    <option value="month">Ce mois</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bell text-warning"></i>
+                            Notifications
+                            <div class="notification-badge bg-success" id="notifCount">3</div>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="highImpactNotifs" checked>
+                            <label class="form-check-label" for="highImpactNotifs">
+                                Événements fort impact
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="beforeEventNotifs">
+                            <label class="form-check-label" for="beforeEventNotifs">
+                                Alerte 30min avant
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="resultNotifs">
+                            <label class="form-check-label" for="resultNotifs">
+                                Résultats publiés
+                            </label>
+                        </div>
+                        <button class="btn btn-warning btn-sm w-100 mt-2" onclick="enableNotifications()">
+                            <i class="fas fa-bell"></i> Activer Notifications
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Événements Urgents -->
+        <div id="urgentEvents" class="mb-4" style="display: none;">
+            <div class="alert alert-danger">
+                <h6><i class="fas fa-exclamation-triangle"></i> Événements Imminents</h6>
+                <div id="urgentEventsList"></div>
+            </div>
+        </div>
+
+        <!-- Liste des Événements -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-calendar-alt text-success"></i>
+                    Événements Économiques
+                </h5>
+                <span class="badge bg-primary" id="eventCount">Chargement...</span>
+            </div>
+            <div class="card-body">
+                <div id="eventsContainer">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement des événements...</span>
+                        </div>
+                        <p class="mt-2">Récupération du calendrier économique...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-exclamation-circle fa-2x text-danger mb-2"></i>
+                        <h5 id="highImpactCount">-</h5>
+                        <small>Fort Impact</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                        <h5 id="todayCount">-</h5>
+                        <small>Aujourd'hui</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-bell fa-2x text-info mb-2"></i>
+                        <h5 id="notificationsEnabled">OFF</h5>
+                        <small>Notifications</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-sync fa-2x text-success mb-2"></i>
+                        <h5 id="lastUpdate">-</h5>
+                        <small>Dernière MAJ</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Détails Événement -->
+    <div class="modal fade" id="eventModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalTitle">Détails de l'Événement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="eventModalBody">
+                    <!-- Contenu dynamique -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-warning" id="setAlertBtn">
+                        <i class="fas fa-bell"></i> Créer Alerte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let allEvents = [];
+        let notificationsEnabled = false;
+
+        // Charger les événements au démarrage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEconomicEvents();
+            setupFilters();
+            updateClock();
+            setInterval(updateClock, 60000); // Mettre à jour chaque minute
+        });
+
+        // Charger les événements économiques
+        async function loadEconomicEvents() {
+            try {
+                const response = await fetch('/api/economic/events');
+                const data = await response.json();
+                
+                if (data.success) {
+                    allEvents = data.events;
+                    displayEvents(allEvents);
+                    updateStatistics();
+                    checkUrgentEvents();
+                } else {
+                    showError('Impossible de charger le calendrier économique');
+                }
+            } catch (error) {
+                showError('Erreur de connexion au calendrier');
+            }
+        }
+
+        // Afficher les événements
+        function displayEvents(events) {
+            const container = document.getElementById('eventsContainer');
+            
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                        <p>Aucun événement trouvé pour les critères sélectionnés</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            events.forEach(event => {
+                const impactClass = `impact-${event.impact}`;
+                const impactIcon = event.impact === 'high' ? '🔴' : event.impact === 'medium' ? '🟡' : '⚫';
+                const timeUntil = getTimeUntil(event.date, event.time);
+                
+                html += `
+                    <div class="event-card card mb-3 ${impactClass}" onclick="showEventDetails('${event.id}')">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    <div class="country-flag bg-secondary mb-1"></div>
+                                    <small class="text-muted">${event.country}</small>
+                                    <div class="badge bg-primary">${event.currency}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="mb-1">${impactIcon} ${event.title}</h6>
+                                    <small class="text-muted">${event.description}</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="time-until text-info">${timeUntil}</div>
+                                    <small class="text-muted">${event.time}</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="small">
+                                        <div>Prévu: <strong>${event.forecast || 'N/A'}</strong></div>
+                                        <div>Précédent: ${event.previous || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    ${event.actual ? 
+                                        `<span class="badge bg-success">Publié: ${event.actual}</span>` : 
+                                        `<span class="badge bg-warning">En attente</span>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('eventCount').textContent = `${events.length} événements`;
+        }
+
+        // Calculer le temps restant
+        function getTimeUntil(dateStr, timeStr) {
+            const eventDate = new Date(dateStr + 'T' + timeStr);
+            const now = new Date();
+            const diff = eventDate - now;
+            
+            if (diff < 0) return 'Passé';
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (hours > 24) {
+                const days = Math.floor(hours / 24);
+                return `${days}j ${hours % 24}h`;
+            } else if (hours > 0) {
+                return `${hours}h ${minutes}m`;
+            } else {
+                return `${minutes}m`;
+            }
+        }
+
+        // Configurer les filtres
+        function setupFilters() {
+            ['impactFilter', 'currencyFilter', 'periodFilter'].forEach(filterId => {
+                document.getElementById(filterId).addEventListener('change', applyFilters);
+            });
+        }
+
+        // Appliquer les filtres
+        function applyFilters() {
+            const impact = document.getElementById('impactFilter').value;
+            const currency = document.getElementById('currencyFilter').value;
+            const period = document.getElementById('periodFilter').value;
+            
+            let filteredEvents = allEvents;
+            
+            if (impact) {
+                filteredEvents = filteredEvents.filter(e => e.impact === impact);
+            }
+            
+            if (currency) {
+                filteredEvents = filteredEvents.filter(e => e.currency === currency);
+            }
+            
+            // Filtrage par période (simplifié)
+            const now = new Date();
+            if (period === 'today') {
+                filteredEvents = filteredEvents.filter(e => {
+                    const eventDate = new Date(e.date);
+                    return eventDate.toDateString() === now.toDateString();
+                });
+            }
+            
+            displayEvents(filteredEvents);
+        }
+
+        // Activer les notifications
+        async function enableNotifications() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notificationsEnabled = true;
+                    document.getElementById('notificationsEnabled').textContent = 'ON';
+                    showNotification('Notifications activées !', 'Vous recevrez des alertes pour les événements importants.');
+                }
+            } else {
+                alert('Votre navigateur ne supporte pas les notifications');
+            }
+        }
+
+        // Afficher une notification
+        function showNotification(title, body) {
+            if (notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: '/static/favicon.ico',
+                    badge: '/static/favicon.ico'
+                });
+            }
+        }
+
+        // Vérifier les événements urgents
+        function checkUrgentEvents() {
+            const urgent = allEvents.filter(event => {
+                const timeUntil = getTimeUntil(event.date, event.time);
+                return event.impact === 'high' && timeUntil.includes('h') && !timeUntil.includes('j');
+            });
+            
+            if (urgent.length > 0) {
+                document.getElementById('urgentEvents').style.display = 'block';
+                document.getElementById('urgentEventsList').innerHTML = urgent.map(e => 
+                    `<div>🔴 <strong>${e.title}</strong> (${e.currency}) - ${getTimeUntil(e.date, e.time)}</div>`
+                ).join('');
+            }
+        }
+
+        // Mettre à jour les statistiques
+        function updateStatistics() {
+            const highImpact = allEvents.filter(e => e.impact === 'high').length;
+            const today = allEvents.filter(e => {
+                const eventDate = new Date(e.date);
+                return eventDate.toDateString() === new Date().toDateString();
+            }).length;
+            
+            document.getElementById('highImpactCount').textContent = highImpact;
+            document.getElementById('todayCount').textContent = today;
+        }
+
+        // Mettre à jour l'horloge
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Afficher les détails d'un événement
+        function showEventDetails(eventId) {
+            const event = allEvents.find(e => e.id === eventId);
+            if (!event) return;
+            
+            document.getElementById('eventModalTitle').textContent = event.title;
+            document.getElementById('eventModalBody').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informations Générales</h6>
+                        <p><strong>Pays:</strong> ${event.country}</p>
+                        <p><strong>Devise:</strong> ${event.currency}</p>
+                        <p><strong>Impact:</strong> <span class="badge bg-${event.impact === 'high' ? 'danger' : event.impact === 'medium' ? 'warning' : 'secondary'}">${event.impact}</span></p>
+                        <p><strong>Catégorie:</strong> ${event.category}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Données Économiques</h6>
+                        <p><strong>Prévision:</strong> ${event.forecast || 'N/A'}</p>
+                        <p><strong>Précédent:</strong> ${event.previous || 'N/A'}</p>
+                        <p><strong>Actuel:</strong> ${event.actual || 'En attente'}</p>
+                        <p><strong>Date/Heure:</strong> ${event.date} ${event.time}</p>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h6>Description</h6>
+                    <p>${event.description}</p>
+                </div>
+            `;
+            
+            const modal = new bootstrap.Modal(document.getElementById('eventModal'));
+            modal.show();
+        }
+
+        // Actualiser le calendrier
+        document.getElementById('refreshCalendar').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Actualisation...';
+            loadEconomicEvents();
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-sync-alt"></i> Actualiser';
+            }, 1000);
+        });
+
+        // Afficher les erreurs
+        function showError(message) {
+            document.getElementById('eventsContainer').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

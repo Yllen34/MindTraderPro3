@@ -1,0 +1,104 @@
+
+# MindTraderPro - Interface Administrateur Ultra Complète (Back-Office)
+
+## 🎯 Objectif
+Créer une interface d’administration professionnelle pour gérer tous les aspects de l'application MindTraderPro.
+
+---
+
+## 1. Gestion des utilisateurs
+
+- Liste des utilisateurs (recherche, filtres, tri)
+- Informations affichées :
+  - Nom, email, statut (premium / gratuit / banni)
+  - Date d'inscription
+  - Dernière activité
+  - Modules activés
+- Actions possibles :
+  - ✅ Activer/Désactiver le statut premium
+  - ❌ Bannir / Désactiver un compte
+  - ✏️ Modifier infos manuellement
+  - ➕ Ajouter un utilisateur manuellement
+
+---
+
+## 2. Gestion des accès & fonctionnalités
+
+- Activer ou désactiver des modules spécifiques :
+  - Calculateur
+  - Journal
+  - IA
+  - Newsletter
+- Système de rôles :
+  - `admin`
+  - `modérateur`
+  - `premium`
+  - `standard`
+
+---
+
+## 3. Partenariats et Affiliation
+
+- Ajouter / modifier des liens affiliés :
+  - FTMO, The5%ers, formations partenaires…
+  - Champs : nom, lien, description, code promo, visuel
+- Statistiques de clics / redirections
+- Afficher ou cacher des offres à certains types d’utilisateurs
+
+---
+
+## 4. Statistiques et Analytics
+
+- Graphiques et données :
+  - Nombre total d’utilisateurs
+  - Actifs cette semaine / mois
+  - Taux de conversion premium
+  - Utilisation des fonctions clés (journal, IA…)
+- Logs d’activité :
+  - Dernières connexions
+  - Erreurs / exceptions API
+  - Logs de modération (qui a modifié quoi)
+
+---
+
+## 5. Sécurité
+
+- Authentification sécurisée (admin avec 2FA possible)
+- Hash des mots de passe (bcrypt ou argon2)
+- Jetons JWT pour les sessions sécurisées
+- Limites de requêtes (rate-limiting)
+- Sauvegardes automatiques (exports CSV ou JSON)
+
+---
+
+## 6. Gestion de contenu
+
+- Ajouter du contenu affiché à l’utilisateur :
+  - Formations, tutos, promos partenaires
+  - Notifications système / popups
+  - FAQ & messages d’aide
+- Paramétrage rapide d’annonces dans l’app
+
+---
+
+## 7. Outils internes (optionnel)
+
+- Générateur de codes promo premium
+- Système de test utilisateurs anonymisés
+- Console interne pour requêtes admin
+- Historique de toutes les modifications (audit log)
+
+---
+
+## 🔒 Technologies recommandées pour l’admin
+
+- Flask + Jinja2 pour l’interface
+- Base de données PostgreSQL / Supabase
+- Interface mobile-responsive
+- Accès restreint par route `/admin`
+- Authentification avec JWT + rôles
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

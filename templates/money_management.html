@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Management - Trading Calculator</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-primary">
+                🎯 Money Management
+            </h1>
+            <p class="lead text-muted">Gérez votre risque comme un professionnel</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <a href="/simple" class="btn btn-outline-primary">
+                📊 Calculateur
+            </a>
+            <a href="/journal" class="btn btn-outline-primary">
+                📈 Journal
+            </a>
+            <button class="btn btn-primary" disabled>
+                🎯 Money Management
+            </button>
+        </div>
+
+        <div class="row">
+            <!-- Paramètres Gratuits -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success">
+                        <h5 class="mb-0">✅ Fonctionnalités Gratuites</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="freeRiskForm">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                                    Alerte de Risque Élevé
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="maxRiskWarning" 
+                                           value="2.0" min="0.1" max="10" step="0.1">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <div class="form-text">Alerte si le risque dépasse ce pourcentage</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-dollar-sign text-info"></i>
+                                    Limite de Perte Quotidienne
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="dailyLossLimit" 
+                                           value="100" min="10" max="10000" step="10">
+                                </div>
+                                <div class="form-text">Perte maximale autorisée par jour</div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-chart-line"></i> Statistiques du Jour</h6>
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <div class="fw-bold text-danger" id="currentLoss">$0</div>
+                                        <small>Perte Actuelle</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="fw-bold text-success" id="remainingLimit">$100</div>
+                                        <small>Limite Restante</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-save"></i> Sauvegarder Paramètres
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paramètres Premium -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">💎 Fonctionnalités Premium</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="premium-overlay position-relative">
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="dynamicRisk" disabled>
+                                    <label class="form-check-label" for="dynamicRisk">
+                                        <i class="fas fa-robot text-primary"></i>
+                                        Ajustement Dynamique du Risque
+                                    </label>
+                                </div>
+                                <div class="form-text">Modifie automatiquement le % de risque selon vos performances</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-ban text-danger"></i>
+                                    Blocage Après Pertes Consécutives
+                                </label>
+                                <select class="form-select" id="consecutiveLossLimit" disabled>
+                                    <option value="2">2 pertes consécutives</option>
+                                    <option value="3" selected>3 pertes consécutives</option>
+                                    <option value="4">4 pertes consécutives</option>
+                                    <option value="5">5 pertes consécutives</option>
+                                </select>
+                                <div class="form-text">Empêche de nouveaux trades après X pertes d'affilée</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="scalingEnabled" disabled>
+                                    <label class="form-check-label" for="scalingEnabled">
+                                        <i class="fas fa-chart-line text-success"></i>
+                                        Simulation de Scaling
+                                    </label>
+                                </div>
+                                <div class="form-text">Augmente progressivement la taille de position après gains</div>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <h6><i class="fas fa-crown"></i> Statistiques Premium</h6>
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="fw-bold" id="consecutiveLosses">0</div>
+                                        <small>Pertes Consécutives</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="fw-bold text-info" id="riskAdjusted">1.0%</div>
+                                        <small>Risque Ajusté</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="fw-bold text-success" id="scalingFactor">x1.0</div>
+                                        <small>Facteur Scaling</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Premium Overlay -->
+                            <div class="premium-lock position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-75 rounded">
+                                <div class="text-center text-white">
+                                    <i class="fas fa-lock fa-3x mb-3"></i>
+                                    <h5>Fonctionnalités Premium</h5>
+                                    <p>Débloquez le contrôle avancé du risque</p>
+                                    <button class="btn btn-warning" onclick="showPremiumModal()">
+                                        Passer à Premium - €9.99/mois
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulateur de Scénarios -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-flask text-primary"></i>
+                    Simulateur de Scénarios
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Testez Différents Scénarios</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Capital de Test</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="testCapital" value="10000">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Séquence de Résultats</label>
+                            <input type="text" class="form-control" id="resultSequence" 
+                                   placeholder="Ex: +50,-30,+80,-20" value="+50,-30,+80,-20">
+                            <div class="form-text">Format: +gain,-perte (en USD)</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="runScenarioTest()">
+                            <i class="fas fa-play"></i> Lancer Simulation
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="scenarioResults" class="d-none">
+                            <h6>Résultats de Simulation</h6>
+                            <div class="alert alert-secondary">
+                                <div id="scenarioOutput"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal (réutiliser le modal existant) -->
+    <div class="modal fade" id="premiumModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="fas fa-crown"></i> Passer à Premium
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Fonctionnalités Premium Money Management :</h6>
+                    <ul>
+                        <li>🤖 Ajustement dynamique du risque basé sur les performances</li>
+                        <li>🚫 Blocage automatique après pertes consécutives</li>
+                        <li>📈 Simulation de scaling progressif</li>
+                        <li>📊 Statistiques avancées de gestion du risque</li>
+                        <li>☁️ Sauvegarde cloud de vos paramètres</li>
+                    </ul>
+                    <div class="text-center">
+                        <strong class="fs-4 text-warning">€9.99/mois</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Plus tard</button>
+                    <button type="button" class="btn btn-warning">S'abonner Maintenant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fonctions Money Management
+        function showPremiumModal() {
+            const modal = new bootstrap.Modal(document.getElementById('premiumModal'));
+            modal.show();
+        }
+
+        function runScenarioTest() {
+            const capital = parseFloat(document.getElementById('testCapital').value);
+            const sequence = document.getElementById('resultSequence').value;
+            
+            if (!capital || !sequence) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+
+            const results = sequence.split(',').map(s => parseFloat(s.trim()));
+            let currentCapital = capital;
+            let consecutiveLosses = 0;
+            let maxConsecutiveLosses = 0;
+            let totalTrades = results.length;
+            let wins = 0;
+            let losses = 0;
+
+            let simulation = `<strong>Simulation sur ${totalTrades} trades:</strong><br><br>`;
+            
+            results.forEach((result, index) => {
+                currentCapital += result;
+                
+                if (result > 0) {
+                    wins++;
+                    consecutiveLosses = 0;
+                    simulation += `Trade ${index + 1}: <span class="text-success">+$${result}</span> → Capital: $${currentCapital.toFixed(2)}<br>`;
+                } else {
+                    losses++;
+                    consecutiveLosses++;
+                    maxConsecutiveLosses = Math.max(maxConsecutiveLosses, consecutiveLosses);
+                    simulation += `Trade ${index + 1}: <span class="text-danger">$${result}</span> → Capital: $${currentCapital.toFixed(2)}`;
+                    
+                    if (consecutiveLosses >= 3) {
+                        simulation += ` <span class="badge bg-danger">BLOQUÉ</span>`;
+                    }
+                    simulation += `<br>`;
+                }
+            });
+
+            const winRate = (wins / totalTrades * 100).toFixed(1);
+            const totalPL = currentCapital - capital;
+            
+            simulation += `<br><strong>Résumé:</strong><br>`;
+            simulation += `• Taux de réussite: ${winRate}%<br>`;
+            simulation += `• P&L Total: <span class="${totalPL >= 0 ? 'text-success' : 'text-danger'}">$${totalPL.toFixed(2)}</span><br>`;
+            simulation += `• Capital Final: $${currentCapital.toFixed(2)}<br>`;
+            simulation += `• Max Pertes Consécutives: ${maxConsecutiveLosses}`;
+
+            document.getElementById('scenarioOutput').innerHTML = simulation;
+            document.getElementById('scenarioResults').classList.remove('d-none');
+        }
+
+        // Sauvegarder paramètres gratuits
+        document.getElementById('freeRiskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const maxRisk = document.getElementById('maxRiskWarning').value;
+            const dailyLimit = document.getElementById('dailyLossLimit').value;
+            
+            // Simuler sauvegarde
+            localStorage.setItem('riskSettings', JSON.stringify({
+                maxRiskWarning: maxRisk,
+                dailyLossLimit: dailyLimit
+            }));
+            
+            alert('✅ Paramètres sauvegardés avec succès !');
+        });
+
+        // Charger paramètres au démarrage
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('riskSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('maxRiskWarning').value = settings.maxRiskWarning || 2.0;
+                document.getElementById('dailyLossLimit').value = settings.dailyLossLimit || 100;
+                document.getElementById('remainingLimit').textContent = `$${settings.dailyLossLimit || 100}`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs - Trading Calculator Pro</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .pricing-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 4rem 0;
+        }
+        .pricing-card {
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .pricing-card.featured {
+            border-color: #0d6efd;
+            background: linear-gradient(135deg, rgba(13,110,253,0.1) 0%, rgba(13,110,253,0.05) 100%);
+            transform: scale(1.05);
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        .btn-gradient {
+            background: linear-gradient(45deg, #0d6efd, #6610f2);
+            border: none;
+        }
+        .feature-check {
+            color: #28a745;
+        }
+        .feature-cross {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-chart-line text-primary me-2"></i>
+                Trading Calculator Pro
+            </a>
+            <div class="ms-auto">
+                <a href="/" class="btn btn-outline-primary btn-sm me-2">Retour</a>
+                <a href="/login" class="btn btn-primary btn-sm">Connexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pricing-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-3">
+                        Choisissez Votre <span class="text-primary">Plan Premium</span>
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Débloquez tout le potentiel de votre trading avec nos fonctionnalités avancées
+                    </p>
+                    <div class="d-inline-flex align-items-center bg-dark rounded p-2 mb-4">
+                        <span class="badge bg-success me-2">
+                            <i class="fas fa-check me-1"></i>Essai gratuit 7 jours
+                        </span>
+                        <span class="badge bg-info me-2">
+                            <i class="fas fa-shield-alt me-1"></i>Paiement sécurisé
+                        </span>
+                        <span class="badge bg-warning">
+                            <i class="fas fa-times me-1"></i>Sans engagement
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4 justify-content-center">
+                <!-- Plan Gratuit -->
+                <div class="col-lg-4">
+                    <div class="card pricing-card bg-dark">
+                        <div class="card-body p-4 text-center">
+                            <h5 class="card-title fs-4 mb-3">Gratuit</h5>
+                            <div class="mb-4">
+                                <span class="display-3 fw-bold">0€</span>
+                                <span class="text-muted fs-5">/mois</span>
+                            </div>
+                            <p class="text-muted mb-4">Parfait pour commencer</p>
+                            
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    5 calculs par jour
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    3 paires principales (EUR/USD, GBP/USD, XAU/USD)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    Calculateur de base
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    Journal simple
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-times feature-cross me-2"></i>
+                                    Assistant IA
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-times feature-cross me-2"></i>
+                                    Analytics avancées
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-times feature-cross me-2"></i>
+                                    Analyse psychologique
+                                </li>
+                            </ul>
+                            
+                            <a href="/register?plan=free" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-rocket me-2"></i>Commencer Gratuitement
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plan Premium -->
+                <div class="col-lg-4">
+                    <div class="card pricing-card featured">
+                        <div class="card-header bg-primary text-center py-3">
+                            <span class="badge bg-light text-primary fs-6">
+                                <i class="fas fa-star me-1"></i>PLUS POPULAIRE
+                            </span>
+                        </div>
+                        <div class="card-body p-4 text-center">
+                            <h5 class="card-title fs-4 mb-3">Premium</h5>
+                            <div class="mb-4">
+                                <span class="display-3 fw-bold text-primary">9.99€</span>
+                                <span class="text-muted fs-5">/mois</span>
+                            </div>
+                            <p class="text-muted mb-4">Pour les traders sérieux</p>
+                            
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Calculs illimités</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>60+ paires de trading</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Assistant IA complet</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Analytics avancées</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Analyse psychologique</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Alertes en temps réel</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Support prioritaire</strong>
+                                </li>
+                            </ul>
+                            
+                            <a href="/payment/checkout/premium" class="btn btn-gradient w-100 mb-2">
+                                <i class="fas fa-crown me-2"></i>Choisir Premium
+                            </a>
+                            <small class="text-muted">Annulable à tout moment</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plan Lifetime -->
+                <div class="col-lg-4">
+                    <div class="card pricing-card bg-dark">
+                        <div class="card-body p-4 text-center">
+                            <h5 class="card-title fs-4 mb-3">Lifetime</h5>
+                            <div class="mb-4">
+                                <span class="display-3 fw-bold text-warning">149€</span>
+                                <span class="text-muted fs-5">unique</span>
+                            </div>
+                            <p class="text-muted mb-4">Investissement à vie</p>
+                            
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Tout Premium inclus</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Accès à vie garanti</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Nouvelles fonctionnalités incluses</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>API privée</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Support VIP</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Formation exclusive</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check feature-check me-2"></i>
+                                    <strong>Communauté privée</strong>
+                                </li>
+                            </ul>
+                            
+                            <a href="/payment/checkout/lifetime" class="btn btn-warning w-100 mb-2">
+                                <i class="fas fa-infinity me-2"></i>Achat Unique
+                            </a>
+                            <small class="text-muted">Meilleure valeur à long terme</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Garanties -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card bg-dark border-primary">
+                        <div class="card-body text-center p-4">
+                            <h5 class="mb-3">
+                                <i class="fas fa-shield-check text-primary me-2"></i>
+                                Nos Garanties
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <i class="fas fa-lock fa-2x text-success mb-2"></i>
+                                    <p class="small mb-0">Paiement 100% Sécurisé</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-undo fa-2x text-info mb-2"></i>
+                                    <p class="small mb-0">Remboursement 30 jours</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-headset fa-2x text-warning mb-2"></i>
+                                    <p class="small mb-0">Support 24/7</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-sync fa-2x text-danger mb-2"></i>
+                                    <p class="small mb-0">Mises à jour gratuites</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-5 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h3 class="text-center mb-4">Questions Fréquentes</h3>
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Puis-je changer de plan à tout moment ?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Absolument ! Vous pouvez passer du plan gratuit au premium, ou du premium au lifetime à tout moment. Les changements prennent effet immédiatement.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Y a-t-il des frais cachés ?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Aucun ! Les prix affichés sont tout compris. Pas de frais de configuration, pas de frais cachés, pas de surprises.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Que se passe-t-il si j'annule mon abonnement ?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Vous gardez l'accès premium jusqu'à la fin de votre période payée, puis votre compte repasse automatiquement en mode gratuit. Vos données sont conservées.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+
+# MindTraderPro - Système de Templates Visuels (Gratuits et Premium)
+
+## 🎯 Objectif
+Offrir plusieurs interfaces visuelles personnalisables (templates) que l'utilisateur peut choisir, avec certains thèmes réservés aux abonnés Premium pour créer de la valeur et inciter à l'abonnement.
+
+---
+
+## ✅ Fonctionnement
+
+- Accessible dans les paramètres de l'application : "Choisir un thème visuel"
+- Aperçu en temps réel (mini-preview)
+- Sauvegarde du thème dans le profil utilisateur
+- Certains thèmes Premium affichés avec cadenas et message "Débloque ce thème avec l’abonnement Premium"
+
+---
+
+## 🎨 Thèmes disponibles
+
+### Thèmes gratuits :
+
+1. **Minimaliste**
+   - Blanc/gris très clair, textes noirs
+   - Très épuré et lisible
+   - Sans distraction
+
+2. **Dark Trading**
+   - Fond gris foncé ou noir
+   - Couleurs vert / rouge pour gains et pertes
+   - Idéal de nuit ou pour réduire la fatigue oculaire
+
+3. **Green Pro**
+   - Fond clair, accents verts
+   - Style clean, comme les apps bancaires pro
+
+---
+
+### Thèmes Premium :
+
+1. **Crypto Néon**
+   - Noir intense avec accents bleus/violets fluorescents
+   - Typo digitale
+   - Pour les jeunes traders ou fans de crypto
+
+2. **Futur Tech**
+   - Bleu foncé, bords lumineux animés
+   - Interface semi-transparente
+   - Look IA / Matrix
+
+3. **Graphique Only**
+   - Fond neutre
+   - Dashboards ultra épurés (charts, data, KPIs)
+   - Pour ceux qui veulent tout visuel
+
+4. **Ambition Gold**
+   - Couleurs chaudes (or, beige, blanc cassé)
+   - Typographie élégante
+   - Inspiré des apps de luxe / finance élite
+
+5. **Mindset Zen**
+   - Bleu nuit / beige doux
+   - Boutons ronds, animations lentes
+   - Icônes douces, très relaxante
+   - Parfait pour focus / mindset / psychologie
+
+---
+
+## 🧠 Bonus idées visuelles
+
+- **Animation de démarrage unique par thème**
+- **Cadenas sur les thèmes Premium + popup d’upgrade**
+- **Thème responsive : interface s’adapte mobile / tablette / desktop**
+- **Badge de prestige (ex : “Crypto Elite” avec Crypto Néon)**
+- **Mini-signal sonore ou fond animé discret selon l’émotion du trade (optionnel)**
+
+---
+
+## 🔐 Intégration technique (à prévoir)
+
+- Base de données : table `themes` avec accès limité selon `user.premium`
+- Appels conditionnels : `if user.theme == 'crypto_neon' and user.premium`
+- CSS ou styles Flutter appliqués selon sélection
+- Système de preview (thumbnails ou mini interface interactive)
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025

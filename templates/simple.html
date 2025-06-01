@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Calculator Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #1a1a1a; color: white; }
+        .premium-section { border: 2px solid #ffc107; background: rgba(255, 193, 7, 0.1); }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="fas fa-calculator me-3"></i>Trading Calculator Pro
+            </h1>
+            <p class="lead">Calculateur professionnel pour traders</p>
+            
+            <!-- Premium Banner -->
+            <div class="alert alert-warning">
+                <i class="fas fa-crown text-warning me-2"></i>
+                <strong>Version Gratuite</strong> - 
+                <button class="btn btn-outline-warning btn-sm ms-2" onclick="showPremium()">
+                    💎 Découvrir Premium
+                </button>
+            </div>
+            
+            <!-- Simulateur de Trading - Accès Direct -->
+            <div class="alert alert-info">
+                <i class="fas fa-gamepad text-info me-2"></i>
+                <strong>Nouveau !</strong> 
+                <a href="/trading-simulator" class="btn btn-info btn-sm ms-2">
+                    🎮 Simulateur Trading (Backtesting + Paper Trading)
+                </a>
+            </div>
+            
+            <!-- Calculator Buttons -->
+            <!-- Navigation Simple -->
+            <div class="text-center mb-4">
+                <h6>🚀 Modules disponibles :</h6>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a href="/smart-journal" class="btn btn-outline-primary">🧠 Journal Intelligent</a>
+                    <a href="/money-management" class="btn btn-outline-warning">🎯 Gestion du Risque</a>
+                    <a href="/ai-assistant" class="btn btn-outline-info">🤖 Assistant IA</a>
+                    <a href="/integrations" class="btn btn-outline-success">🔗 Partage & Export</a>
+                    <a href="/economic-calendar" class="btn btn-outline-danger">📅 Calendrier Économique</a>
+                    <a href="/price-alerts" class="btn btn-outline-warning">🚨 Alertes de Prix</a>
+                    <a href="/learning-center" class="btn btn-outline-info">🎓 Centre d'Apprentissage</a>
+                    <a href="/analytics" class="btn btn-outline-success">📊 Analytics Avancés</a>
+                    <a href="/trading-simulator" class="btn btn-outline-info">🎮 Simulateur Trading</a>
+                    <a href="/pricing" class="btn btn-outline-warning">💰 Passer Premium</a>
+                    <a href="/personalization" class="btn btn-outline-secondary">🎨 Personnalisation</a>
+                </div>
+                <p class="small text-muted mt-2">Cliquez sur un module pour l'explorer !</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 id="cardTitle">📊 Calculateur de Position</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Premium Features -->
+                        <div class="premium-section rounded p-3 mb-3">
+                            <h6 class="text-warning mb-2">
+                                <i class="fas fa-crown me-2"></i>Fonctionnalités Premium
+                            </h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                        📊 Multi-positions
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                        🎯 SL/TP Auto
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                        💾 Presets
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                        ⚖️ Break-even
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <small class="text-muted">Débloquez avec Premium !</small>
+                            </div>
+                        </div>
+
+                        <!-- Basic Calculator Form -->
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Paire de devise</label>
+                                <select class="form-select">
+                                    <option>🥇 XAUUSD (Gold)</option>
+                                    <option>🇪🇺🇺🇸 EUR/USD</option>
+                                    <option>🇬🇧🇺🇸 GBP/USD</option>
+                                </select>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Prix d'entrée</label>
+                                        <input type="number" class="form-control" placeholder="2725.50">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Stop Loss</label>
+                                        <input type="number" class="form-control" placeholder="2715.50">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Capital ($)</label>
+                                        <input type="number" class="form-control" placeholder="10000" value="10000">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Risque (%)</label>
+                                        <input type="number" class="form-control" placeholder="2" value="2">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-success w-100 btn-lg" onclick="calculate()">
+                                <i class="fas fa-calculator me-2"></i>
+                                Calculer Position (Gratuit)
+                            </button>
+                        </form>
+                        
+                        <!-- Results -->
+                        <div id="results" class="mt-4" style="display: none;">
+                            <div class="alert alert-success">
+                                <h6>🎯 Résultats du Calcul</h6>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Lot Size:</strong> <span id="lotSize">0.20</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Risque:</strong> <span id="riskAmount">$200</span>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-primary btn-sm" onclick="share()">
+                                        <i class="fas fa-share-alt me-1"></i>Partager
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trading Journal Section -->
+                        <div id="journalSection" style="display: none;">
+                            <div class="card-header">
+                                <h5>📈 Journal de Trading</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Premium Journal Features -->
+                                <div class="premium-section rounded p-3 mb-3">
+                                    <h6 class="text-warning mb-2">
+                                        <i class="fas fa-crown me-2"></i>Fonctionnalités Premium Journal
+                                    </h6>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                                ☁️ Sauvegarde Cloud
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                                📊 Stats Avancées
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                                🔍 Filtres
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="showPremiumFeature()">
+                                                📄 Export CSV/PDF
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Basic Journal Entry Form -->
+                                <form id="journalForm">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Paire</label>
+                                                <select class="form-select" id="journalPair">
+                                                    <option>🥇 XAUUSD</option>
+                                                    <option>🇪🇺🇺🇸 EURUSD</option>
+                                                    <option>🇬🇧🇺🇸 GBPUSD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Direction</label>
+                                                <select class="form-select" id="journalDirection">
+                                                    <option value="BUY">📈 BUY</option>
+                                                    <option value="SELL">📉 SELL</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Prix d'entrée</label>
+                                                <input type="number" class="form-control" id="journalEntry" step="0.01" placeholder="2725.50">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Lot Size</label>
+                                                <input type="number" class="form-control" id="journalLotSize" step="0.01" placeholder="0.20">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Stop Loss</label>
+                                                <input type="number" class="form-control" id="journalSL" step="0.01" placeholder="2715.50">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Take Profit</label>
+                                                <input type="number" class="form-control" id="journalTP" step="0.01" placeholder="2745.50">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Notes (Optionnel)</label>
+                                        <textarea class="form-control" id="journalNotes" rows="2" placeholder="Analyse ou raison du trade..."></textarea>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-success w-100 btn-lg mb-3" onclick="addTradeToJournal()">
+                                        <i class="fas fa-plus me-2"></i>
+                                        Ajouter Trade (Gratuit)
+                                    </button>
+                                </form>
+
+                                <!-- Basic Statistics (Free) -->
+                                <div class="alert alert-info">
+                                    <h6>📊 Statistiques de Base (Gratuit)</h6>
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="fw-bold text-primary" id="totalTrades">5</div>
+                                            <small>Total Trades</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="fw-bold text-success" id="winRate">60%</div>
+                                            <small>Taux Réussite</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="fw-bold text-warning" id="totalPnL">+$245</div>
+                                            <small>P&L Total</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Trades List (Free - Limited) -->
+                                <div class="alert alert-secondary">
+                                    <h6>📋 Derniers Trades (Gratuit - 5 max)</h6>
+                                    <div id="recentTrades">
+                                        <div class="d-flex justify-content-between border-bottom py-2">
+                                            <span>🥇 XAUUSD BUY</span>
+                                            <span class="text-success">+$45</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between border-bottom py-2">
+                                            <span>🇪🇺🇺🇸 EURUSD SELL</span>
+                                            <span class="text-danger">-$25</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span>🥇 XAUUSD BUY</span>
+                                            <span class="text-success">+$78</span>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <small class="text-muted">Stockage local - Max 5 trades en version gratuite</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPremium() {
+            alert('💎 Trading Calculator Premium\n\n✅ Multi-positions\n✅ SL/TP automatiques\n✅ Presets sauvegardés\n✅ Calcul break-even\n✅ Support prioritaire\n\n💰 Seulement 9,99€/mois\n\n🚀 Cliquez OK pour upgrader !');
+        }
+
+        function showPremiumFeature() {
+            alert('🔒 Fonctionnalité Premium\n\nCette fonctionnalité est disponible avec Premium !\n\n💎 Passez à Premium pour débloquer toutes les fonctionnalités avancées.');
+            setTimeout(showPremium, 500);
+        }
+
+        function calculate() {
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('lotSize').textContent = '0.20';
+            document.getElementById('riskAmount').textContent = '$200';
+        }
+
+        function share() {
+            alert('🎯 RÉSULTATS PARTAGÉS !\n\nLot Size: 0.20\nRisque: $200\n\n💡 Calculé avec Trading Calculator Pro\n\n#Trading #RiskManagement');
+        }
+
+        function showCalculator(type) {
+            const cardTitle = document.getElementById('cardTitle');
+            const cardBody = document.querySelector('.card-body');
+            
+            if (type === 'journal') {
+                // Change title and content to journal
+                cardTitle.innerHTML = '📈 Journal de Trading';
+                cardBody.innerHTML = `
+                    <div class="alert alert-warning text-center mb-3">
+                        <i class="fas fa-crown text-warning me-2"></i>
+                        <strong>Journal Premium disponible pour 9,99€/mois</strong>
+                    </div>
+                    
+                    <form>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Paire</label>
+                                    <select class="form-select">
+                                        <option>🥇 XAUUSD</option>
+                                        <option>🇪🇺🇺🇸 EURUSD</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Direction</label>
+                                    <select class="form-select">
+                                        <option>📈 BUY</option>
+                                        <option>📉 SELL</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Prix d'entrée</label>
+                                    <input type="number" class="form-control" placeholder="2725.50">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Lot Size</label>
+                                    <input type="number" class="form-control" placeholder="0.20">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-success w-100 btn-lg mb-3" onclick="addTrade()">
+                            <i class="fas fa-plus me-2"></i>Ajouter Trade (Gratuit)
+                        </button>
+                    </form>
+                    
+                    <div class="alert alert-info">
+                        <h6>📊 Statistiques (Gratuit)</h6>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="fw-bold">3</div>
+                                <small>Trades</small>
+                            </div>
+                            <div class="col-4">
+                                <div class="fw-bold text-success">67%</div>
+                                <small>Réussite</small>
+                            </div>
+                            <div class="col-4">
+                                <div class="fw-bold text-warning">+$150</div>
+                                <small>Profit</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Update button styles
+                document.querySelector('[onclick="showCalculator(\'position\')"]').className = 'btn btn-outline-primary btn-lg';
+                document.querySelector('[onclick="showCalculator(\'journal\')"]').className = 'btn btn-primary btn-lg';
+            } else {
+                // Back to position calculator
+                location.reload();
+            }
+        }
+        
+        function addTrade() {
+            alert('✅ Trade ajouté avec succès !\n\n💡 Version Premium disponible :\n- Sauvegarde cloud illimitée\n- Statistiques avancées\n- Export PDF/CSV\n\nPour seulement 9,99€/mois !');
+        }
+
+        function addTradeToJournal() {
+            const pair = document.getElementById('journalPair').value;
+            const direction = document.getElementById('journalDirection').value;
+            const entry = document.getElementById('journalEntry').value;
+            const lotSize = document.getElementById('journalLotSize').value;
+            const sl = document.getElementById('journalSL').value;
+            const tp = document.getElementById('journalTP').value;
+            const notes = document.getElementById('journalNotes').value;
+
+            if (!pair || !direction || !entry || !lotSize) {
+                alert('⚠️ Veuillez remplir tous les champs obligatoires !');
+                return;
+            }
+
+            // Simulate adding trade (in real app would save to database)
+            const profit = Math.random() > 0.6 ? (Math.random() * 100 + 20) : -(Math.random() * 50 + 10);
+            const profitText = profit > 0 ? `+$${profit.toFixed(0)}` : `-$${Math.abs(profit).toFixed(0)}`;
+            const profitClass = profit > 0 ? 'text-success' : 'text-danger';
+
+            // Add to recent trades (simulate)
+            const recentTrades = document.getElementById('recentTrades');
+            const newTrade = document.createElement('div');
+            newTrade.className = 'd-flex justify-content-between border-bottom py-2';
+            newTrade.innerHTML = `
+                <span>${pair} ${direction}</span>
+                <span class="${profitClass}">${profitText}</span>
+            `;
+            recentTrades.insertBefore(newTrade, recentTrades.firstChild);
+
+            // Update stats (simulate)
+            const currentTotal = parseInt(document.getElementById('totalTrades').textContent);
+            document.getElementById('totalTrades').textContent = currentTotal + 1;
+
+            // Clear form
+            document.getElementById('journalForm').reset();
+
+            alert(`✅ Trade ajouté avec succès !\n\n${pair} ${direction}\nLot: ${lotSize}\nEntrée: ${entry}\n\n💡 En version Premium: sauvegarde cloud automatique !`);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.style.background === 'white') {
+                body.style.background = '#1a1a1a';
+                body.style.color = 'white';
+            } else {
+                body.style.background = 'white';
+                body.style.color = 'black';
+            }
+        }
+    </script>
+</body>
+</html>

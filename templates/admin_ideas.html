@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Gestion des Idées - MindTraderPro{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- En-tête admin -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="fas fa-cogs text-warning me-2"></i>
+            Administration - Idées & Messages
+        </h1>
+        <div class="d-flex gap-2">
+            <span class="badge bg-info">Connecté en tant qu'admin</span>
+            <a href="{{ url_for('ideas.admin_logout') }}" class="btn btn-outline-danger btn-sm">
+                <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-2">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.total_ideas }}</h3>
+                    <small>Idées total</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.pending }}</h3>
+                    <small>En attente</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.accepted }}</h3>
+                    <small>Acceptées</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.in_development }}</h3>
+                    <small>En développement</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-secondary text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.total_messages }}</h3>
+                    <small>Messages</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-0">{{ stats.unread_messages }}</h3>
+                    <small>Non lus</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglets -->
+    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="ideas-tab" data-bs-toggle="tab" data-bs-target="#ideas-pane" type="button">
+                <i class="fas fa-lightbulb me-1"></i>Idées ({{ ideas|length }})
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-pane" type="button">
+                <i class="fas fa-envelope me-1"></i>Messages ({{ messages|length }})
+                {% if stats.unread_messages > 0 %}
+                    <span class="badge bg-danger ms-1">{{ stats.unread_messages }}</span>
+                {% endif %}
+            </button>
+        </li>
+    </ul>
+
+    <!-- Contenu des onglets -->
+    <div class="tab-content" id="adminTabContent">
+        <!-- Onglet Idées -->
+        <div class="tab-pane fade show active" id="ideas-pane" role="tabpanel">
+            <div class="row">
+                {% for idea in ideas %}
+                    <div class="col-12 mb-3">
+                        <div class="card {% if idea.status == 'pending' %}border-warning{% elif idea.status == 'accepted' %}border-success{% elif idea.status == 'in_development' %}border-info{% elif idea.status == 'rejected' %}border-danger{% endif %}">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Votes et infos -->
+                                    <div class="col-md-2 text-center">
+                                        <div class="bg-primary text-white rounded p-2 mb-2">
+                                            <h4 class="mb-0">{{ idea.votes }}</h4>
+                                            <small>vote{{ 's' if idea.votes != 1 else '' }}</small>
+                                        </div>
+                                        <span class="badge bg-{% if idea.status == 'pending' %}warning{% elif idea.status == 'accepted' %}success{% elif idea.status == 'in_development' %}info{% elif idea.status == 'rejected' %}danger{% endif %}">
+                                            {{ idea.status|title }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Contenu -->
+                                    <div class="col-md-7">
+                                        <h5 class="card-title">{{ idea.title }}</h5>
+                                        <p class="card-text">{{ idea.description }}</p>
+                                        <div class="small text-muted">
+                                            <i class="fas fa-user me-1"></i>{{ idea.username }} | 
+                                            <i class="fas fa-tag me-1"></i>{{ idea.category }} | 
+                                            <i class="fas fa-clock me-1"></i>{{ idea.timestamp[:10] }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="col-md-3">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-success btn-sm update-status" 
+                                                    data-idea-id="{{ idea.id }}" data-status="accepted">
+                                                <i class="fas fa-check me-1"></i>Accepter
+                                            </button>
+                                            <button class="btn btn-info btn-sm update-status" 
+                                                    data-idea-id="{{ idea.id }}" data-status="in_development">
+                                                <i class="fas fa-code me-1"></i>En développement
+                                            </button>
+                                            <button class="btn btn-warning btn-sm update-status" 
+                                                    data-idea-id="{{ idea.id }}" data-status="pending">
+                                                <i class="fas fa-clock me-1"></i>En attente
+                                            </button>
+                                            <button class="btn btn-danger btn-sm update-status" 
+                                                    data-idea-id="{{ idea.id }}" data-status="rejected">
+                                                <i class="fas fa-times me-1"></i>Refuser
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-lightbulb fa-3x mb-3"></i>
+                            <h5>Aucune idée soumise</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Onglet Messages -->
+        <div class="tab-pane fade" id="messages-pane" role="tabpanel">
+            <div class="row">
+                {% for message in messages %}
+                    <div class="col-12 mb-3">
+                        <div class="card {% if not message.read %}border-warning{% else %}border-secondary{% endif %}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="card-title">
+                                            {% if not message.read %}
+                                                <span class="badge bg-warning me-2">NOUVEAU</span>
+                                            {% endif %}
+                                            De: {{ message.name }}
+                                            {% if message.email != 'Non fourni' %}
+                                                ({{ message.email }})
+                                            {% endif %}
+                                        </h6>
+                                        <p class="card-text">{{ message.message }}</p>
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>{{ message.timestamp[:10] }} | 
+                                            <i class="fas fa-globe me-1"></i>{{ message.ip }}
+                                        </small>
+                                    </div>
+                                    <div class="ms-3">
+                                        {% if not message.read %}
+                                            <button class="btn btn-primary btn-sm mark-read" 
+                                                    data-message-id="{{ message.id }}">
+                                                <i class="fas fa-check me-1"></i>Marquer lu
+                                            </button>
+                                        {% else %}
+                                            <span class="badge bg-success">Lu</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-envelope fa-3x mb-3"></i>
+                            <h5>Aucun message reçu</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="fixed-bottom bg-dark border-top p-3">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <small class="text-muted">Administration MindTraderPro</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-eye me-1"></i>Voir côté public
+                    </a>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-home me-1"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des changements de statut d'idées
+    document.querySelectorAll('.update-status').forEach(button => {
+        button.addEventListener('click', function() {
+            const ideaId = this.dataset.ideaId;
+            const status = this.dataset.status;
+            const originalText = this.innerHTML;
+            
+            // Désactiver le bouton
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            fetch('/ideas/admin/ideas/update_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idea_id: ideaId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    // Recharger la page après 1 seconde
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    showNotification(data.message, 'error');
+                    this.disabled = false;
+                    this.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                showNotification('Erreur lors de la mise à jour', 'error');
+                this.disabled = false;
+                this.innerHTML = originalText;
+            });
+        });
+    });
+    
+    // Gestion des messages lus
+    document.querySelectorAll('.mark-read').forEach(button => {
+        button.addEventListener('click', function() {
+            const messageId = this.dataset.messageId;
+            const originalText = this.innerHTML;
+            
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            fetch('/ideas/admin/messages/mark_read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message_id: messageId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    // Remplacer par un badge "Lu"
+                    this.outerHTML = '<span class="badge bg-success">Lu</span>';
+                } else {
+                    showNotification(data.message, 'error');
+                    this.disabled = false;
+                    this.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                showNotification('Erreur lors du marquage', 'error');
+                this.disabled = false;
+                this.innerHTML = originalText;
+            });
+        });
+    });
+    
+    // Fonction pour afficher les notifications
+    function showNotification(message, type) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const notification = document.createElement('div');
+        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed`;
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.zIndex = '9999';
+        notification.style.minWidth = '300px';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 3000);
+    }
+});
+</script>
+
+<style>
+body {
+    padding-bottom: 80px; /* Pour éviter que le contenu soit caché par la barre fixe */
+}
+</style>
+{% endblock %}

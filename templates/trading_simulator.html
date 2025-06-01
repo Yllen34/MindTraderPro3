@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur de Trading - Trading Calculator Pro</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .simulator-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--bs-secondary);
+        }
+        .simulator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .backtest-card { border-left-color: var(--bs-primary); }
+        .paper-card { border-left-color: var(--bs-success); }
+        .strategy-card { border-left-color: var(--bs-warning); }
+        
+        .performance-metric {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+        .metric-positive { background: rgba(40, 167, 69, 0.1); color: var(--bs-success); }
+        .metric-negative { background: rgba(220, 53, 69, 0.1); color: var(--bs-danger); }
+        .metric-neutral { background: rgba(108, 117, 125, 0.1); color: var(--bs-info); }
+        
+        .strategy-selector {
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .strategy-selector:hover {
+            border-color: var(--bs-primary);
+            background: rgba(13, 110, 253, 0.1);
+        }
+        .strategy-selector.selected {
+            border-color: var(--bs-success);
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .trade-row.winning { border-left: 3px solid var(--bs-success); }
+        .trade-row.losing { border-left: 3px solid var(--bs-danger); }
+        
+        .equity-chart {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold text-primary">
+                    🎮 Simulateur de Trading
+                </h1>
+                <p class="lead text-muted">Backtesting et Paper Trading pour tester vos stratégies sans risque</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mb-4">
+            <a href="/simple" class="btn btn-outline-secondary me-2">← Retour Accueil</a>
+            <button class="btn btn-info" onclick="showHelpModal()">
+                <i class="fas fa-question-circle"></i> Guide d'utilisation
+            </button>
+        </div>
+
+        <!-- Onglets principaux -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill" id="simulatorTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="backtest-tab" data-bs-toggle="pill" data-bs-target="#backtest" type="button">
+                            <i class="fas fa-chart-line"></i> Backtesting
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="paper-tab" data-bs-toggle="pill" data-bs-target="#paper" type="button">
+                            <i class="fas fa-play-circle"></i> Paper Trading
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="results-tab" data-bs-toggle="pill" data-bs-target="#results" type="button">
+                            <i class="fas fa-trophy"></i> Résultats
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="simulatorTabContent">
+            <!-- Onglet Backtesting -->
+            <div class="tab-pane fade show active" id="backtest" role="tabpanel">
+                <div class="row">
+                    <!-- Configuration du backtest -->
+                    <div class="col-lg-4">
+                        <div class="card simulator-card backtest-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-cogs text-primary"></i>
+                                    Configuration Backtest
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="backtestForm">
+                                    <!-- Sélection d'actif -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Actif à tester</label>
+                                        <select class="form-select" id="backtestSymbol" required>
+                                            <option value="EURUSD">🇪🇺 EURUSD - Euro/Dollar</option>
+                                            <option value="GBPUSD">🇬🇧 GBPUSD - Livre/Dollar</option>
+                                            <option value="USDJPY">🇯🇵 USDJPY - Dollar/Yen</option>
+                                            <option value="XAUUSD" selected>🥇 XAUUSD - Or/Dollar</option>
+                                            <option value="BTCUSD">₿ BTCUSD - Bitcoin</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Période de test -->
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label">Date début</label>
+                                            <input type="date" class="form-control" id="startDate" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Date fin</label>
+                                            <input type="date" class="form-control" id="endDate" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Timeframe -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Timeframe</label>
+                                        <select class="form-select" id="timeframe">
+                                            <option value="1h" selected>1 Heure</option>
+                                            <option value="4h">4 Heures</option>
+                                            <option value="1d">1 Jour</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Capital initial -->
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label">Capital initial</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="number" class="form-control" id="initialBalance" value="10000" min="1000" step="1000">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Risque par trade</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="riskPerTrade" value="2" min="0.5" max="10" step="0.5">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                                        <i class="fas fa-rocket"></i> Lancer le Backtest
+                                    </button>
+                                </form>
+
+                                <!-- Indicateur de progression -->
+                                <div id="backtestProgress" class="d-none">
+                                    <div class="text-center mb-2">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                                        <p class="mt-2">Backtest en cours...</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                             style="width: 0%" id="progressBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sélection de stratégie -->
+                        <div class="card simulator-card strategy-card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-brain text-warning"></i>
+                                    Stratégies Disponibles
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="strategiesList">
+                                    <!-- Chargé dynamiquement -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Résultats du backtest -->
+                    <div class="col-lg-8">
+                        <div class="card simulator-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-area text-success"></i>
+                                    Résultats du Backtest
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="backtestResults">
+                                    <div class="text-center py-5 text-muted">
+                                        <i class="fas fa-chart-line fa-4x mb-3"></i>
+                                        <h5>Prêt pour le backtest !</h5>
+                                        <p>Sélectionnez une stratégie et configurez les paramètres pour commencer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Paper Trading -->
+            <div class="tab-pane fade" id="paper" role="tabpanel">
+                <div class="row">
+                    <!-- Compte Paper Trading -->
+                    <div class="col-lg-4">
+                        <div class="card simulator-card paper-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-wallet text-success"></i>
+                                    Compte Paper Trading
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="paperAccount">
+                                    <div class="text-center mb-3">
+                                        <button class="btn btn-success" onclick="createPaperAccount()">
+                                            <i class="fas fa-plus"></i> Créer Compte Demo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Passage d'ordre -->
+                        <div class="card simulator-card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-plus-circle text-info"></i>
+                                    Nouvel Ordre
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="orderForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Paire</label>
+                                        <select class="form-select" id="orderSymbol">
+                                            <option value="EURUSD">EURUSD</option>
+                                            <option value="GBPUSD">GBPUSD</option>
+                                            <option value="XAUUSD">XAUUSD</option>
+                                            <option value="BTCUSD">BTCUSD</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label">Direction</label>
+                                            <select class="form-select" id="orderDirection">
+                                                <option value="BUY">🟢 Achat</option>
+                                                <option value="SELL">🔴 Vente</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Quantité</label>
+                                            <input type="number" class="form-control" id="orderQuantity" 
+                                                   value="0.1" min="0.01" step="0.01">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label">Stop Loss</label>
+                                            <input type="number" class="form-control" id="stopLoss" step="any">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Take Profit</label>
+                                            <input type="number" class="form-control" id="takeProfit" step="any">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-paper-plane"></i> Passer l'Ordre
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Positions et ordres -->
+                    <div class="col-lg-8">
+                        <div class="card simulator-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-list text-warning"></i>
+                                    Positions et Ordres
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="paperPositions">
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="fas fa-chart-area fa-3x mb-3"></i>
+                                        <p>Créez un compte paper trading pour commencer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Résultats -->
+            <div class="tab-pane fade" id="results" role="tabpanel">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card simulator-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-trophy text-warning"></i>
+                                    Historique des Simulations
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="simulationHistory">
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="fas fa-history fa-3x mb-3"></i>
+                                        <p>Aucune simulation effectuée pour le moment</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'aide -->
+    <div class="modal fade" id="helpModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-question-circle text-info"></i>
+                        Guide du Simulateur de Trading
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-chart-line text-primary"></i> Backtesting</h6>
+                            <ul class="small">
+                                <li>Testez vos stratégies sur des données historiques</li>
+                                <li>Analysez les performances sans risque financier</li>
+                                <li>Optimisez vos paramètres de trading</li>
+                                <li>Comparez différentes stratégies</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-play-circle text-success"></i> Paper Trading</h6>
+                            <ul class="small">
+                                <li>Tradez en temps réel avec de l'argent virtuel</li>
+                                <li>Pratiquez sans risquer votre capital</li>
+                                <li>Testez vos émotions et discipline</li>
+                                <li>Perfectionnez votre exécution</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6><i class="fas fa-brain text-warning"></i> Stratégies Disponibles</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>MA Cross</strong>
+                            <p class="small">Croisement de moyennes mobiles - idéal pour les tendances</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>RSI</strong>
+                            <p class="small">Relative Strength Index - détecte les retournements</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Breakout</strong>
+                            <p class="small">Stratégie de cassure - capture les mouvements forts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let userSession = 'user_' + Math.random().toString(36).substr(2, 9);
+        let selectedStrategy = 'ma_cross';
+        let availableStrategies = [];
+        let equityChart = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDates();
+            loadAvailableStrategies();
+            checkPaperAccount();
+        });
+
+        function initializeDates() {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setMonth(startDate.getMonth() - 6); // 6 mois en arrière
+
+            document.getElementById('startDate').value = startDate.toISOString().split('T')[0];
+            document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+        }
+
+        async function loadAvailableStrategies() {
+            try {
+                const response = await fetch('/api/simulator/strategies');
+                const data = await response.json();
+
+                if (data.success) {
+                    availableStrategies = data.strategies;
+                    displayStrategies(availableStrategies);
+                }
+            } catch (error) {
+                console.error('Erreur chargement stratégies:', error);
+                displayDefaultStrategies();
+            }
+        }
+
+        function displayDefaultStrategies() {
+            const strategies = [
+                {
+                    id: 'ma_cross',
+                    name: 'Croisement MA',
+                    description: 'Moyennes mobiles 10/20',
+                    parameters: []
+                },
+                {
+                    id: 'rsi',
+                    name: 'RSI Strategy',
+                    description: 'RSI 14 périodes',
+                    parameters: []
+                },
+                {
+                    id: 'breakout',
+                    name: 'Breakout',
+                    description: 'Cassure de range',
+                    parameters: []
+                }
+            ];
+            displayStrategies(strategies);
+        }
+
+        function displayStrategies(strategies) {
+            const container = document.getElementById('strategiesList');
+            let html = '';
+
+            strategies.forEach((strategy, index) => {
+                const isSelected = strategy.id === selectedStrategy;
+                html += `
+                    <div class="card strategy-selector mb-2 ${isSelected ? 'selected' : ''}" 
+                         onclick="selectStrategy('${strategy.id}')">
+                        <div class="card-body p-3">
+                            <h6 class="mb-1">${strategy.name}</h6>
+                            <small class="text-muted">${strategy.description}</small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectStrategy(strategyId) {
+            selectedStrategy = strategyId;
+            document.querySelectorAll('.strategy-selector').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        // Gestion du formulaire de backtest
+        document.getElementById('backtestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await runBacktest();
+        });
+
+        async function runBacktest() {
+            const formData = {
+                user_session: userSession,
+                symbol: document.getElementById('backtestSymbol').value,
+                strategy: selectedStrategy,
+                timeframe: document.getElementById('timeframe').value,
+                start_date: document.getElementById('startDate').value + 'T00:00:00',
+                end_date: document.getElementById('endDate').value + 'T23:59:59',
+                initial_balance: parseInt(document.getElementById('initialBalance').value),
+                risk_per_trade: parseFloat(document.getElementById('riskPerTrade').value),
+                strategy_params: {}
+            };
+
+            // Afficher la progression
+            document.getElementById('backtestProgress').classList.remove('d-none');
+            
+            // Simulation de progression
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress > 90) progress = 90;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }, 200);
+
+            try {
+                const response = await fetch('/api/simulator/backtest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                clearInterval(progressInterval);
+                document.getElementById('progressBar').style.width = '100%';
+
+                setTimeout(() => {
+                    document.getElementById('backtestProgress').classList.add('d-none');
+                    document.getElementById('progressBar').style.width = '0%';
+                    
+                    if (result.success) {
+                        displayBacktestResults(result.backtest_result);
+                    } else {
+                        showError('Erreur lors du backtest: ' + result.error);
+                    }
+                }, 1000);
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                document.getElementById('backtestProgress').classList.add('d-none');
+                showError('Erreur de connexion');
+            }
+        }
+
+        function displayBacktestResults(result) {
+            const container = document.getElementById('backtestResults');
+            
+            const winRateColor = result.win_rate >= 60 ? 'success' : result.win_rate >= 40 ? 'warning' : 'danger';
+            const returnColor = result.total_return_percent >= 0 ? 'success' : 'danger';
+            
+            container.innerHTML = `
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="performance-metric metric-${result.total_return >= 0 ? 'positive' : 'negative'}">
+                            <h4>${result.total_return >= 0 ? '+' : ''}$${result.total_return.toFixed(2)}</h4>
+                            <small>Profit Total</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric metric-${result.win_rate >= 50 ? 'positive' : 'negative'}">
+                            <h4>${result.win_rate.toFixed(1)}%</h4>
+                            <small>Taux de Réussite</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric metric-neutral">
+                            <h4>${result.total_trades}</h4>
+                            <small>Trades Total</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric metric-${result.max_drawdown_percent <= 10 ? 'positive' : 'negative'}">
+                            <h4>${result.max_drawdown_percent.toFixed(1)}%</h4>
+                            <small>Drawdown Max</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6>Courbe d'Équité</h6>
+                        <canvas id="equityChart" class="equity-chart"></canvas>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Métriques Détaillées</h6>
+                        <table class="table table-sm">
+                            <tr><td>Trades Gagnants:</td><td class="text-success">${result.winning_trades}</td></tr>
+                            <tr><td>Trades Perdants:</td><td class="text-danger">${result.losing_trades}</td></tr>
+                            <tr><td>Gain Moyen:</td><td class="text-success">$${result.average_win.toFixed(2)}</td></tr>
+                            <tr><td>Perte Moyenne:</td><td class="text-danger">$${result.average_loss.toFixed(2)}</td></tr>
+                            <tr><td>Plus Grand Gain:</td><td class="text-success">$${result.largest_win.toFixed(2)}</td></tr>
+                            <tr><td>Plus Grande Perte:</td><td class="text-danger">$${result.largest_loss.toFixed(2)}</td></tr>
+                            <tr><td>Ratio de Profit:</td><td>${result.profit_factor.toFixed(2)}</td></tr>
+                            <tr><td>Ratio Sharpe:</td><td>${result.sharpe_ratio.toFixed(2)}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Créer le graphique d'équité
+            createEquityChart(result.equity_curve);
+        }
+
+        function createEquityChart(equityData) {
+            const ctx = document.getElementById('equityChart').getContext('2d');
+            
+            if (equityChart) {
+                equityChart.destroy();
+            }
+
+            const labels = equityData.map(point => new Date(point[0]).toLocaleDateString('fr-FR'));
+            const data = equityData.map(point => point[1]);
+
+            equityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Équité du Compte',
+                        data: data,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Paper Trading Functions
+        async function createPaperAccount() {
+            try {
+                const response = await fetch('/api/simulator/paper-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_session: userSession,
+                        initial_balance: 10000
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess('Compte paper trading créé avec $10,000 !');
+                    loadPaperAccount();
+                } else {
+                    showError('Erreur: ' + result.error);
+                }
+            } catch (error) {
+                showError('Erreur de connexion');
+            }
+        }
+
+        async function checkPaperAccount() {
+            try {
+                const response = await fetch(`/api/simulator/paper-account/${userSession}`);
+                const data = await response.json();
+
+                if (!data.error) {
+                    displayPaperAccount(data);
+                }
+            } catch (error) {
+                console.log('Pas de compte paper trading existant');
+            }
+        }
+
+        async function loadPaperAccount() {
+            await checkPaperAccount();
+        }
+
+        function displayPaperAccount(account) {
+            const container = document.getElementById('paperAccount');
+            const unrealizedColor = account.unrealized_pnl >= 0 ? 'success' : 'danger';
+            
+            container.innerHTML = `
+                <div class="row g-2 text-center mb-3">
+                    <div class="col-6">
+                        <div class="card bg-primary bg-opacity-10">
+                            <div class="card-body p-2">
+                                <h6 class="mb-0">$${account.balance.toLocaleString()}</h6>
+                                <small>Balance</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-info bg-opacity-10">
+                            <div class="card-body p-2">
+                                <h6 class="mb-0">$${account.equity.toLocaleString()}</h6>
+                                <small>Équité</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-${unrealizedColor} bg-opacity-10">
+                            <div class="card-body p-2">
+                                <h6 class="mb-0 text-${unrealizedColor}">
+                                    ${account.unrealized_pnl >= 0 ? '+' : ''}$${account.unrealized_pnl.toFixed(2)}
+                                </h6>
+                                <small>P&L Ouvert</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-secondary bg-opacity-10">
+                            <div class="card-body p-2">
+                                <h6 class="mb-0">${account.trade_count}</h6>
+                                <small>Trades</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Afficher les positions
+            displayPaperPositions(account.positions || []);
+        }
+
+        function displayPaperPositions(positions) {
+            const container = document.getElementById('paperPositions');
+            
+            if (positions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-3 text-muted">
+                        <i class="fas fa-chart-area fa-2x mb-2"></i>
+                        <p>Aucune position ouverte</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<h6>Positions Ouvertes</h6>';
+            positions.forEach(position => {
+                const pnlColor = position.unrealized_pnl >= 0 ? 'success' : 'danger';
+                html += `
+                    <div class="card mb-2">
+                        <div class="card-body p-3">
+                            <div class="row align-items-center">
+                                <div class="col-3">
+                                    <h6 class="mb-0">${position.symbol}</h6>
+                                    <small class="badge bg-${position.direction === 'BUY' ? 'success' : 'danger'}">
+                                        ${position.direction}
+                                    </small>
+                                </div>
+                                <div class="col-3">
+                                    <small>Lot: ${position.quantity}</small><br>
+                                    <small>Entrée: ${position.entry_price}</small>
+                                </div>
+                                <div class="col-3">
+                                    <small>Actuel: ${position.current_price}</small><br>
+                                    <small class="text-${pnlColor}">
+                                        ${position.unrealized_pnl >= 0 ? '+' : ''}$${position.unrealized_pnl.toFixed(2)}
+                                    </small>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-outline-danger btn-sm" onclick="closePaperPosition('${position.position_id}')">
+                                        Fermer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Gestion des ordres paper trading
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await placePaperOrder();
+        });
+
+        async function placePaperOrder() {
+            const orderData = {
+                user_session: userSession,
+                symbol: document.getElementById('orderSymbol').value,
+                direction: document.getElementById('orderDirection').value,
+                quantity: parseFloat(document.getElementById('orderQuantity').value),
+                order_type: 'market',
+                stop_loss: parseFloat(document.getElementById('stopLoss').value) || null,
+                take_profit: parseFloat(document.getElementById('takeProfit').value) || null
+            };
+
+            try {
+                const response = await fetch('/api/simulator/paper-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess(`Ordre ${orderData.direction} exécuté à ${result.filled_price}`);
+                    document.getElementById('orderForm').reset();
+                    loadPaperAccount();
+                } else {
+                    showError('Erreur: ' + result.error);
+                }
+            } catch (error) {
+                showError('Erreur de connexion');
+            }
+        }
+
+        function showHelpModal() {
+            const modal = new bootstrap.Modal(document.getElementById('helpModal'));
+            modal.show();
+        }
+
+        function showSuccess(message) {
+            showToast(message, 'success');
+        }
+
+        function showError(message) {
+            showToast(message, 'danger');
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+            toast.style.zIndex = '9999';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+</html>

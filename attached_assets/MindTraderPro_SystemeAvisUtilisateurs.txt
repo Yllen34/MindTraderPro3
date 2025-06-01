@@ -1,0 +1,73 @@
+
+# MindTraderPro - Système de récolte d'avis utilisateurs (App Store + Trustpilot)
+
+## 🎯 Objectif
+Encourager les utilisateurs satisfaits à laisser un **avis public positif** pour renforcer :
+- La crédibilité de l’application
+- Le référencement sur les stores
+- La preuve sociale pour attirer de nouveaux utilisateurs
+
+---
+
+## ✅ Meilleurs moments pour afficher la demande d’avis
+
+1. Après une action positive :
+   - Calculateur utilisé
+   - Trade validé ou journal rempli
+   - Objectif atteint ou badge débloqué
+
+2. Après X connexions :
+   - Ex : après 3, 5 ou 10 connexions
+
+3. Après un retour positif dans l’app :
+   - Si l’utilisateur coche “satisfait” ou “app utile”
+
+---
+
+## 💬 Exemple de message dans l’application
+
+> “Tu aimes MindTraderPro ?  
+> Laisse-nous un petit avis, ça nous aide énormément à continuer à te fournir des outils de qualité.”
+
+- [Laisser un avis sur l’App Store]
+- [Laisser un avis sur le Play Store]
+- [Laisser un avis sur Trustpilot]
+
+---
+
+## 🔁 Système de redirection
+
+- Détection automatique de la plateforme (Android, iOS, Web)
+- Lien de redirection unique vers :
+  - App Store : https://apps.apple.com/app/idVOTRE_ID
+  - Play Store : https://play.google.com/store/apps/details?id=VOTRE_ID
+  - Trustpilot : https://fr.trustpilot.com/review/votreapp.com
+
+---
+
+## 🏅 Récompenses (facultatif)
+
+- Badge “Supporter MindTraderPro”
+- Accès temporaire à une fonctionnalité Premium
+- Remerciement public dans la section “Témoignages”
+
+---
+
+## 📬 Rappel doux (notifications / emails)
+
+> “Tu utilises MindTraderPro ? Aide-nous à continuer en laissant un petit avis. Cela prend 10 secondes !”
+
+- Bouton : “Je laisse mon avis maintenant”
+
+---
+
+## 📊 Tracking
+
+- Nombre d’ouvertures de la popup
+- Clics sur chaque lien
+- Taux de conversion (optionnel via UTM ou lien personnalisé)
+
+---
+
+## Auteur
+Fabien Fab (alias Yllen34) – 2025
